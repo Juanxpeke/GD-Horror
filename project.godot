@@ -13,3 +13,7 @@ config_version=5
 config/name="GD-Horror"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor]
+
+script/templates_search_path="res://ScriptTemplates"
