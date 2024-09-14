@@ -1,3 +1,10 @@
+# Comments
+# .import files need to be tracked as they define
+# how resources should be imported to the engine
+
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Windows temporal files bug ignore
+**/*.tmp
