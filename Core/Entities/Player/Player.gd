@@ -11,9 +11,10 @@ extends CharacterBody3D
 #region Constants
 ## Gravity applied to the player.
 const BASE_MOVEMENT_SPEED : float = 12.0
-const CAMERA_HORIZONTAL_ROTATION_SPEED : float = 0.02
-const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.01
-const FRICTION_VALUE : float = 0.05
+const MAXIMUM_MOVEMENT_SPEED : float = 4.0
+const CAMERA_HORIZONTAL_ROTATION_SPEED : float = 0.005
+const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.002
+const FRICTION_VALUE : float = 0.30
 #endregion Constants
 
 #region Exports Variables
@@ -52,6 +53,9 @@ func _physics_process(delta : float) -> void:
 		velocity += Vector3(movement.x, 0, movement.y)
 	else:
 		velocity -= velocity * FRICTION_VALUE
+	
+	if velocity.length() > MAXIMUM_MOVEMENT_SPEED:
+		velocity = velocity.normalized() * MAXIMUM_MOVEMENT_SPEED
 	
 	velocity.y -= _gravity * delta
 	
