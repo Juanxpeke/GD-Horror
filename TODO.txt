@@ -8,3 +8,10 @@
 - See how to make an scene with buildings and other 3D models the right way
   - See how to light the scene
     - See how to shader the scene
+
+- Research how NPC logic works
+
+- Implement UI stuff
+  - Implement main menu screen
+  - Implement settings screen
+  - Implement credits screen
