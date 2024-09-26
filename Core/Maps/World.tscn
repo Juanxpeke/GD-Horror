@@ -13,7 +13,7 @@ size = Vector3(10, 1, 10)
 [node name="Player" parent="." instance=ExtResource("1_j28u4")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.54635, 0)
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, 0, -1.54635, 0)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
@@ -24,3 +24,5 @@ mesh = SubResource("BoxMesh_afef1")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 1.817

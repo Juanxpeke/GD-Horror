@@ -13,6 +13,7 @@ extends CharacterBody3D
 const BASE_MOVEMENT_SPEED : float = 12.0
 const CAMERA_HORIZONTAL_ROTATION_SPEED : float = 0.02
 const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.01
+const FRICTION_VALUE : float = 0.05
 #endregion Constants
 
 #region Exports Variables
@@ -46,10 +47,15 @@ func _physics_process(delta : float) -> void:
 
 	movement = Vector2(forward.x, forward.z) * movement.y + Vector2(right.x, right.z) * movement.x
 	
-	velocity += Vector3(movement.x, 0, movement.y)
+	print(movement.is_zero_approx())
+	if not movement.is_zero_approx():
+		velocity += Vector3(movement.x, 0, movement.y)
+	else:
+		velocity -= velocity * FRICTION_VALUE
 	
 	velocity.y -= _gravity * delta
 	
+	print(velocity)
 	move_and_slide()
 
 func _input(event : InputEvent) -> void:
