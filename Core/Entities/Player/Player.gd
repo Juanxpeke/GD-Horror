@@ -47,8 +47,7 @@ func _physics_process(delta : float) -> void:
 	var right := transform.basis.x
 
 	movement = Vector2(forward.x, forward.z) * movement.y + Vector2(right.x, right.z) * movement.x
-	
-	print(movement.is_zero_approx())
+
 	if not movement.is_zero_approx():
 		velocity += Vector3(movement.x, 0, movement.y)
 	else:
@@ -58,8 +57,7 @@ func _physics_process(delta : float) -> void:
 		velocity = velocity.normalized() * MAXIMUM_MOVEMENT_SPEED
 	
 	velocity.y -= _gravity * delta
-	
-	print(velocity)
+
 	move_and_slide()
 
 func _input(event : InputEvent) -> void:
