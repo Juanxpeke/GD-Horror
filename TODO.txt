@@ -1,0 +1,17 @@
+- Object handling system (inheritance from RigidBody3D)
+  - The object follows the cursor
+    - The objects doesn't go through walls or other objects while being hold
+    ? After releasing the HOLD key the object acquires an impulse instead of being dropped
+
+- Dialogue system (study the use of Plugins for this)
+
+- See how to make an scene with buildings and other 3D models the right way
+  - See how to light the scene
+    - See how to shader the scene
+
+- Research how NPC logic works
+
+- Implement UI stuff
+  - Implement main menu screen
+  - Implement settings screen
+  - Implement credits screen
