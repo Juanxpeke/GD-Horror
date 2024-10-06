@@ -1,10 +1,14 @@
-extends Node3D
+extends Node
 ## Docstring
 
 #region Signals
 #endregion Signals
 
 #region Enums
+enum CollisionLayer {
+	WORLD = 1 << 0 , 
+	CAMERA_RAY = 1 << 31
+}
 #endregion Enums
 
 #region Constants

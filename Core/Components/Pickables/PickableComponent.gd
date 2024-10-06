@@ -1,4 +1,4 @@
-extends Node3D
+class_name PickableComponent extends RigidBody3D
 ## Docstring
 
 #region Signals
@@ -20,14 +20,16 @@ extends Node3D
 #endregion Private Variables
 
 #region On Ready Variables
+@onready var _hittable_component : HittableComponent = %HittableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
 	pass
 
-func _process(delta : float) -> void:
-	pass
+func _physics_process(delta : float) -> void:
+	if _hittable_component.is_hitted:
+		pass
 #endregion Built-in Virtual Methods
 
 #region Public Methods

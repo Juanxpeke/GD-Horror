@@ -79,6 +79,7 @@ func _input(event : InputEvent) -> void:
 		rotate_y(horizontal_plane_rotation)
 		head_pivot.rotate_x(vertical_plane_rotation)
 	
+	
 	if Input.is_action_just_pressed("pick_item") and picked_object == null:
 		print("input picked item")
 		pick_object()
@@ -95,7 +96,7 @@ func pick_object():
 	if interaction.is_colliding():
 		print("Is colliding")
 		picked_object = interaction.get_collider()
-		if picked_object != null and picked_object is RigidBody3D:
+		if picked_object != null and picked_object.has_node("PickableComponent"):
 			print(picked_object)
 			print("Detected item")
 			#picked_object.position = hand.position

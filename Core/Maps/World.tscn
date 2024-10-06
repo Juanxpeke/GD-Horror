@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmkct1k6278t8"]
+[gd_scene load_steps=6 format=3 uid="uid://bmkct1k6278t8"]
 
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_j28u4"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Core/Components/Pickables/Item/test_item.tscn" id="2_0mq3r"]
+[ext_resource type="PackedScene" uid="uid://dvonab0vfaon7" path="res://Core/Components/Pickables/Item/big_test_item.tscn" id="3_p1eba"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4nl04"]
 size = Vector3(30, 1, 30)
@@ -28,5 +29,8 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 shadow_enabled = true
 shadow_bias = 1.817
 
-[node name="TestItem" parent="." instance=ExtResource("2_0mq3r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.765356, 0.220643, -3.82959)
+[node name="Cubito" parent="." instance=ExtResource("2_0mq3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 1.00978, -3.81759)
+
+[node name="Cubito2" parent="." instance=ExtResource("3_p1eba")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.67526, 1.49819, -3.09021)

@@ -20,7 +20,7 @@ extends RayCast3D
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var actual_collider : RigidBody3D = get_collider()
+@onready var last_hittable_component : HittableComponent = null
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
@@ -29,16 +29,29 @@ func _ready() -> void:
 
 func _physics_process(delta : float) -> void:
 	var new_collider = get_collider()
-	if new_collider != actual_collider:
-		if actual_collider != null:
-			actual_collider.not_in_range()
-		actual_collider = new_collider
-		if new_collider != null:
-			new_collider.in_range()
+	
+	if not new_collider and last_hittable_component:
+		last_hittable_component.unregister_hit()
+		last_hittable_component = null
+	
+	if new_collider:
+		var hittable_component := get_hittable_component(new_collider)
+		
+		if hittable_component != last_hittable_component:
+			if last_hittable_component:
+				last_hittable_component.unregister_hit()
+			last_hittable_component = hittable_component
+			last_hittable_component.register_hit()
+		
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
+func get_hittable_component(node : Node3D) -> HittableComponent:	
+	var aux_node = node.get_node_or_null("HittableComponent")
+	if not aux_node:
+		aux_node = node.get_parent().get_node("HittableComponent")
+	return aux_node
 #endregion Private Methods
