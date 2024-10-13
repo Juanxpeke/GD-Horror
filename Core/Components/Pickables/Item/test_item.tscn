@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://dsqsm4bv8ojnj"]
+
+[ext_resource type="Script" path="res://Core/Components/Pickables/Item/test_item.gd" id="1_qqbat"]
+[ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="2_dy8ae"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vj528"]
+albedo_color = Color(0.0885599, 0.0885599, 0.0885599, 1)
+metallic = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_s3twx"]
+material = SubResource("StandardMaterial3D_vj528")
+size = Vector3(0.8, 0.8, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b3l4v"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[node name="Cubito" type="RigidBody3D"]
+lock_rotation = true
+script = ExtResource("1_qqbat")
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s3twx")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_b3l4v")
+
+[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("2_dy8ae")]
+collision_object = NodePath("..")
+mesh = NodePath("../MeshInstance3D")
