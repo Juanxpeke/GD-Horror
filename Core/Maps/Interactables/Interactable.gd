@@ -1,6 +1,7 @@
 class_name Interactable
-extends StaticBody3D
-## Docstring
+extends CollisionObject3D
+## A [CollisionObject3D] which detects the camera ray and can be interactable
+## by pressing the interact key.
 
 #region Signals
 #endregion Signals
@@ -21,7 +22,7 @@ extends StaticBody3D
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var hittable_component : HittableComponent = $HittableComponent
+@onready var _hittable_component : HittableComponent = $HittableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
@@ -29,7 +30,7 @@ func _ready() -> void:
 	pass
 	
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and hittable_component.is_hitted:
+	if event.is_action_pressed("interact") and _hittable_component.is_hitted:
 		_interact()
 #endregion Built-in Virtual Methods
 

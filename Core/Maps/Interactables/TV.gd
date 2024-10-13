@@ -1,6 +1,6 @@
 class_name TV
 extends Interactable
-## Docstring
+## A TV.
 
 #region Signals
 #endregion Signals
@@ -18,6 +18,7 @@ extends Interactable
 #endregion Public Variables
 
 #region Private Variables
+## Boolean related to the TV on state.
 var is_on : bool = false
 #endregion Private Variables
 
