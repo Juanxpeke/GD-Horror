@@ -1,11 +1,14 @@
-- Object handling system (inheritance from RigidBody3D)
-  - The object follows the cursor
-    - The objects doesn't go through walls or other objects while being hold
+✅ Interactables logic
+
+✅ Object handling system (inheritance from RigidBody3D)
+  ✅ The object follows the cursor
+    ✅ The objects doesn't go through walls or other objects while being hold
     ? After releasing the HOLD key the object acquires an impulse instead of being dropped
+    - Implement as a component logic
 
 - Dialogue system (study the use of Plugins for this)
 
-- See how to make an scene with buildings and other 3D models the right way
+✅ See how to make an scene with buildings and other 3D models the right way
   - See how to light the scene
     - See how to shader the scene
 
