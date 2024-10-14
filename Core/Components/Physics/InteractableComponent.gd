@@ -1,9 +1,9 @@
-class_name Interactable
-extends CollisionObject3D
-## A [CollisionObject3D] which detects the camera ray and can be interactable
-## by pressing the interact key.
+class_name InteractableComponent
+extends HittableComponent
+## A [HittableComponent] that reacts to the interact key.
 
 #region Signals
+signal interacted
 #endregion Signals
 
 #region Enums
@@ -22,21 +22,16 @@ extends CollisionObject3D
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var _interactable_component : InteractableComponent = $InteractableComponent
 #endregion On Ready Variables
 
-#region Built-in Virtual Methods
-func _ready() -> void:
-	_interactable_component.interacted.connect(_on_interacted)
+#region Built-in Virtual Methods	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact") and is_hitted:
+		interacted.emit()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
-func _on_interacted() -> void:
-	_interact()
-
-func _interact() -> void:
-	pass
 #endregion Private Methods

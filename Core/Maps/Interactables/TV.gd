@@ -1,6 +1,6 @@
 class_name TV
 extends Interactable
-## A TV.
+## A TV object that can be turned on or off.
 
 #region Signals
 #endregion Signals
@@ -18,7 +18,7 @@ extends Interactable
 #endregion Public Variables
 
 #region Private Variables
-## Boolean related to the TV on state.
+## Boolean that tells if the TV is on or not.
 var is_on : bool = false
 #endregion Private Variables
 
@@ -27,7 +27,7 @@ var is_on : bool = false
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	pass
+	super()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
