@@ -1,6 +1,7 @@
-class_name TV
-extends Interactable
-## A TV object that can be turned on or off.
+class_name BasicInteractable
+extends CollisionObject3D
+## A [CollisionObject3D] which detects the camera ray and can be interactable
+## by pressing the interact key.
 
 #region Signals
 #endregion Signals
@@ -18,27 +19,24 @@ extends Interactable
 #endregion Public Variables
 
 #region Private Variables
-## Boolean that tells if the TV is on or not.
-var is_on : bool = false
 #endregion Private Variables
 
 #region On Ready Variables
+@onready var _interactable_component : InteractableComponent = $InteractableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	super()
+	_interactable_component.interacted.connect(_on_interacted)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
+func _on_interacted() -> void:
+	_interact()
+
 func _interact() -> void:
-	if not is_on:
-		is_on = true
-		print("TV ON")
-	else:
-		is_on = false
-		print("TV OFF")
+	pass
 #endregion Private Methods

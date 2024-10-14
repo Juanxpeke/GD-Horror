@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cb5udnaur6knc"]
 
-[ext_resource type="Script" path="res://Core/Maps/Interactables/TV.gd" id="1_1y0xe"]
+[ext_resource type="Script" path="res://Core/Maps/BasicInteractables/TV.gd" id="1_1y0xe"]
 [ext_resource type="PackedScene" uid="uid://b5fgd2dw4lqdf" path="res://Core/Components/Physics/InteractableComponent.tscn" id="2_tntk7"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_avbgd"]
