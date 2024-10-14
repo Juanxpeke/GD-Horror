@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_j28u4"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Core/Components/Pickables/Item/test_item.tscn" id="2_0mq3r"]
 [ext_resource type="PackedScene" uid="uid://dvonab0vfaon7" path="res://Core/Components/Pickables/Item/big_test_item.tscn" id="3_p1eba"]
-[ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Interactables/TV.tscn" id="4_882wy"]
+[ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/BasicInteractables/TV.tscn" id="4_882wy"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4nl04"]
 size = Vector3(30, 1, 30)

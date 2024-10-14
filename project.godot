@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+LogManager="*res://Debugging/Global/LogManager.gd"
 PhysicsManager="*res://Core/Global/PhysicsManager.gd"
 
 [editor]

@@ -1,7 +1,5 @@
-class_name Interactable
-extends CollisionObject3D
-## A [CollisionObject3D] which detects the camera ray and can be interactable
-## by pressing the interact key.
+extends Node
+## A global class for custom log methods.
 
 #region Signals
 #endregion Signals
@@ -19,25 +17,25 @@ extends CollisionObject3D
 #endregion Public Variables
 
 #region Private Variables
+var _rendering_color : String = "green"
+var _physics_color : String = "yellow"
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var _hittable_component : HittableComponent = $HittableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	pass
-	
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact") and _hittable_component.is_hitted:
-		_interact()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
+# Logs a message related to a rendering system.
+func rendering_log(message : String) -> void:
+	print_rich("[color=%s](Rendering) %s[/color]" % [_rendering_color, message])
+
+# Logs a message related to a physics system.
+func physics_log(message : String) -> void:
+	print_rich("[color=%s](Physics) %s[/color]" % [_physics_color, message])
 #endregion Public Methods
 
 #region Private Methods
-func _interact() -> void:
-	pass
 #endregion Private Methods

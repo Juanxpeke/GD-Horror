@@ -1,8 +1,9 @@
-class_name TV
-extends Interactable
-## A TV.
+class_name InteractableComponent
+extends HittableComponent
+## A [HittableComponent] that reacts to the interact key.
 
 #region Signals
+signal interacted
 #endregion Signals
 
 #region Enums
@@ -18,27 +19,19 @@ extends Interactable
 #endregion Public Variables
 
 #region Private Variables
-## Boolean related to the TV on state.
-var is_on : bool = false
 #endregion Private Variables
 
 #region On Ready Variables
 #endregion On Ready Variables
 
-#region Built-in Virtual Methods
-func _ready() -> void:
-	pass
+#region Built-in Virtual Methods	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact") and is_hitted:
+		interacted.emit()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
-func _interact() -> void:
-	if not is_on:
-		is_on = true
-		print("TV ON")
-	else:
-		is_on = false
-		print("TV OFF")
 #endregion Private Methods

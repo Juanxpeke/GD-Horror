@@ -49,9 +49,8 @@ func _physics_process(delta : float) -> void:
 #endregion Public Methods
 
 #region Private Methods
-func get_hittable_component(node : Node3D) -> HittableComponent:	
-	var aux_node = node.get_node_or_null("HittableComponent")
-	if not aux_node:
-		aux_node = node.get_parent().get_node("HittableComponent")
-	return aux_node
+func get_hittable_component(node : Node3D) -> HittableComponent:
+	var component_path = node.get_meta("HittableComponentPath", null)
+	assert(component_path)
+	return node.get_node(component_path)
 #endregion Private Methods
