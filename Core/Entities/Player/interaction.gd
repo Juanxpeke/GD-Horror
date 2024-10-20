@@ -1,4 +1,4 @@
-extends RayCast3D
+class_name Interaction extends RayCast3D
 ## Docstring
 
 #region Signals
@@ -14,13 +14,14 @@ extends RayCast3D
 #endregion Exports Variables
 
 #region Public Variables
+var last_collider : CollisionObject3D = null
+var last_hittable_component : HittableComponent = null
 #endregion Public Variables
 
 #region Private Variables
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var last_hittable_component : HittableComponent = null
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
@@ -28,14 +29,14 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta : float) -> void:
-	var new_collider = get_collider()
+	last_collider = get_collider()
 	
-	if not new_collider and last_hittable_component:
+	if not last_collider and last_hittable_component:
 		last_hittable_component.unregister_hit()
 		last_hittable_component = null
 	
-	if new_collider:
-		var hittable_component := get_hittable_component(new_collider)
+	if last_collider:
+		var hittable_component := get_hittable_component(last_collider)
 		
 		if hittable_component != last_hittable_component:
 			if last_hittable_component:
