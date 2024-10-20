@@ -15,6 +15,9 @@ enum CollisionLayer {
 #endregion Constants
 
 #region Exports Variables
+var player_hand : Marker3D = null:
+	set(new_player_hand):
+		player_hand = new_player_hand
 #endregion Exports Variables
 
 #region Public Variables

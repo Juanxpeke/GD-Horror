@@ -26,5 +26,6 @@ mesh = SubResource("BoxMesh_s3twx")
 shape = SubResource("BoxShape3D_b3l4v")
 
 [node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("2_dy8ae")]
+unique_name_in_owner = true
 collision_object = NodePath("..")
 mesh = NodePath("../MeshInstance3D")
