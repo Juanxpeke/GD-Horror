@@ -6,7 +6,9 @@
     ? After releasing the HOLD key the object acquires an impulse instead of being dropped
     - Implement as a component logic
 
-- Dialogue system (study the use of Plugins for this)
+(J) - Dialogue system (Dialogic)
+
+(2) - Study the use of Plugins for this (GDExtension or Module)
 
 ✅ See how to make an scene with buildings and other 3D models the right way
   - See how to light the scene
@@ -14,7 +16,8 @@
 
 - Research how NPC logic works
 
-- Implement UI stuff
-  - Implement main menu screen
-  - Implement settings screen
-  - Implement credits screen
+(T) - Implement UI stuff
+      - Implement main menu screen
+      - Implement in-game menu screen
+      - Implement settings screen
+      - Implement credits screen
