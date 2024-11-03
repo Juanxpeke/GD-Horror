@@ -25,7 +25,7 @@ var is_hitted : bool = false # TODO: Change it to is_hit
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var highlight_material : Material = preload("res://Core/Components/highlight_material.tres")
+@onready var highlight_material : Material = preload("res://Core/Components/HighlightMaterial.tres")
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
