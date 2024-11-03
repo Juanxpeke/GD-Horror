@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dvonab0vfaon7"]
 
-[ext_resource type="Script" path="res://Core/Components/Pickables/Item/big_test_item.gd" id="1_7jabn"]
+[ext_resource type="Script" path="res://Core/Components/Pickables/Item/BigTestItem.gd" id="1_7jabn"]
 [ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="2_nu1ed"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vj528"]
