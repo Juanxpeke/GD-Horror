@@ -1,17 +1,17 @@
 [gd_resource type="Theme" load_steps=4 format=3 uid="uid://cyq0hshp2gbi0"]
 
-[ext_resource type="FontFile" uid="uid://ccyse8tea6x1o" path="res://Core/UI/BloodyModes-gwwYp.ttf" id="1_k1cjk"]
+[ext_resource type="FontFile" uid="uid://dgmspreqh6diw" path="res://Core/UI/shlop rg.otf" id="1_nhwo5"]
 
 [sub_resource type="FontVariation" id="FontVariation_235ei"]
-base_font = ExtResource("1_k1cjk")
+base_font = ExtResource("1_nhwo5")
 variation_transform = Transform2D(0.98, 0.12, 0.32, 0.97, 0.035, 0)
 spacing_glyph = 2
 spacing_space = 2
 
 [sub_resource type="FontVariation" id="FontVariation_oeq5o"]
-base_font = ExtResource("1_k1cjk")
+base_font = ExtResource("1_nhwo5")
 variation_embolden = -0.4
-variation_transform = Transform2D(1.14, 0.15, 0.05, 1.075, 0.075, 0.55)
+variation_transform = Transform2D(1.455, 0.15, 0.055, 1.09, 0.075, 0.55)
 spacing_glyph = 38
 
 [resource]
