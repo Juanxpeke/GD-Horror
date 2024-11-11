@@ -10,7 +10,7 @@
 },
 "default_portrait": "Basic Portrait",
 "description": "This description is just for me.",
-"display_name": "Juan",
+"display_name": "BasicDialogicCharacter",
 "mirror": false,
 "nicknames": ["Char"],
 "offset": Vector2(0, 0),

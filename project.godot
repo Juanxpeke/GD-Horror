@@ -24,13 +24,13 @@ Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 [dialogic]
 
 directories/dch_directory={
-"Juan": "res://Debugging/Tests/Dialogic/Juan.dch"
+"BasicDialogicCharacter": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
 }
 directories/dtl_directory={
-"Timeline": "res://Debugging/Tests/Dialogic/Timeline.dtl"
+"BasicDialogicTimeline": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
 }
-layout/style_list=["res://Debugging/Tests/Dialogic/Styles/TestStyle.tres", "res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres"]
-layout/default_style="res://Debugging/Tests/Dialogic/Styles/TestStyle.tres"
+layout/style_list=["res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres", "res://Debugging/Tests/Dialogic/Styles/TestPremadeStyle.tres"]
+layout/default_style="res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres"
 extensions_folder="res://addons/dialogic_additions"
 text/letter_speed=0.01
 text/initial_text_reveal_skippable=true
