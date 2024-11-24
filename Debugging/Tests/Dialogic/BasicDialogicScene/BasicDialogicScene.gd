@@ -1,6 +1,8 @@
 extends Node3D
 ## Docstring
 
+@export var basic_dialogic_timeline : DialogicTimeline
+
 #region Signals
 #endregion Signals
 
@@ -23,19 +25,13 @@ extends Node3D
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	pass
-
-func _process(delta : float) -> void:
-	pass
-
 func _input(event: InputEvent):
 	# Check if a dialog is already running
 	if Dialogic.current_timeline != null:
 		return
 
 	if event is InputEventKey and event.keycode == KEY_ENTER and event.pressed:
-		Dialogic.start("res://Debugging/Tests/Dialogic/Timeline.dtl")
+		Dialogic.start(basic_dialogic_timeline)
 		get_viewport().set_input_as_handled()
 #endregion Built-in Virtual Methods
 
