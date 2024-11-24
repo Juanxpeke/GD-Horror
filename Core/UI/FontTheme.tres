@@ -12,7 +12,7 @@ spacing_space = 2
 base_font = ExtResource("1_nhwo5")
 variation_embolden = -0.4
 variation_transform = Transform2D(1.455, 0.15, 0.055, 1.09, 0.075, 0.55)
-spacing_glyph = 38
+spacing_glyph = 8
 
 [resource]
 Button/font_sizes/font_size = 22
