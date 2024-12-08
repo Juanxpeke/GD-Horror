@@ -68,16 +68,13 @@ theme = ExtResource("2_eoq5r")
 text = "Resolution"
 
 [node name="ResolutionOptions" type="OptionButton" parent="TabContainer/Graphics/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 alignment = 1
 icon_alignment = 1
 selected = 0
-item_count = 2
-popup/item_0/text = "1920x1080"
-popup/item_1/text = "1280x720"
-popup/item_1/id = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/Graphics/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -98,10 +95,6 @@ size_flags_vertical = 4
 alignment = 1
 icon_alignment = 1
 selected = 0
-item_count = 2
-popup/item_0/text = "Full-Screen"
-popup/item_1/text = "Windowed"
-popup/item_1/id = 1
 
 [node name="Audio" type="TabBar" parent="TabContainer"]
 visible = false
