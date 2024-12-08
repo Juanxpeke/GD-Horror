@@ -1,16 +1,21 @@
-extends Control
+extends Node
 ## Docstring
 
 #region Signals
-signal play_pressed
-signal options_pressed
-signal exit_pressed
 #endregion Signals
 
 #region Enums
+
 #endregion Enums
 
 #region Constants
+const WINDOW_MODE_ARRAY : Array[String] = [
+	"Full-Screen",
+	"Window Mode",
+	"Borderless Window",
+	"Borderless Full-Screen"
+]
+
 #endregion Constants
 
 #region Exports Variables
@@ -31,16 +36,6 @@ func _ready() -> void:
 
 func _process(delta : float) -> void:
 	pass
-	
-func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://Core/Maps/World.tscn")
-	
-func _on_options_pressed() -> void:
-	get_tree().change_scene_to_file("res://Core/UI/Options.tscn")
-
-func _on_exit_pressed() -> void:
-	get_tree().quit()
-
 #endregion Built-in Virtual Methods
 
 #region Public Methods
