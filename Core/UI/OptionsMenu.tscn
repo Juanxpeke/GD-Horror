@@ -1,0 +1,119 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpbu8dyp262go"]
+
+[ext_resource type="Shader" path="res://Core/UI/MainMenu.gdshader" id="1_6r45g"]
+[ext_resource type="Script" path="res://Core/UI/options_menu.gd" id="1_34hup"]
+[ext_resource type="Theme" uid="uid://cyq0hshp2gbi0" path="res://Core/UI/FontTheme.tres" id="2_eoq5r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l63pl"]
+shader = ExtResource("1_6r45g")
+shader_parameter/frequency = 4.0
+shader_parameter/speed_y = 4.0
+shader_parameter/speed_x = 2.0
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_34hup")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.102373, 0.000657333, 0.00156452, 1)
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 0
+
+[node name="Graphics" type="TabBar" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Graphics"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Graphics/PanelContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/Graphics/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Resolution" type="Label" parent="TabContainer/Graphics/PanelContainer/VBoxContainer/HBoxContainer2"]
+material = SubResource("ShaderMaterial_l63pl")
+layout_mode = 2
+theme = ExtResource("2_eoq5r")
+text = "Resolution"
+
+[node name="ResolutionOptions" type="OptionButton" parent="TabContainer/Graphics/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+icon_alignment = 1
+selected = 0
+item_count = 2
+popup/item_0/text = "1920x1080"
+popup/item_1/text = "1280x720"
+popup/item_1/id = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/Graphics/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="WindowMode" type="Label" parent="TabContainer/Graphics/PanelContainer/VBoxContainer/HBoxContainer3"]
+material = SubResource("ShaderMaterial_l63pl")
+layout_mode = 2
+theme = ExtResource("2_eoq5r")
+text = "Window Mode"
+
+[node name="WindowOptions" type="OptionButton" parent="TabContainer/Graphics/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+icon_alignment = 1
+selected = 0
+item_count = 2
+popup/item_0/text = "Full-Screen"
+popup/item_1/text = "Windowed"
+popup/item_1/id = 1
+
+[node name="Audio" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Gameplay" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Controls" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3

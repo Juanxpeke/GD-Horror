@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://ccyse8tea6x1o"
-path="res://.godot/imported/BloodyModes-gwwYp.ttf-1d9149d87fa02308046dcd49052bf17a.fontdata"
+uid="uid://dgmspreqh6diw"
+path="res://.godot/imported/shlop rg.otf-314e5d54d96f45e52d58340b5ba47fdd.fontdata"
 
 [deps]
 
-source_file="res://Core/UI/BloodyModes-gwwYp.ttf"
-dest_files=["res://.godot/imported/BloodyModes-gwwYp.ttf-1d9149d87fa02308046dcd49052bf17a.fontdata"]
+source_file="res://Core/UI/shlop rg.otf"
+dest_files=["res://.godot/imported/shlop rg.otf-314e5d54d96f45e52d58340b5ba47fdd.fontdata"]
 
 [params]
 
