@@ -48,13 +48,13 @@ const RESOLUTION_DICTIONARY: Dictionary = {
 
 #region Built-in Virtual Methods
 func _ready() -> void:	
+	for window_mode in WINDOW_MODE_ARRAY:
+		window_mode_button.add_item(window_mode)
 	window_mode_button.item_selected.connect(on_change_window_mode)
-	
+
 	for resolution_size in RESOLUTION_DICTIONARY:
 		window_resolution_button.add_item(resolution_size)
-		
 	window_resolution_button.item_selected.connect(on_change_resolution)
-	
 
 func _process(delta : float) -> void:
 	pass
