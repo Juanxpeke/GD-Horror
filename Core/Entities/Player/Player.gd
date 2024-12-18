@@ -68,14 +68,7 @@ func _physics_process(delta : float) -> void:
 	velocity.y -= _gravity * delta
 
 	move_and_slide()
-	
-	# Moving picked item
-	if picked_object != null:
-		if picked_object.has_method("pick_item"):
-			picked_object.pick_item()
-		else:
-			print("not picked")
-			
+
 func _input(event : InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var horizontal_plane_rotation : float = event.relative.x * CAMERA_HORIZONTAL_ROTATION_SPEED * -1
@@ -83,13 +76,6 @@ func _input(event : InputEvent) -> void:
 		
 		rotate_y(horizontal_plane_rotation)
 		head_pivot.rotate_x(vertical_plane_rotation)
-	
-	if Input.is_action_just_pressed("pick_item") and interaction.last_collider is PickableComponent:
-		print("input picked item")
-		picked_object = interaction.last_collider
-	elif Input.is_action_just_pressed("pick_item"):
-		print("input drop item")
-		picked_object = null		
 #endregion Built-in Virtual Methods
 
 #region Public Methods

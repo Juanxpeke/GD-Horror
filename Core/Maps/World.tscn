@@ -29,11 +29,11 @@ transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 
 shadow_enabled = true
 shadow_bias = 1.817
 
-[node name="Cubito" parent="." instance=ExtResource("2_0mq3r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 1.00978, -3.81759)
-
 [node name="TV" parent="." instance=ExtResource("4_882wy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.01069, -0.800249, 10.5931)
 
-[node name="Cubito2" parent="." instance=ExtResource("2_0mq3r")]
+[node name="Cubito" parent="." instance=ExtResource("2_0mq3r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 1.00978, -3.81759)
+
+[node name="Cubito2" parent="." instance=ExtResource("2_0mq3r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.30732, 1.00978, -3.81759)

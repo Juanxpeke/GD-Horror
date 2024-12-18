@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://dsqsm4bv8ojnj"]
+[gd_scene load_steps=5 format=3 uid="uid://dsqsm4bv8ojnj"]
 
-[ext_resource type="Script" path="res://Core/Components/Pickables/Item/TestItem.gd" id="1_qqbat"]
 [ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="2_dy8ae"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vj528"]
@@ -16,7 +15,6 @@ size = Vector3(0.8, 0.8, 0.8)
 
 [node name="Cubito" type="RigidBody3D"]
 lock_rotation = true
-script = ExtResource("1_qqbat")
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -29,3 +27,4 @@ shape = SubResource("BoxShape3D_b3l4v")
 unique_name_in_owner = true
 collision_object = NodePath("..")
 mesh = NodePath("../MeshInstance3D")
+pickable = true

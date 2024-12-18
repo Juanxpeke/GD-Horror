@@ -19,7 +19,7 @@ extends CollisionObject3D
 #endregion Public Variables
 
 #region Private Variables
-var _interactable_component : InteractableComponent = null
+var _interactable_component : HittableComponent = null
 #endregion Private Variables
 
 #region On Ready Variables
@@ -53,7 +53,7 @@ func _find_interactable_component(depth : int) -> void:
 		depth -= 1
 		
 		for node : Node in nodes_left:
-			if node is InteractableComponent:
+			if node is HittableComponent:
 				_interactable_component = node
 				return
 
