@@ -9,13 +9,14 @@ extends CharacterBody3D
 #endregion Enums
 
 #region Constants
-## Gravity applied to the player.
-const BASE_MOVEMENT_SPEED : float = 12.0
+## TODO
+const BASE_MOVEMENT_SPEED : float = 250.0
+## TODO
 const MAXIMUM_MOVEMENT_SPEED : float = 5.0
+## TODO
 const CAMERA_HORIZONTAL_ROTATION_SPEED : float = 0.005
+## TODO
 const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.002
-const FRICTION_VALUE : float = 0.30
-
 #endregion Constants
 
 #region Exports Variables
@@ -25,8 +26,6 @@ const FRICTION_VALUE : float = 0.30
 #endregion Public Variables
 
 #region Private Variables
-var _gravity : float = 0.0
-var picked_object : RigidBody3D
 #endregion Private Variables
 
 #region On Ready Variables
@@ -37,11 +36,9 @@ var picked_object : RigidBody3D
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	PhysicsManager.player_hand = hand
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
-	# TODO: Move this logic to a PhysicsManager class.
-	_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+	GameManager.player_hand = hand
 
 func _physics_process(delta : float) -> void:
 	var movement : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
@@ -53,19 +50,9 @@ func _physics_process(delta : float) -> void:
 
 	movement = Vector2(forward.x, forward.z) * movement.y + Vector2(right.x, right.z) * movement.x
 
-	var velocity_xz = Vector2(velocity.x, velocity.z)
+	velocity = Vector3(movement.x, 0, movement.y)
 	
-	if not movement.is_zero_approx():
-		velocity += Vector3(movement.x, 0, movement.y)
-	else:
-		velocity_xz -= velocity_xz * FRICTION_VALUE
-		velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
-	
-	if velocity_xz.length() > MAXIMUM_MOVEMENT_SPEED:
-		velocity_xz = velocity_xz.normalized() * MAXIMUM_MOVEMENT_SPEED
-		velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
-	
-	velocity.y -= _gravity * delta
+	velocity.y -= PhysicsManager.gravity * delta
 
 	move_and_slide()
 

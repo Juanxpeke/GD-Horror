@@ -18,7 +18,7 @@ signal unpicked
 #endregion Enums
 
 #region Constants
-const PICKING_DRAG_SPEED : float = 70.0
+const PICKING_DRAG_SPEED : float = 30.0
 #endregion Constants
 
 #region Exports Variables
@@ -60,7 +60,7 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	if being_picked:
 		var a = collision_object.global_transform.origin
-		var b = PhysicsManager.player_hand.global_transform.origin
+		var b = GameManager.player_hand.global_transform.origin
 		collision_object.set_linear_velocity((b-a) * PICKING_DRAG_SPEED)
 
 func _input(event: InputEvent) -> void:
@@ -82,6 +82,10 @@ func _input(event: InputEvent) -> void:
 		picking = false
 		
 		collision_object.lock_rotation = false
+		
+		if being_hit:
+			mesh.material_overlay = highlight_material
+		
 #endregion Built-in Virtual Methods
 
 #region Public Methods

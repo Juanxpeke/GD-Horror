@@ -1,6 +1,5 @@
-class_name TV
-extends BasicInteractable
-## A TV object that can be turned on or off.
+extends Node
+## Docstring
 
 #region Signals
 #endregion Signals
@@ -15,11 +14,13 @@ extends BasicInteractable
 #endregion Exports Variables
 
 #region Public Variables
+## TODO
+var player_hand : Marker3D = null:
+	set(new_player_hand):
+		player_hand = new_player_hand
 #endregion Public Variables
 
 #region Private Variables
-## Boolean that tells if the TV is on or not.
-var is_on : bool = false
 #endregion Private Variables
 
 #region On Ready Variables
@@ -27,18 +28,14 @@ var is_on : bool = false
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	super()
+	pass
+
+func _process(delta : float) -> void:
+	pass
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
-func _interact() -> void:
-	if not is_on:
-		is_on = true
-		print("TV ON")
-	else:
-		is_on = false
-		print("TV OFF")
 #endregion Private Methods

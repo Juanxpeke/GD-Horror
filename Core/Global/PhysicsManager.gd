@@ -15,12 +15,10 @@ enum CollisionLayer {
 #endregion Constants
 
 #region Exports Variables
-var player_hand : Marker3D = null:
-	set(new_player_hand):
-		player_hand = new_player_hand
 #endregion Exports Variables
 
 #region Public Variables
+var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
@@ -31,7 +29,7 @@ var player_hand : Marker3D = null:
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	pass
+	LogManager.physics_log("Default gravity: %f" % gravity)
 
 func _process(delta : float) -> void:
 	pass
