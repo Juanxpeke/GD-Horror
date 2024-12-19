@@ -19,9 +19,11 @@ signal unpicked
 
 #region Constants
 ## TODO
-const DRAGGING_SPEED : float = 30.0
+const DRAGGING_INITIAL_SPEED : float = 15.0
 ## TODO
-const MAXIMUM_DRAGGING_DISTANCE : float = 2.4
+const MAXIMUM_DRAGGING_SPEED : float = 30.0
+## TODO
+const MAXIMUM_DRAGGING_SQUARED_DISTANCE : float = 2.4
 #endregion Constants
 
 #region Exports Variables
@@ -66,11 +68,12 @@ func _physics_process(delta : float) -> void:
 		var object_pos = object.global_transform.origin
 		var hand_pos = GameManager.player_hand.global_transform.origin
 		
-		if object_pos.distance_squared_to(hand_pos) > MAXIMUM_DRAGGING_DISTANCE:
+		if object_pos.distance_squared_to(hand_pos) > MAXIMUM_DRAGGING_SQUARED_DISTANCE:
 			object.set_linear_velocity(Vector3.ZERO)
 			unpick_object()
 		else:
-			object.set_linear_velocity((hand_pos - object_pos) * DRAGGING_SPEED)
+			var dragging_speed : float = min(DRAGGING_INITIAL_SPEED / object.mass, MAXIMUM_DRAGGING_SPEED)
+			object.set_linear_velocity((hand_pos - object_pos) * dragging_speed)
 
 func _input(event: InputEvent) -> void:
 	if being_hit:

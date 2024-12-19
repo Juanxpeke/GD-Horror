@@ -16,6 +16,7 @@ size = Vector3(0.36, 0.18, 1.08)
 [node name="ChocolateBar" type="RigidBody3D"]
 collision_layer = 7
 collision_mask = 2
+mass = 0.01
 script = ExtResource("1_wc3m4")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
