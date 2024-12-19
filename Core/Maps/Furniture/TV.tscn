@@ -10,6 +10,7 @@ size = Vector3(2, 1.4, 1)
 size = Vector3(2, 1.4, 1)
 
 [node name="TV" type="StaticBody3D"]
+collision_layer = 7
 script = ExtResource("1_1y0xe")
 
 [node name="MeshInstance" type="MeshInstance3D" parent="."]

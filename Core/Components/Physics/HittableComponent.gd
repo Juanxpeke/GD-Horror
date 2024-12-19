@@ -18,7 +18,10 @@ signal unpicked
 #endregion Enums
 
 #region Constants
-const PICKING_DRAG_SPEED : float = 30.0
+## TODO
+const DRAGGING_SPEED : float = 30.0
+## TODO
+const MAXIMUM_DRAGGING_DISTANCE : float = 2.4
 #endregion Constants
 
 #region Exports Variables
@@ -59,9 +62,15 @@ func _ready() -> void:
 
 func _physics_process(delta : float) -> void:
 	if being_picked:
-		var a = collision_object.global_transform.origin
-		var b = GameManager.player_hand.global_transform.origin
-		collision_object.set_linear_velocity((b-a) * PICKING_DRAG_SPEED)
+		var object : RigidBody3D = collision_object as RigidBody3D
+		var object_pos = object.global_transform.origin
+		var hand_pos = GameManager.player_hand.global_transform.origin
+		
+		if object_pos.distance_squared_to(hand_pos) > MAXIMUM_DRAGGING_DISTANCE:
+			object.set_linear_velocity(Vector3.ZERO)
+			unpick_object()
+		else:
+			object.set_linear_velocity((hand_pos - object_pos) * DRAGGING_SPEED)
 
 func _input(event: InputEvent) -> void:
 	if being_hit:
@@ -69,23 +78,10 @@ func _input(event: InputEvent) -> void:
 			interacted.emit()
 		
 		if pickable and not picking and event.is_action_pressed("pick_item"):
-			picked.emit()
-			picking = true
-			being_picked = true
-			
-			collision_object.lock_rotation = true
-			mesh.material_overlay = null
+			pick_object()
 			
 	if being_picked and event.is_action_released("pick_item"):
-		unpicked.emit()
-		being_picked = false
-		picking = false
-		
-		collision_object.lock_rotation = false
-		
-		if being_hit:
-			mesh.material_overlay = highlight_material
-		
+		unpick_object()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -96,7 +92,6 @@ func register_hit() -> void:
 	if mesh:
 		mesh.material_overlay = highlight_material
 	LogManager.physics_log("HittableComponent hit registered")
-
 ## TODO
 func unregister_hit() -> void:
 	unfocused.emit()
@@ -104,6 +99,30 @@ func unregister_hit() -> void:
 	if mesh:
 		mesh.material_overlay = null
 	LogManager.physics_log("HittableComponent hit unregistered")
+## TODO
+func pick_object() -> void:
+	picked.emit()
+	being_picked = true
+	picking = true
+	
+	collision_object.lock_rotation = true
+	collision_object.collision_layer &= ~PhysicsManager.CollisionLayer.PLAYER_WORLD
+	
+	# TODO: Add player limit to vertical mouse movement
+	# TODO: Remove physics processing
+	
+	mesh.material_overlay = null
+## TODO
+func unpick_object() -> void:
+	unpicked.emit()
+	being_picked = false
+	picking = false
+	
+	collision_object.lock_rotation = false
+	collision_object.collision_layer |= PhysicsManager.CollisionLayer.PLAYER_WORLD
+	
+	if being_hit:
+		mesh.material_overlay = highlight_material
 #endregion Public Methods
 
 #region Private Methods

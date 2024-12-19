@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8wdbuv2mv34d"]
+
+[ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="1_6231q"]
+[ext_resource type="Script" path="res://Core/Items/ChocolateBar/ChocolateBar.gd" id="1_wc3m4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qipi1"]
+albedo_color = Color(0.977008, 0.495561, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_355ic"]
+material = SubResource("StandardMaterial3D_qipi1")
+size = Vector3(0.36, 0.18, 1.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1haf1"]
+size = Vector3(0.36, 0.18, 1.08)
+
+[node name="ChocolateBar" type="RigidBody3D"]
+collision_layer = 7
+collision_mask = 2
+script = ExtResource("1_wc3m4")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_355ic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_1haf1")
+
+[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("1_6231q")]
+unique_name_in_owner = true
+collision_object = NodePath("..")
+mesh = NodePath("../Mesh")
+interactable = true
+pickable = true

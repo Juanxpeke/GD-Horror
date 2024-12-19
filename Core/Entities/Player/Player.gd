@@ -10,19 +10,35 @@ extends CharacterBody3D
 
 #region Constants
 ## TODO
-const BASE_MOVEMENT_SPEED : float = 250.0
+const MOVEMENT_SPEED : float = 250.0
 ## TODO
-const MAXIMUM_MOVEMENT_SPEED : float = 5.0
+const HEAD_HORIZONTAL_ROTATION_SPEED : float = 0.003
 ## TODO
-const CAMERA_HORIZONTAL_ROTATION_SPEED : float = 0.005
+const HEAD_VERTICAL_ROTATION_SPEED   : float = 0.002
 ## TODO
-const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.002
+const MAXIMUM_HEAD_HORIZONTAL_DELTA_ROTATION : float = 0.25
+## TODO
+const MAXIMUM_HEAD_VERTICAL_DELTA_ROTATION   : float = 0.25
+## TODO
+const MAXIMUM_HEAD_VERTICAL_ROTATION         : float = deg_to_rad(72)
 #endregion Constants
 
 #region Exports Variables
 #endregion Exports Variables
 
 #region Public Variables
+## TODO
+var hunger : float = 100.0:
+	set(new_hunger):
+		hunger = clamp(new_hunger, 0, 100.0)
+## TODO
+var thirst : float = 100.0:
+	set(new_thirst):
+		thirst = clamp(new_thirst, 0, 100.0)
+## TODO
+var oxygen : float = 100.0:
+	set(new_oxygen):
+		oxygen = clamp(new_oxygen, 0, 100.0)
 #endregion Public Variables
 
 #region Private Variables
@@ -38,19 +54,20 @@ const CAMERA_VERTICAL_ROTATION_SPEED : float = 0.002
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
+	GameManager.player = self
 	GameManager.player_hand = hand
 
 func _physics_process(delta : float) -> void:
-	var movement : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
-
-	movement *= delta * BASE_MOVEMENT_SPEED
+	var input_direction : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
 
 	var forward := transform.basis.z
-	var right := transform.basis.x
-
-	movement = Vector2(forward.x, forward.z) * movement.y + Vector2(right.x, right.z) * movement.x
-
-	velocity = Vector3(movement.x, 0, movement.y)
+	var right   := transform.basis.x
+	
+	var movement_direction = Vector2(forward.x, forward.z) * input_direction.y + Vector2(right.x, right.z) * input_direction.x
+	
+	var velocity_xz = movement_direction * MOVEMENT_SPEED * delta
+	
+	velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
 	
 	velocity.y -= PhysicsManager.gravity * delta
 
@@ -58,11 +75,15 @@ func _physics_process(delta : float) -> void:
 
 func _input(event : InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		var horizontal_plane_rotation : float = event.relative.x * CAMERA_HORIZONTAL_ROTATION_SPEED * -1
-		var vertical_plane_rotation : float = event.relative.y * CAMERA_VERTICAL_ROTATION_SPEED * -1
+		var horizontal_rotation : float = event.relative.x * HEAD_HORIZONTAL_ROTATION_SPEED * -1
+		var vertical_rotation   : float = event.relative.y *   HEAD_VERTICAL_ROTATION_SPEED * -1
 		
-		rotate_y(horizontal_plane_rotation)
-		head_pivot.rotate_x(vertical_plane_rotation)
+		horizontal_rotation = clamp(horizontal_rotation, -MAXIMUM_HEAD_HORIZONTAL_DELTA_ROTATION, MAXIMUM_HEAD_HORIZONTAL_DELTA_ROTATION)
+		vertical_rotation   = clamp(  vertical_rotation,   -MAXIMUM_HEAD_VERTICAL_DELTA_ROTATION,   MAXIMUM_HEAD_VERTICAL_DELTA_ROTATION)
+		
+		rotate_y(horizontal_rotation)
+		head_pivot.rotate_x(vertical_rotation)
+		head_pivot.rotation.x = clamp(head_pivot.rotation.x, -MAXIMUM_HEAD_VERTICAL_ROTATION, MAXIMUM_HEAD_VERTICAL_ROTATION)
 #endregion Built-in Virtual Methods
 
 #region Public Methods

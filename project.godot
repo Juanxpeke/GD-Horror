@@ -107,5 +107,7 @@ dialogic_default_action={
 
 [layer_names]
 
-3d_physics/layer_1="World"
+3d_physics/layer_1="Static World"
+3d_physics/layer_2="Rigid World"
+3d_physics/layer_3="Player World"
 3d_physics/layer_32="CameraRay"

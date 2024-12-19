@@ -6,8 +6,10 @@ extends Node
 
 #region Enums
 enum CollisionLayer {
-	WORLD = 1 << 0 , 
-	CAMERA_RAY = 1 << 31
+	STATIC_WORLD = 1 <<  0,
+	RIGID_WORLD  = 1 <<  1,
+	PLAYER_WORLD = 1 <<  2, 
+	CAMERA_RAY   = 1 << 31
 }
 #endregion Enums
 
