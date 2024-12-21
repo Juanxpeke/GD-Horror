@@ -10,7 +10,7 @@ extends CharacterBody3D
 
 #region Constants
 ## TODO
-const MOVEMENT_SPEED : float = 250.0
+const MOVEMENT_SPEED : float = 4.0
 ## TODO
 const HEAD_HORIZONTAL_ROTATION_SPEED : float = 0.003
 ## TODO
@@ -65,7 +65,7 @@ func _physics_process(delta : float) -> void:
 	
 	var movement_direction = Vector2(forward.x, forward.z) * input_direction.y + Vector2(right.x, right.z) * input_direction.x
 	
-	var velocity_xz = movement_direction * MOVEMENT_SPEED * delta
+	var velocity_xz = movement_direction * MOVEMENT_SPEED # WARNING: This should not be delta dependent (?)
 	
 	velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
 	

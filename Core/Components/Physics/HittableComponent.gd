@@ -19,11 +19,13 @@ signal unpicked
 
 #region Constants
 ## TODO
-const DRAGGING_INITIAL_SPEED : float = 15.0
+const INITIAL_DRAG_SPEED : float = 18.0
 ## TODO
-const MAXIMUM_DRAGGING_SPEED : float = 30.0
+const MAXIMUM_DRAG_SPEED : float = 40.0
 ## TODO
-const MAXIMUM_DRAGGING_SQUARED_DISTANCE : float = 2.4
+const MAXIMUM_COLLIDING_DRAG_SPEED : float = 2.5
+## TODO
+const MAXIMUM_DRAG_DISTANCE : float = 1.6
 #endregion Constants
 
 #region Exports Variables
@@ -50,6 +52,8 @@ var being_picked : bool = false
 #endregion Public Variables
 
 #region Private Variables
+var _object_pick_initial_rotation : float = 0.0
+var _player_pick_initial_rotation : float = 0.0
 #endregion Private Variables
 
 #region On Ready Variables
@@ -58,6 +62,7 @@ var being_picked : bool = false
 
 #region Built-in Virtual Methods
 func _ready() -> void:
+	_force_collision_object_state()
 	_assert_collision_object_state()
 	collision_object.collision_layer |= PhysicsManager.CollisionLayer.CAMERA_RAY
 	collision_object.set_meta("HittableComponentPath", collision_object.get_path_to(self, true))
@@ -65,15 +70,48 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	if being_picked:
 		var object : RigidBody3D = collision_object as RigidBody3D
-		var object_pos = object.global_transform.origin
-		var hand_pos = GameManager.player_hand.global_transform.origin
 		
-		if object_pos.distance_squared_to(hand_pos) > MAXIMUM_DRAGGING_SQUARED_DISTANCE:
+		var object_pos := object.global_transform.origin
+		var hand_pos := GameManager.player_hand.global_transform.origin
+		
+		var drag_vector := hand_pos - object_pos
+		var drag_length := drag_vector.length()
+		
+		# If the object is too far, it must be dropped
+		if drag_length > MAXIMUM_DRAG_DISTANCE:
 			object.set_linear_velocity(Vector3.ZERO)
 			unpick_object()
+		# If not, it should be dragged to the player's hand
 		else:
-			var dragging_speed : float = min(DRAGGING_INITIAL_SPEED / object.mass, MAXIMUM_DRAGGING_SPEED)
-			object.set_linear_velocity((hand_pos - object_pos) * dragging_speed)
+			var drag_direction := drag_vector / drag_length
+			
+			# The drag speed depends on the object's mass and its distance
+			var mass_factor     : float = min(1.0 / object.mass, 1.0)
+			var distance_factor : float = drag_length
+			
+			var drag_speed := distance_factor * mass_factor * INITIAL_DRAG_SPEED
+			
+			
+			# If object is not colliding, maintain its rotation relative to the player
+			if object.get_contact_count() == 0:
+				var object_vector := object_pos - GameManager.player.global_transform.origin
+				var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
+				
+				var object_vector_xz := Vector2(object_vector.x, object_vector.z)
+				var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
+				
+				var object_angle_to_hand := object_vector_xz.angle_to(hand_vector_xz) 
+				
+				var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
+				
+				object.rotation.y = object_front_rotation + object_angle_to_hand
+			# If it is colliding, reduce drag speed so it doesn't push heavy objects so easily
+			else:
+				drag_speed /= 1
+			
+			drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
+			
+			object.set_linear_velocity(drag_direction * drag_speed)
 
 func _input(event: InputEvent) -> void:
 	if being_hit:
@@ -92,15 +130,19 @@ func _input(event: InputEvent) -> void:
 func register_hit() -> void:
 	focused.emit()
 	being_hit = true
+	
 	if mesh:
 		mesh.material_overlay = highlight_material
+	
 	LogManager.physics_log("HittableComponent hit registered")
 ## TODO
 func unregister_hit() -> void:
 	unfocused.emit()
 	being_hit = false
+	
 	if mesh:
 		mesh.material_overlay = null
+	
 	LogManager.physics_log("HittableComponent hit unregistered")
 ## TODO
 func pick_object() -> void:
@@ -111,10 +153,10 @@ func pick_object() -> void:
 	collision_object.lock_rotation = true
 	collision_object.collision_layer &= ~PhysicsManager.CollisionLayer.PLAYER_WORLD
 	
-	# TODO: Add player limit to vertical mouse movement
-	# TODO: Remove physics processing
-	
 	mesh.material_overlay = null
+	
+	_object_pick_initial_rotation = collision_object.rotation.y
+	_player_pick_initial_rotation = GameManager.player.rotation.y
 ## TODO
 func unpick_object() -> void:
 	unpicked.emit()
@@ -129,8 +171,19 @@ func unpick_object() -> void:
 #endregion Public Methods
 
 #region Private Methods
+func _force_collision_object_state() -> void:
+	if pickable and collision_object.max_contacts_reported == 0:
+		collision_object.contact_monitor = true
+		collision_object.max_contacts_reported = 1
+
 func _assert_collision_object_state() -> void:
 	assert(collision_object)
 	assert(not (collision_object.collision_layer & PhysicsManager.CollisionLayer.CAMERA_RAY))
-	assert(not pickable or collision_object is RigidBody3D)
+	
+	if pickable:
+		assert(collision_object is RigidBody3D)
+		# NOTE: This is necessary for collision detection
+		#       (https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html#class-rigidbody3d-method-get-colliding-bodies)
+		assert(collision_object.contact_monitor)
+		assert(collision_object.max_contacts_reported > 0)
 #endregion Private Methods
