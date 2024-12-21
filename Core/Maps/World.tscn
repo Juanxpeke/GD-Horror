@@ -47,3 +47,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34044, -0.594818, 7.84321)
 
 [node name="ChocolateBar" parent="." instance=ExtResource("4_id7n3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.62094, -1.33488, 2.73626)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 388.0
+offset_bottom = 286.0
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Control/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(388, 286)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Control/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32735, 0, 0)
+current = true

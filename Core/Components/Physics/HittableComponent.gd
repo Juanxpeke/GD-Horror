@@ -52,8 +52,9 @@ var being_picked : bool = false
 #endregion Public Variables
 
 #region Private Variables
-var _object_pick_initial_rotation : float = 0.0
-var _player_pick_initial_rotation : float = 0.0
+var _object_pick_initial_angle_to_hand : float = 0.0
+var _object_pick_initial_rotation      : float = 0.0
+var _player_pick_initial_rotation      : float = 0.0
 #endregion Private Variables
 
 #region On Ready Variables
@@ -91,27 +92,26 @@ func _physics_process(delta : float) -> void:
 			
 			var drag_speed := distance_factor * mass_factor * INITIAL_DRAG_SPEED
 			
-			
-			# If object is not colliding, maintain its rotation relative to the player
-			if object.get_contact_count() == 0:
-				var object_vector := object_pos - GameManager.player.global_transform.origin
-				var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
-				
-				var object_vector_xz := Vector2(object_vector.x, object_vector.z)
-				var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
-				
-				var object_angle_to_hand := object_vector_xz.angle_to(hand_vector_xz) 
-				
-				var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
-				
-				object.rotation.y = object_front_rotation + object_angle_to_hand
-			# If it is colliding, reduce drag speed so it doesn't push heavy objects so easily
-			else:
+			# If object is colliding, reduce drag speed so it doesn't push heavy objects so easily
+			if object.get_contact_count() > 0:
 				drag_speed /= 1
 			
 			drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
 			
 			object.set_linear_velocity(drag_direction * drag_speed)
+			
+			# Maintain object's rotation relative to the player
+			var object_vector := object_pos - GameManager.player.global_transform.origin
+			var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
+			
+			var object_vector_xz := Vector2(object_vector.x, object_vector.z)
+			var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
+			
+			var object_angle_to_hand := object_vector_xz.angle_to(hand_vector_xz) 
+			
+			var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
+			
+			object.rotation.y = object_front_rotation + (object_angle_to_hand - _object_pick_initial_angle_to_hand)
 
 func _input(event: InputEvent) -> void:
 	if being_hit:
@@ -150,21 +150,32 @@ func pick_object() -> void:
 	being_picked = true
 	picking = true
 	
-	collision_object.lock_rotation = true
-	collision_object.collision_layer &= ~PhysicsManager.CollisionLayer.PLAYER_WORLD
+	var object : RigidBody3D = collision_object as RigidBody3D
+	
+	object.lock_rotation = true
+	object.add_collision_exception_with(GameManager.player)
+	
+	var object_vector :=                  object.global_transform.origin - GameManager.player.global_transform.origin
+	var hand_vector   := GameManager.player_hand.global_transform.origin - GameManager.player.global_transform.origin
+
+	var object_vector_xz := Vector2(object_vector.x, object_vector.z)
+	var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
+
+	_object_pick_initial_angle_to_hand = object_vector_xz.angle_to(hand_vector_xz) 
+	_object_pick_initial_rotation      =                         object.rotation.y
+	_player_pick_initial_rotation      =             GameManager.player.rotation.y
 	
 	mesh.material_overlay = null
-	
-	_object_pick_initial_rotation = collision_object.rotation.y
-	_player_pick_initial_rotation = GameManager.player.rotation.y
 ## TODO
 func unpick_object() -> void:
 	unpicked.emit()
 	being_picked = false
 	picking = false
 	
-	collision_object.lock_rotation = false
-	collision_object.collision_layer |= PhysicsManager.CollisionLayer.PLAYER_WORLD
+	var object : RigidBody3D = collision_object as RigidBody3D
+	
+	object.lock_rotation = false
+	object.remove_collision_exception_with(GameManager.player)
 	
 	if being_hit:
 		mesh.material_overlay = highlight_material

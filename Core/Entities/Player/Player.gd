@@ -72,6 +72,11 @@ func _physics_process(delta : float) -> void:
 	velocity.y -= PhysicsManager.gravity * delta
 
 	move_and_slide()
+	
+	for i in get_slide_collision_count():
+		var c = get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			c.get_collider().apply_central_impulse(-c.get_normal() * 0.0)
 
 func _input(event : InputEvent) -> void:
 	if event is InputEventMouseMotion:
