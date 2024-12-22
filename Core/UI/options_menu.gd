@@ -20,6 +20,7 @@ const RESOLUTION_DICTIONARY: Dictionary = {
 	"640 x 480" : Vector2(640, 480),  # VGA
 	"800 x 600" : Vector2(800, 600),  # SVGA
 	"1024 x 768" : Vector2(1024, 768),  # XGA
+	"1152 x 648" : Vector2(1152, 648),
 	"1280 x 720" : Vector2(1280, 720),  # HD (720p)
 	"1366 x 768" : Vector2(1366, 768),  # HD+
 	"1440 x 900" : Vector2(1440, 900),  # WXGA+
@@ -54,7 +55,7 @@ func _ready() -> void:
 
 	for resolution_size in RESOLUTION_DICTIONARY:
 		window_resolution_button.add_item(resolution_size)
-	window_resolution_button.item_selected.connect(on_change_resolution)
+	window_resolution_button.item_selected.connect(on_change_resolution)	
 
 func _process(delta : float) -> void:
 	pass
