@@ -111,3 +111,7 @@ dialogic_default_action={
 3d_physics/layer_2="Rigid World"
 3d_physics/layer_3="Player World"
 3d_physics/layer_32="CameraRay"
+
+[physics]
+
+common/physics_ticks_per_second=120

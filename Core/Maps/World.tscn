@@ -40,7 +40,7 @@ mass = 50.0
 physics_material_override = SubResource("PhysicsMaterial_5364w")
 
 [node name="Cubito2" parent="." instance=ExtResource("2_0mq3r")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.30732, 1.00978, -3.81759)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29893, 1.02524, -3.8294)
 
 [node name="TV" parent="." instance=ExtResource("3_emdrb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34044, -0.594818, 7.84321)
