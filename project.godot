@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GD-Horror"
-run/main_scene="res://Core/Maps/World.tscn"
+run/main_scene="res://Debugging/Tests/Maps/TestWorld.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -25,10 +25,10 @@ Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 [dialogic]
 
 directories/dch_directory={
-"BasicDialogicCharacter": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
+"BasicDialogicCharacter": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
 }
 directories/dtl_directory={
-"BasicDialogicTimeline": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
+"BasicDialogicTimeline": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
 }
 layout/style_list=["res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres", "res://Debugging/Tests/Dialogic/Styles/TestPremadeStyle.tres"]
 layout/default_style="res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres"
