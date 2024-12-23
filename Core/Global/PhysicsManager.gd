@@ -6,8 +6,10 @@ extends Node
 
 #region Enums
 enum CollisionLayer {
-	WORLD = 1 << 0 , 
-	CAMERA_RAY = 1 << 31
+	STATIC_WORLD = 1 <<  0,
+	RIGID_WORLD  = 1 <<  1,
+	PLAYER_WORLD = 1 <<  2, 
+	CAMERA_RAY   = 1 << 31
 }
 #endregion Enums
 
@@ -15,12 +17,10 @@ enum CollisionLayer {
 #endregion Constants
 
 #region Exports Variables
-var player_hand : Marker3D = null:
-	set(new_player_hand):
-		player_hand = new_player_hand
 #endregion Exports Variables
 
 #region Public Variables
+var gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
@@ -31,7 +31,7 @@ var player_hand : Marker3D = null:
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	pass
+	LogManager.physics_log("Default gravity: %f" % gravity)
 
 func _process(delta : float) -> void:
 	pass

@@ -1,0 +1,102 @@
+[gd_scene load_steps=12 format=3 uid="uid://bmkct1k6278t8"]
+
+[ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_5gggp"]
+[ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
+[ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Debugging/Tests/Items/Cubito.tscn" id="2_sin7y"]
+[ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Furniture/TV.tscn" id="3_tbc3t"]
+[ext_resource type="PackedScene" uid="uid://b8wdbuv2mv34d" path="res://Core/Items/ChocolateBar/ChocolateBar.tscn" id="4_lgxhr"]
+[ext_resource type="Script" path="res://Debugging/Tests/Maps/CameraControl.gd" id="6_syp30"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4nl04"]
+size = Vector3(60, 1, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_afef1"]
+material = ExtResource("2_6tu8j")
+size = Vector3(60, 1, 30)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5364w"]
+rough = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tdtx6"]
+top_radius = 0.1
+height = 0.4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5evvu"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 1)
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_5gggp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00995, 0)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_4nl04")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_afef1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 1.817
+
+[node name="Cubito" parent="." instance=ExtResource("2_sin7y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 3.01973, -3.81759)
+mass = 50.0
+physics_material_override = SubResource("PhysicsMaterial_5364w")
+
+[node name="Cubito2" parent="." instance=ExtResource("2_sin7y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29893, 3.03519, -3.8294)
+
+[node name="TV" parent="." instance=ExtResource("3_tbc3t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34044, 1.41514, 7.84321)
+
+[node name="ChocolateBar" parent="." instance=ExtResource("4_lgxhr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.62094, 0.675075, 2.73626)
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32735, 2.00995, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.2)
+mesh = SubResource("CylinderMesh_tdtx6")
+skeleton = NodePath("../../CameraControl/PanelContainer/SubViewportContainer/SubViewport")
+
+[node name="CameraControl" type="Control" parent="." node_paths=PackedStringArray("current_camera")]
+layout_mode = 3
+anchor_right = 0.3
+anchor_bottom = 0.3
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_syp30")
+current_camera = NodePath("../Camera")
+
+[node name="PanelContainer" type="PanelContainer" parent="CameraControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5evvu")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CameraControl/PanelContainer"]
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CameraControl/PanelContainer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(341, 190)
+render_target_update_mode = 4

@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsqsm4bv8ojnj"]
+
+[ext_resource type="Material" uid="uid://cd7fqtyah8axh" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Item.tres" id="1_2miml"]
+[ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="2_dy8ae"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_s3twx"]
+material = ExtResource("1_2miml")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b3l4v"]
+
+[node name="Cubito" type="RigidBody3D"]
+collision_layer = 7
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s3twx")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_b3l4v")
+
+[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("2_dy8ae")]
+unique_name_in_owner = true
+collision_object = NodePath("..")
+mesh = NodePath("../MeshInstance")
+pickable = true
