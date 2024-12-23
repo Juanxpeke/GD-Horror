@@ -11,23 +11,24 @@ config_version=5
 [application]
 
 config/name="GD-Horror"
-run/main_scene="res://Core/Maps/World.tscn"
+run/main_scene="res://Debugging/Tests/Maps/TestWorld.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 LogManager="*res://Debugging/Global/LogManager.gd"
+GameManager="*res://Core/Global/GameManager.gd"
 PhysicsManager="*res://Core/Global/PhysicsManager.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 
 [dialogic]
 
 directories/dch_directory={
-"BasicDialogicCharacter": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
+"BasicDialogicCharacter": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
 }
 directories/dtl_directory={
-"BasicDialogicTimeline": "res://Debugging/Tests/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
+"BasicDialogicTimeline": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
 }
 layout/style_list=["res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres", "res://Debugging/Tests/Dialogic/Styles/TestPremadeStyle.tres"]
 layout/default_style="res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres"
@@ -106,5 +107,11 @@ dialogic_default_action={
 
 [layer_names]
 
-3d_physics/layer_1="World"
+3d_physics/layer_1="Static World"
+3d_physics/layer_2="Rigid World"
+3d_physics/layer_3="Player World"
 3d_physics/layer_32="CameraRay"
+
+[physics]
+
+common/physics_ticks_per_second=120

@@ -31,12 +31,15 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	last_collider = get_collider()
 	
+	if HittableComponent.picking:
+		return
+	
 	if not last_collider and last_hittable_component:
 		last_hittable_component.unregister_hit()
 		last_hittable_component = null
 	
 	if last_collider:
-		var hittable_component := get_hittable_component(last_collider)
+		var hittable_component := _get_hittable_component(last_collider)
 		
 		if hittable_component != last_hittable_component:
 			if last_hittable_component:
@@ -50,7 +53,7 @@ func _physics_process(delta : float) -> void:
 #endregion Public Methods
 
 #region Private Methods
-func get_hittable_component(node : Node3D) -> HittableComponent:
+func _get_hittable_component(node : Node3D) -> HittableComponent:
 	var component_path = node.get_meta("HittableComponentPath", null)
 	assert(component_path)
 	return node.get_node(component_path)
