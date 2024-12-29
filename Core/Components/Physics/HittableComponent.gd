@@ -94,7 +94,8 @@ func _physics_process(delta : float) -> void:
 			
 			# If object is colliding, reduce drag speed so it doesn't push heavy objects so easily
 			if object.get_contact_count() > 0:
-				drag_speed /= 20 # TODO: Solve this
+				drag_speed /= 1 # TODO: Solve this, dividing the speed entirely causes a bug in which
+								#       heavy objects can't be lifted
 			
 			drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
 			

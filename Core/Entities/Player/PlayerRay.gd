@@ -1,4 +1,4 @@
-class_name Interaction extends RayCast3D
+class_name PlayerRay extends RayCast3D
 ## Docstring
 
 #region Signals

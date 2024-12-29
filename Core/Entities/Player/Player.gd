@@ -46,7 +46,6 @@ var oxygen : float = 100.0:
 
 #region On Ready Variables
 @onready var head_pivot : Node3D = %HeadPivot
-@onready var interaction : Interaction = %Interaction
 @onready var hand : Marker3D = %Hand
 #endregion On Ready Variables
 
