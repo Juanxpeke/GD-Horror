@@ -43,11 +43,13 @@ const MAXIMUM_DRAG_DISTANCE : float = 1.6
 
 @export_group("Picking")
 ## If [code]true[/code], [member collision_object] will follow the player's hand when being picked.
-## Requires [collision_object] to be an instance of [RigidBody3D].
+## Requires [member collision_object] to be an instance of [RigidBody3D].
 @export var pickable : bool = false
-## TODO
+## Default sound that will be played when [member collision_object] is picked.
+## For more advanced behaviour, use [signal picked]. 
 @export var pick_sound : AudioStream
-## TODO
+## Default sound that will be played when [member collision_object] is picked.
+## For more advanced behaviour, use [signal unpicked].
 @export var unpick_sound : AudioStream
 #endregion Exports Variables
 
