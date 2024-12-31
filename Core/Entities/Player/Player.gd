@@ -1,5 +1,4 @@
-class_name Player
-extends CharacterBody3D
+class_name Player extends CharacterBody3D
 ## A player.
 
 #region Signals

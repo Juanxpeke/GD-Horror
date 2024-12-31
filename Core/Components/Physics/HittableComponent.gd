@@ -1,12 +1,13 @@
 class_name HittableComponent extends Node
-## A component that can be hit by the [Player] camera ray.
+## A component that can be hit by the [Player]'s camera ray.
 
 #region Signals
-## TODO
+## Emitted when the ray collides with [member collision_object].
 signal focused
-## TODO
+## Emitted when the ray stop colliding with [member collision_object]. See also [signal focused].
 signal unfocused
-## TODO
+## Emitted when the [code]"interact"[/code] action is pressed while [member being_hit].
+## Requires [member interacted] to be set to [code]true[/code].
 signal interacted
 ## TODO
 signal picked
@@ -29,25 +30,37 @@ const MAXIMUM_DRAG_DISTANCE : float = 1.6
 #endregion Constants
 
 #region Exports Variables
-## TODO
+## [CollisionObject3D] that will be put in the ray's layer in order to be detected.
 @export var collision_object : CollisionObject3D
 ## TODO
 @export var mesh : MeshInstance3D
-## TODO
+
+@export_group("Interaction")
+## If [code]true[/code], [member collision_object] can be interacted with.
 @export var interactable : bool = false
 ## TODO
+@export var interaction_name : String = ""
+
+@export_group("Picking")
+## If [code]true[/code], [member collision_object] will follow the player's hand when being picked.
+## Requires [collision_object] to be an instance of [RigidBody3D].
 @export var pickable : bool = false
+## TODO
+@export var pick_sound : AudioStream
+## TODO
+@export var unpick_sound : AudioStream
 #endregion Exports Variables
 
 #region Static Variables
-## TODO
+## If [code]true[/code], there is at least one instance of [HittableComponent] being picked.
+## See also [member being_picked].
 static var picking : bool = false
 #endregion Static Variables
 
 #region Public Variables
-## TODO
+## If [code]true[/code], [member collision_object] is being hit by the ray in the current frame.
 var being_hit : bool = false
-## TODO
+## If [code]true[/code], [member collision_object] is being picked. See also [member pickable].
 var being_picked : bool = false
 #endregion Public Variables
 
