@@ -1,0 +1,139 @@
+[gd_scene load_steps=3 format=3 uid="uid://xjna54gcstsq"]
+
+[ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="1_1ml0q"]
+[ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="2_013ja"]
+
+[node name="NewShip" type="Node3D"]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="ShipFloor" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, -1, -0.5)
+size = Vector3(40, 1, 20)
+material = ExtResource("1_1ml0q")
+
+[node name="MainLobbyWall" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2, 0)
+radius = 6.0
+height = 7.32295
+sides = 10
+material = ExtResource("1_1ml0q")
+
+[node name="MainLobbyRoom" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2.44368, 0)
+operation = 2
+radius = 5.0
+height = 6.0
+sides = 15
+material = ExtResource("1_1ml0q")
+
+[node name="MainLobbyDoor" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.76631, 0.98532, 0.5)
+operation = 2
+size = Vector3(1.5918, 3, 2)
+material = ExtResource("1_1ml0q")
+
+[node name="MainShipCasing" type="CSGCombiner3D" parent="."]
+visible = false
+use_collision = true
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MainShipCasing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 3, -0.5)
+size = Vector3(40, 7, 20)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="MainShipCasing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.5, -0.347595)
+operation = 2
+size = Vector3(38, 6, 18.8585)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="MainShipCasing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 2.5, -0.348)
+operation = 2
+size = Vector3(1, 6, 18.858)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="MainShipCasing"]
+transform = Transform3D(0.997813, -0.0660997, 0, 0.0660997, 0.997813, 0, 0, 0, 1, 0, 1.164, 9.55012)
+operation = 2
+polygon = PackedVector2Array(15, 0, 14, -1, -10, 0, -2, 1)
+depth = 1.2
+material = ExtResource("1_1ml0q")
+
+[node name="CSGPolygon3D2" type="CSGPolygon3D" parent="MainShipCasing"]
+transform = Transform3D(0.997813, -0.0660997, 0, 0.0660997, 0.997813, 0, 0, 0, 1, 0, 1.164, -9.44988)
+operation = 2
+polygon = PackedVector2Array(15, 0, 14, -1, -10, 0, -2, 1)
+depth = 1.2
+material = ExtResource("1_1ml0q")
+
+[node name="FrontShip" type="CSGCombiner3D" parent="."]
+use_collision = true
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="FrontOuterCasing" type="CSGCylinder3D" parent="FrontShip"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.91, 2.5, -0.492)
+radius = 10.0
+height = 8.0
+sides = 30
+material = ExtResource("1_1ml0q")
+metadata/_edit_group_ = true
+
+[node name="FrontWindow" type="CSGBox3D" parent="FrontShip/FrontOuterCasing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.96397, 0.5, 0.144)
+operation = 2
+size = Vector3(5, 4, 13)
+material = ExtResource("1_1ml0q")
+
+[node name="FrontInnerCasing" type="CSGCylinder3D" parent="FrontShip"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.91, 2.5, -0.348)
+operation = 2
+radius = 9.5
+height = 6.0
+sides = 30
+material = ExtResource("1_1ml0q")
+
+[node name="FrontIntersection" type="CSGBox3D" parent="FrontShip"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.5, 2.5, -0.348)
+operation = 2
+size = Vector3(12, 6, 18.858)
+material = ExtResource("1_1ml0q")
+
+[node name="FrontDoors" type="CSGCombiner3D" parent="FrontShip"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="FrontShip/FrontDoors"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -19.5, 3, 5.86603)
+size = Vector3(1, 7, 7)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="FrontShip/FrontDoors/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00568295, -2, 0.637326)
+operation = 2
+size = Vector3(1.04883, 3, 2)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="FrontShip/FrontDoors"]
+transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, -18.5, 3, -7.13397)
+size = Vector3(1, 7, 7)
+material = ExtResource("1_1ml0q")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="FrontShip/FrontDoors/CSGBox3D2"]
+transform = Transform3D(1, 0, -5.96046e-08, 0, 1, 0, 5.96046e-08, 0, 1, 0.0314398, -2, -0.539969)
+operation = 2
+size = Vector3(1.08093, 3, 2)
+material = ExtResource("1_1ml0q")
+
+[node name="Player" parent="." instance=ExtResource("2_013ja")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -21.2853, 1, -5)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Player"]
+light_energy = 13.195
+spot_range = 7.0
+spot_angle = 67.6622

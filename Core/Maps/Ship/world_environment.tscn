@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1ptkpe8j5aht"]
+
+[ext_resource type="Texture2D" uid="uid://cund0ekjy06po" path="res://Core/Maps/Ship/space.png" id="1_qarwf"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_3ss87"]
+panorama = ExtResource("1_qarwf")
+
+[sub_resource type="Sky" id="Sky_qby77"]
+sky_material = SubResource("PanoramaSkyMaterial_3ss87")
+
+[sub_resource type="Environment" id="Environment_p2r6r"]
+background_mode = 2
+sky = SubResource("Sky_qby77")
+ambient_light_sky_contribution = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource("Environment_p2r6r")

@@ -1,0 +1,127 @@
+[gd_scene load_steps=10 format=3 uid="uid://n7650y7vl3kt"]
+
+[ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_dsfuv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6kj8i"]
+size = Vector3(35, 0.5, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_spjen"]
+size = Vector3(35, 0.5, 15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_81qhj"]
+size = Vector3(0.5, 4, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6sv0o"]
+size = Vector3(0.5, 4, 15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f78ay"]
+size = Vector3(35, 4, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vore2"]
+size = Vector3(35, 4, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_d2thv"]
+size = Vector3(8, 4, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gtigx"]
+size = Vector3(8, 4, 0.5)
+
+[node name="Ship" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_6kj8i")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_spjen")
+
+[node name="Roof" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3139, 0)
+visible = false
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Roof"]
+mesh = SubResource("BoxMesh_6kj8i")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Roof"]
+shape = SubResource("BoxShape3D_spjen")
+
+[node name="Wall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.7756, 2.21001, 0)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Wall"]
+mesh = SubResource("BoxMesh_81qhj")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Wall"]
+shape = SubResource("BoxShape3D_6sv0o")
+
+[node name="Wall2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.2437, 2.21001, 0)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Wall2"]
+mesh = SubResource("BoxMesh_81qhj")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Wall2"]
+shape = SubResource("BoxShape3D_6sv0o")
+
+[node name="Wall3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0408735, 2.21001, 7.71878)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Wall3"]
+mesh = SubResource("BoxMesh_f78ay")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Wall3"]
+shape = SubResource("BoxShape3D_vore2")
+
+[node name="Wall4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0408735, 2.21001, -7.28122)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Wall4"]
+mesh = SubResource("BoxMesh_f78ay")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Wall4"]
+shape = SubResource("BoxShape3D_vore2")
+
+[node name="Wall5" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8516, 2.21001, 2.71878)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Wall5"]
+mesh = SubResource("BoxMesh_d2thv")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Wall5"]
+shape = SubResource("BoxShape3D_gtigx")
+
+[node name="Player" parent="." instance=ExtResource("1_dsfuv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1655, 1.59221, 0.561219)
+metadata/_edit_group_ = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.989098, -0.147257, 0, 0.147257, 0.989098, 0, -0.682326, 0)
+light_energy = 15.335
+spot_range = 8.98031
+spot_angle = 31.2586
+
+[node name="CSGMesh3D" type="CSGBox3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 10, 2.25, 5)
+use_collision = true
+collision_layer = 7
+size = Vector3(5, 5, 0.5)
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGMesh3D"]
+operation = 2
+size = Vector3(2, 5, 1)
