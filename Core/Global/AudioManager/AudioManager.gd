@@ -103,15 +103,68 @@ func play_sound(audio_stream : AudioStream) -> void:
 			LogManager.audio_log("Trying to play sound while another is already playing, overriding")
 		_sfx_stream_player.stream = audio_stream
 		_sfx_stream_player.play()
-		LogManager.audio_log("Playing sound %s" % audio_stream.resource_path)
 	else:
-		pass
+		if _sfx_stream_player.playing:
+			var temporary_player : AudioStreamPlayer = AudioStreamPlayer.new()
+			
+			temporary_player.name = "TemporarySFXStreamPlayer"
+			temporary_player.bus = get_bus_name(AudioBus.SFX)
+			temporary_player.finished.connect(func(): temporary_player.queue_free())
+			
+			add_child(temporary_player)
+			
+			temporary_player.stream = audio_stream
+			temporary_player.play()
+		else:
+			_sfx_stream_player.stream = audio_stream
+			_sfx_stream_player.play()
+	LogManager.audio_log("Playing sound %s" % audio_stream.resource_path)
 ## TODO
 func play_music(audio_stream : AudioStream) -> void:
-	pass
+	if not multiple_global_music_playback:
+		if _music_stream_player.playing:
+			LogManager.audio_log("Trying to play music while another is already playing, overriding")
+		_music_stream_player.stream = audio_stream
+		_music_stream_player.play()
+	else:
+		if _music_stream_player.playing:
+			var temporary_player : AudioStreamPlayer = AudioStreamPlayer.new()
+			
+			temporary_player.name = "TemporaryMusicStreamPlayer"
+			temporary_player.bus = get_bus_name(AudioBus.MUSIC)
+			temporary_player.finished.connect(func(): temporary_player.queue_free())
+			
+			add_child(temporary_player)
+			
+			temporary_player.stream = audio_stream
+			temporary_player.play()
+		else:
+			_music_stream_player.stream = audio_stream
+			_music_stream_player.play()
+	LogManager.audio_log("Playing music %s" % audio_stream.resource_path)
 ## TODO
 func play_dialogue(audio_stream : AudioStream) -> void:
-	pass
+	if not multiple_global_dialogue_playback:
+		if _dialogue_stream_player.playing:
+			LogManager.audio_log("Trying to play dialogue while another is already playing, overriding")
+		_dialogue_stream_player.stream = audio_stream
+		_dialogue_stream_player.play()
+	else:
+		if _dialogue_stream_player.playing:
+			var temporary_player : AudioStreamPlayer = AudioStreamPlayer.new()
+			
+			temporary_player.name = "TemporaryDialogueStreamPlayer"
+			temporary_player.bus = get_bus_name(AudioBus.DIALOGUE)
+			temporary_player.finished.connect(func(): temporary_player.queue_free())
+			
+			add_child(temporary_player)
+			
+			temporary_player.stream = audio_stream
+			temporary_player.play()
+		else:
+			_dialogue_stream_player.stream = audio_stream
+			_dialogue_stream_player.play()
+	LogManager.audio_log("Playing dialogue %s" % audio_stream.resource_path)
 #endregion Playback
 #endregion Public Methods
 
