@@ -1,5 +1,4 @@
-class_name ChocolateBar
-extends RigidBody3D
+extends Node
 ## Docstring
 
 #region Signals
@@ -9,6 +8,14 @@ extends RigidBody3D
 #endregion Enums
 
 #region Constants
+
+#region Consumables
+## TODO
+const CHOCOLATE_BAR_FOOD_POINTS  : int = 20
+const CHOCOLATE_BAR_DRINK_POINTS : int =  0
+
+#endregion Consumables
+
 #endregion Constants
 
 #region Exports Variables
@@ -18,26 +25,16 @@ extends RigidBody3D
 #endregion Public Variables
 
 #region Private Variables
-var chunks_amount : int = 3
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var _hittable_component : HittableComponent = %HittableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	_hittable_component.interacted.connect(_on_interacted)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
-func _on_interacted() -> void:
-	chunks_amount -= 1
-	EventsManager.item_consumed.emit(GameParametersManager.CHOCOLATE_BAR_FOOD_POINTS, GameParametersManager.CHOCOLATE_BAR_DRINK_POINTS)
-	
-	if chunks_amount <= 0:
-		queue_free()
 #endregion Private Methods

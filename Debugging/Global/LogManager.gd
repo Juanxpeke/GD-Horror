@@ -18,7 +18,8 @@ extends Node
 
 #region Private Variables
 var _rendering_color : String = "green"
-var _physics_color : String = "yellow"
+var _physics_color   : String = "yellow"
+var _audio_color     : String = "cyan"
 #endregion Private Variables
 
 #region On Ready Variables
@@ -31,10 +32,12 @@ var _physics_color : String = "yellow"
 # Logs a message related to a rendering system.
 func rendering_log(message : String) -> void:
 	print_rich("[color=%s](Rendering) %s[/color]" % [_rendering_color, message])
-
 # Logs a message related to a physics system.
 func physics_log(message : String) -> void:
 	print_rich("[color=%s](Physics) %s[/color]" % [_physics_color, message])
+# Logs a message related to an audio system.
+func audio_log(message : String) -> void:
+	print_rich("[color=%s](Audio) %s[/color]" % [_audio_color, message])
 #endregion Public Methods
 
 #region Private Methods

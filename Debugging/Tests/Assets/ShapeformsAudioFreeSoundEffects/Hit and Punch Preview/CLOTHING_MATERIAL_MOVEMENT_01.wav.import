@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dlmxeluh65h7u"
+path="res://.godot/imported/CLOTHING_MATERIAL_MOVEMENT_01.wav-ce746adeb28016d44a32de87733ee067.sample"
+
+[deps]
+
+source_file="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/CLOTHING_MATERIAL_MOVEMENT_01.wav"
+dest_files=["res://.godot/imported/CLOTHING_MATERIAL_MOVEMENT_01.wav-ce746adeb28016d44a32de87733ee067.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,17 +1,24 @@
 class_name HittableComponent extends Node
-## A component that can be hit by the [Player]'s camera ray.
+## A component that can make a [CollisionObject3D] detectable by the [Player]'s camera ray.
+##
+## [HittableComponent] is very cool.
 
 #region Signals
-## Emitted when the ray collides with [member collision_object].
+## Emitted when the ray starts colliding with [member collision_object].
 signal focused
-## Emitted when the ray stop colliding with [member collision_object]. See also [signal focused].
+## Emitted when the ray stops colliding with [member collision_object].
 signal unfocused
-## Emitted when the [code]"interact"[/code] action is pressed while [member being_hit].
-## Requires [member interacted] to be set to [code]true[/code].
+## Emitted when [member collision_object] is interacted with.
+## Requires [member interactable] to be set to [code]true[/code].
+## See also [member interactable].
 signal interacted
-## TODO
+## Emitted when [member collision_object] is picked.
+## Requires [member pickable] to be set to [code]true[/code].
+## See also [member pickable].
 signal picked
-## TODO
+## Emitted when [member collision_object] is unpicked.
+## Requires [member pickable] to be set to [code]true[/code].
+## See also [member pickable].
 signal unpicked
 #endregion Signals
 
@@ -19,13 +26,13 @@ signal unpicked
 #endregion Enums
 
 #region Constants
-## TODO
+## See also [member being_picked].
 const INITIAL_DRAG_SPEED : float = 18.0
-## TODO
+## See also [member being_picked].
 const MAXIMUM_DRAG_SPEED : float = 40.0
-## TODO
+## See also [member being_picked].
 const MAXIMUM_COLLIDING_DRAG_SPEED : float = 2.5
-## TODO
+## See also [member being_picked].
 const MAXIMUM_DRAG_DISTANCE : float = 1.6
 #endregion Constants
 
@@ -36,13 +43,18 @@ const MAXIMUM_DRAG_DISTANCE : float = 1.6
 @export var mesh : MeshInstance3D
 
 @export_group("Interaction")
-## If [code]true[/code], [member collision_object] can be interacted with.
+## If [code]true[/code], [member collision_object] can be interacted with when the action
+## [code]"interact"[/code] is pressed.
 @export var interactable : bool = false
-## TODO
+## Name that can be shown as a hint while [member being_hit].
 @export var interaction_name : String = ""
+## Default sound that will be played when [member collision_object] is interacted with.
+## For more advanced behaviour, use [signal interacted].
+@export var interact_sound : AudioStream
 
 @export_group("Picking")
-## If [code]true[/code], [member collision_object] will follow the player's hand when being picked.
+## If [code]true[/code], [member collision_object] will follow the player's hand while the action
+## [code]"pick"[/code] is being pressed.
 ## Requires [member collision_object] to be an instance of [RigidBody3D].
 @export var pickable : bool = false
 ## Default sound that will be played when [member collision_object] is picked.
@@ -61,8 +73,11 @@ static var picking : bool = false
 
 #region Public Variables
 ## If [code]true[/code], [member collision_object] is being hit by the ray in the current frame.
+## [b]Note:[/b] This variable must not be modified.
 var being_hit : bool = false
-## If [code]true[/code], [member collision_object] is being picked. See also [member pickable].
+## If [code]true[/code], [member collision_object] is being picked.
+## See also [member pickable].
+## [b]Note:[/b] This variable must not be modified.
 var being_picked : bool = false
 #endregion Public Variables
 
@@ -80,8 +95,11 @@ var _player_pick_initial_rotation      : float = 0.0
 func _ready() -> void:
 	_force_collision_object_state()
 	_assert_collision_object_state()
+	
 	collision_object.collision_layer |= PhysicsManager.CollisionLayer.CAMERA_RAY
 	collision_object.set_meta("HittableComponentPath", collision_object.get_path_to(self, true))
+	
+	tree_exited.connect(_on_tree_exited)
 
 func _physics_process(delta : float) -> void:
 	if being_picked:
@@ -132,6 +150,8 @@ func _physics_process(delta : float) -> void:
 func _input(event: InputEvent) -> void:
 	if being_hit:
 		if interactable and event.is_action_pressed("interact"):
+			if interact_sound:
+				AudioManager.play_sound(interact_sound)
 			interacted.emit()
 		
 		if pickable and not picking and event.is_action_pressed("pick_item"):
@@ -162,7 +182,6 @@ func unregister_hit() -> void:
 	LogManager.physics_log("HittableComponent hit unregistered")
 ## TODO
 func pick_object() -> void:
-	picked.emit()
 	being_picked = true
 	picking = true
 	
@@ -182,9 +201,13 @@ func pick_object() -> void:
 	_player_pick_initial_rotation      =             GameManager.player.rotation.y
 	
 	mesh.material_overlay = null
+	
+	if pick_sound:
+		AudioManager.play_sound(pick_sound)
+	
+	picked.emit()
 ## TODO
 func unpick_object() -> void:
-	unpicked.emit()
 	being_picked = false
 	picking = false
 	
@@ -195,9 +218,15 @@ func unpick_object() -> void:
 	
 	if being_hit:
 		mesh.material_overlay = highlight_material
+	
+	if unpick_sound:
+		AudioManager.play_sound(unpick_sound)
+	
+	unpicked.emit()
 #endregion Public Methods
 
 #region Private Methods
+#region Assertions
 func _force_collision_object_state() -> void:
 	if pickable and collision_object.max_contacts_reported == 0:
 		collision_object.contact_monitor = true
@@ -213,4 +242,11 @@ func _assert_collision_object_state() -> void:
 		#       (https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html#class-rigidbody3d-method-get-colliding-bodies)
 		assert(collision_object.contact_monitor)
 		assert(collision_object.max_contacts_reported > 0)
+#endregion Assertions
+#region Callbacks
+func _on_tree_exited() -> void:
+	if being_picked:
+		being_picked = false
+		picking = false
+#endregion Callbacks
 #endregion Private Methods

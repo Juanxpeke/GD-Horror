@@ -19,7 +19,10 @@ config/icon="res://icon.svg"
 
 LogManager="*res://Debugging/Global/LogManager.gd"
 GameManager="*res://Core/Global/GameManager.gd"
+GameParametersManager="*res://Core/Global/GameParametersManager.gd"
+EventsManager="*res://Core/Global/EventsManager.gd"
 PhysicsManager="*res://Core/Global/PhysicsManager.gd"
+AudioManager="*res://Core/Global/AudioManager/AudioManager.tscn"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 
 [dialogic]

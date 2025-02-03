@@ -31,21 +31,22 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	last_collider = get_collider()
 	
-	if HittableComponent.picking:
-		return
-	
-	if not last_collider and last_hittable_component:
-		last_hittable_component.unregister_hit()
-		last_hittable_component = null
-	
-	if last_collider:
-		var hittable_component := _get_hittable_component(last_collider)
-		
-		if hittable_component != last_hittable_component:
-			if last_hittable_component:
+	if not HittableComponent.picking:
+		if not last_collider:
+			# Make sure last_hittable_component is not null nor being freed
+			if is_instance_valid(last_hittable_component):
 				last_hittable_component.unregister_hit()
-			last_hittable_component = hittable_component
-			last_hittable_component.register_hit()
+			last_hittable_component = null
+		
+		if last_collider:
+			var hittable_component := _get_hittable_component(last_collider)
+			
+			if hittable_component != last_hittable_component:
+				# Make sure last_hittable_component is not null nor being freed
+				if is_instance_valid(last_hittable_component):
+					last_hittable_component.unregister_hit()
+				last_hittable_component = hittable_component
+				last_hittable_component.register_hit()
 		
 #endregion Built-in Virtual Methods
 
