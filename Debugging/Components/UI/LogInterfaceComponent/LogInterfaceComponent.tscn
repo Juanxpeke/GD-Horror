@@ -1,7 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcpelyemlb6hk"]
+[gd_scene load_steps=6 format=3 uid="uid://bcpelyemlb6hk"]
 
 [ext_resource type="Script" path="res://Debugging/Components/UI/LogInterfaceComponent/LogInterfaceComponent.gd" id="1_xmtp5"]
+[ext_resource type="FontFile" uid="uid://bbxeingvdxxjd" path="res://Debugging/Components/UI/LogInterfaceComponent/JetBrainsMono-VariableFont_wght.ttf" id="2_3aryy"]
 [ext_resource type="PackedScene" uid="uid://dnvybyli02r33" path="res://Debugging/Components/UI/LogInterfaceComponent/LogInterfaceLine.tscn" id="2_atvk6"]
+
+[sub_resource type="Theme" id="Theme_e3ktg"]
+default_font = ExtResource("2_3aryy")
+default_font_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1p61"]
 content_margin_left = 16.0
@@ -16,29 +21,33 @@ script = ExtResource("1_xmtp5")
 [node name="LinesContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(320, 0)
+custom_minimum_size = Vector2(480, 0)
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 46.0
+offset_top = -44.0
+offset_right = 320.0
 grow_vertical = 0
-scale = Vector2(0.8, 0.8)
-pivot_offset = Vector2(0, 136)
+theme = SubResource("Theme_e3ktg")
 theme_override_styles/panel = SubResource("StyleBoxFlat_g1p61")
 
 [node name="LinesArranger" type="VBoxContainer" parent="LinesContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="Line" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
 layout_mode = 2
+text = ""
 
 [node name="Line2" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
 layout_mode = 2
+text = ""
 
 [node name="Line3" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
 layout_mode = 2
+text = ""
 
 [node name="Line4" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
 layout_mode = 2
+text = ""

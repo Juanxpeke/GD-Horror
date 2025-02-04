@@ -43,6 +43,9 @@ func _ready() -> void:
 
 func _ready_base() -> void:
 	_update()
+	
+	for line : RichTextLabel in _lines_arranger.get_children():
+		line.text = ""
 
 func _ready_editor() -> void:
 	pass
