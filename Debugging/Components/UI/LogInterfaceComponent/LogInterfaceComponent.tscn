@@ -17,6 +17,7 @@ bg_color = Color(0, 0, 0, 1)
 
 [node name="LogInterfaceComponent" type="CanvasLayer" groups=["LogLayer"]]
 script = ExtResource("1_xmtp5")
+line_scene = ExtResource("2_atvk6")
 
 [node name="LinesContainer" type="PanelContainer" parent="."]
 unique_name_in_owner = true
@@ -35,19 +36,3 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_g1p61")
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
-
-[node name="Line" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
-layout_mode = 2
-text = ""
-
-[node name="Line2" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
-layout_mode = 2
-text = ""
-
-[node name="Line3" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
-layout_mode = 2
-text = ""
-
-[node name="Line4" parent="LinesContainer/LinesArranger" instance=ExtResource("2_atvk6")]
-layout_mode = 2
-text = ""

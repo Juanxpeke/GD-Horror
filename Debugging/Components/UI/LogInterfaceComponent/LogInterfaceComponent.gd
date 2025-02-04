@@ -19,6 +19,14 @@ extends CanvasLayer
 		transparent = new_transparent
 		if is_inside_tree():
 			_update()
+## TODO
+@export var lines : int = 6:
+	set(new_lines):
+		lines = new_lines
+		if is_inside_tree():
+			_update()
+## TODO
+@export var line_scene : PackedScene
 #endregion Exports Variables
 
 #region Public Variables
@@ -43,9 +51,6 @@ func _ready() -> void:
 
 func _ready_base() -> void:
 	_update()
-	
-	for line : RichTextLabel in _lines_arranger.get_children():
-		line.text = ""
 
 func _ready_editor() -> void:
 	pass
@@ -78,6 +83,17 @@ func _update() -> void:
 		_lines_container.self_modulate = Color.TRANSPARENT
 	else:
 		_lines_container.self_modulate = Color.WHITE
+		
+	while _lines_arranger.get_child_count() < lines:
+		var new_line : RichTextLabel = line_scene.instantiate()
+		new_line.text = ""
+		_lines_arranger.add_child(new_line)
+		_lines_arranger.move_child(new_line, -1)
+	
+	while _lines_arranger.get_child_count() > lines:
+		var death_line := _lines_arranger.get_child(0)
+		_lines_arranger.remove_child(death_line)
+		death_line.queue_free()
 
 func _push_line(content : String) -> void:
 	for line_index in range(_lines_arranger.get_child_count()):
