@@ -69,7 +69,7 @@ func _physics_process(delta : float) -> void:
 	
 	velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
 	
-	velocity.y -= PhysicsManager.gravity * delta
+	velocity += get_gravity() * delta
 
 	move_and_slide()
 	
