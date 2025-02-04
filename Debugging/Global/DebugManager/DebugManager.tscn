@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://b04c17n6pxkyf"]
+
+[ext_resource type="Script" path="res://Debugging/Global/DebugManager/DebugManager.gd" id="1_iahjq"]
+[ext_resource type="PackedScene" uid="uid://n523xpsqwcpb" path="res://Debugging/Components/UI/MinimalMenuComponent/MinimalMenuComponent.tscn" id="2_hyhb0"]
+[ext_resource type="PackedScene" uid="uid://bcpelyemlb6hk" path="res://Debugging/Components/UI/LogInterfaceComponent/LogInterfaceComponent.tscn" id="3_kt1k4"]
+
+[node name="DebugManager" type="Node"]
+script = ExtResource("1_iahjq")
+minimal_menu_scene = ExtResource("2_hyhb0")
+log_interface_scene = ExtResource("3_kt1k4")

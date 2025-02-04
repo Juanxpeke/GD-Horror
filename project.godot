@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-DebugManager="*res://Debugging/Global/DebugManager.tscn"
-LogManager="*res://Debugging/Global/LogManager.gd"
+DebugManager="*res://Debugging/Global/DebugManager/DebugManager.tscn"
+LogManager="*res://Debugging/Global/LogManager/LogManager.gd"
 GameManager="*res://Core/Global/GameManager.gd"
 GameParametersManager="*res://Core/Global/GameParametersManager.gd"
 EventsManager="*res://Core/Global/EventsManager.gd"
@@ -73,6 +73,7 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 HUDLayer=""
 MenuLayer=""
+LogLayer=""
 
 [input]
 

@@ -12,9 +12,13 @@ extends Node
 
 #region Exports Variables
 ## TODO
-@export var add_minimal_menu : bool = true
+@export var minimal_menu_enabled : bool = true
 ## TODO
 @export var minimal_menu_scene : PackedScene
+## TODO
+@export var log_interface_enabled : bool = true
+## TODO
+@export var log_interface_scene : PackedScene
 #endregion Exports Variables
 
 #region Public Variables
@@ -28,9 +32,12 @@ extends Node
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	if add_minimal_menu and minimal_menu_scene:
+	if minimal_menu_enabled and minimal_menu_scene:
 		var minimal_menu : MinimalMenuComponent = minimal_menu_scene.instantiate()
 		add_child(minimal_menu)
+	if log_interface_enabled and log_interface_scene:
+		var log_interface := log_interface_scene.instantiate()
+		add_child(log_interface)
 #endregion Built-in Virtual Methods
 
 #region Public Methods

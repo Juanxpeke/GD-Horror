@@ -1,8 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://b04c17n6pxkyf"]
-
-[ext_resource type="Script" path="res://Debugging/Global/DebugManager.gd" id="1_hq2jl"]
-[ext_resource type="PackedScene" uid="uid://n523xpsqwcpb" path="res://Debugging/Components/UI/MinimalMenuComponent/MinimalMenuComponent.tscn" id="1_tgu04"]
-
-[node name="DebugManager" type="Node"]
-script = ExtResource("1_hq2jl")
-minimal_menu_scene = ExtResource("1_tgu04")
