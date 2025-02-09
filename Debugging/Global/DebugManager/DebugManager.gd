@@ -1,4 +1,4 @@
-extends Control
+extends Node
 ## Docstring
 
 #region Signals
@@ -11,7 +11,14 @@ extends Control
 #endregion Constants
 
 #region Exports Variables
-@export var current_camera : Camera3D 
+## TODO
+@export var minimal_menu_enabled : bool = true
+## TODO
+@export var minimal_menu_scene : PackedScene
+## TODO
+@export var log_interface_enabled : bool = true
+## TODO
+@export var log_interface_scene : PackedScene
 #endregion Exports Variables
 
 #region Public Variables
@@ -21,19 +28,16 @@ extends Control
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var sub_viewport : SubViewport = $PanelContainer/SubViewportContainer/SubViewport
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	if current_camera:
-		await get_tree().create_timer(1.0).timeout
-		print("XDD")
-		current_camera.get_parent().remove_child(current_camera)
-		var xd = Camera3D.new()
-		sub_viewport.add_child(xd) #.add_child(current_camera)
-func _process(delta : float) -> void:
-	pass
+	if minimal_menu_enabled and minimal_menu_scene:
+		var minimal_menu : MinimalMenuComponent = minimal_menu_scene.instantiate()
+		add_child(minimal_menu)
+	if log_interface_enabled and log_interface_scene:
+		var log_interface := log_interface_scene.instantiate()
+		add_child(log_interface)
 #endregion Built-in Virtual Methods
 
 #region Public Methods

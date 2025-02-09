@@ -1,16 +1,14 @@
 extends Node
-## Docstring
+## Manager of global signals.
 
 #region Signals
+#region Match
+## Emitted when an item is consumed.
+signal item_consumed(food_points : int, drink_points : int)
+#endregion Match
 #endregion Signals
 
 #region Enums
-enum CollisionLayer {
-	STATIC_WORLD = 1 <<  0,
-	RIGID_WORLD  = 1 <<  1,
-	PLAYER_WORLD = 1 <<  2, 
-	CAMERA_RAY   = 1 << 31
-}
 #endregion Enums
 
 #region Constants
@@ -20,7 +18,6 @@ enum CollisionLayer {
 #endregion Exports Variables
 
 #region Public Variables
-var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
@@ -30,11 +27,6 @@ var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gra
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	LogManager.physics_log("Global gravity: %f" % global_gravity)
-
-func _process(delta : float) -> void:
-	pass
 #endregion Built-in Virtual Methods
 
 #region Public Methods

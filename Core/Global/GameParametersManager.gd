@@ -1,5 +1,5 @@
 extends Node
-## A global class for custom log methods.
+## Docstring
 
 #region Signals
 #endregion Signals
@@ -8,6 +8,14 @@ extends Node
 #endregion Enums
 
 #region Constants
+
+#region Consumables
+## TODO
+const CHOCOLATE_BAR_FOOD_POINTS  : int = 20
+const CHOCOLATE_BAR_DRINK_POINTS : int =  0
+
+#endregion Consumables
+
 #endregion Constants
 
 #region Exports Variables
@@ -17,8 +25,6 @@ extends Node
 #endregion Public Variables
 
 #region Private Variables
-var _rendering_color : String = "green"
-var _physics_color : String = "yellow"
 #endregion Private Variables
 
 #region On Ready Variables
@@ -28,13 +34,6 @@ var _physics_color : String = "yellow"
 #endregion Built-in Virtual Methods
 
 #region Public Methods
-# Logs a message related to a rendering system.
-func rendering_log(message : String) -> void:
-	print_rich("[color=%s](Rendering) %s[/color]" % [_rendering_color, message])
-
-# Logs a message related to a physics system.
-func physics_log(message : String) -> void:
-	print_rich("[color=%s](Physics) %s[/color]" % [_physics_color, message])
 #endregion Public Methods
 
 #region Private Methods

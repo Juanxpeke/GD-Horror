@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://n523xpsqwcpb"]
+
+[ext_resource type="Script" path="res://Debugging/Components/UI/MinimalMenuComponent/MinimalMenuComponent.gd" id="1_kgsbk"]
+
+[node name="MinimalMenuComponent" type="CanvasLayer" groups=["MenuLayer"]]
+process_mode = 3
+script = ExtResource("1_kgsbk")
+
+[node name="MenuContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuArranger" type="VBoxContainer" parent="MenuContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ResumeButton" type="Button" parent="MenuContainer/MenuArranger"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resume"
+
+[node name="SettingsButton" type="Button" parent="MenuContainer/MenuArranger"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="MenuContainer/MenuArranger"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Exit"

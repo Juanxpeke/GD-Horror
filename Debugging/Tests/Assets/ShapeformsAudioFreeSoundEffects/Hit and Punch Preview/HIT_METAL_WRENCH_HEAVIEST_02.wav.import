@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cnnjg5c57sujx"
+path="res://.godot/imported/HIT_METAL_WRENCH_HEAVIEST_02.wav-e1cd96b90bdd24f30dd9bfe1c6c1fb40.sample"
+
+[deps]
+
+source_file="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/HIT_METAL_WRENCH_HEAVIEST_02.wav"
+dest_files=["res://.godot/imported/HIT_METAL_WRENCH_HEAVIEST_02.wav-e1cd96b90bdd24f30dd9bfe1c6c1fb40.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

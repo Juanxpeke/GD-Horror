@@ -18,6 +18,7 @@ extends RigidBody3D
 #endregion Public Variables
 
 #region Private Variables
+var chunks_amount : int = 3
 #endregion Private Variables
 
 #region On Ready Variables
@@ -34,5 +35,9 @@ func _ready() -> void:
 
 #region Private Methods
 func _on_interacted() -> void:
-	print("nam nam nam")
+	chunks_amount -= 1
+	EventsManager.item_consumed.emit(GameParametersManager.CHOCOLATE_BAR_FOOD_POINTS, GameParametersManager.CHOCOLATE_BAR_DRINK_POINTS)
+	
+	if chunks_amount <= 0:
+		queue_free()
 #endregion Private Methods

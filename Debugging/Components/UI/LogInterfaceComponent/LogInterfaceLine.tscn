@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dnvybyli02r33"]
+
+[node name="Line" type="RichTextLabel"]
+custom_minimum_size = Vector2(240, 0)
+bbcode_enabled = true
+text = "Line"
+fit_content = true
+autowrap_mode = 0

@@ -1,5 +1,4 @@
-class_name Player
-extends CharacterBody3D
+class_name Player extends CharacterBody3D
 ## A player.
 
 #region Signals
@@ -28,17 +27,17 @@ const MAXIMUM_HEAD_VERTICAL_ROTATION         : float = deg_to_rad(72)
 
 #region Public Variables
 ## TODO
-var hunger : float = 100.0:
+var hunger : int = 100:
 	set(new_hunger):
-		hunger = clamp(new_hunger, 0, 100.0)
+		hunger = clampi(new_hunger, 0, 100)
 ## TODO
-var thirst : float = 100.0:
+var thirst : int = 100:
 	set(new_thirst):
-		thirst = clamp(new_thirst, 0, 100.0)
+		thirst = clampi(new_thirst, 0, 100)
 ## TODO
-var oxygen : float = 100.0:
+var oxygen : int = 100:
 	set(new_oxygen):
-		oxygen = clamp(new_oxygen, 0, 100.0)
+		oxygen = clampi(new_oxygen, 0, 100)
 #endregion Public Variables
 
 #region Private Variables
@@ -46,7 +45,6 @@ var oxygen : float = 100.0:
 
 #region On Ready Variables
 @onready var head_pivot : Node3D = %HeadPivot
-@onready var interaction : Interaction = %Interaction
 @onready var hand : Marker3D = %Hand
 #endregion On Ready Variables
 
@@ -56,6 +54,8 @@ func _ready() -> void:
 	
 	GameManager.player = self
 	GameManager.player_hand = hand
+	
+	EventsManager.item_consumed.connect(_on_item_consumed)
 
 func _physics_process(delta : float) -> void:
 	var input_direction : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
@@ -69,7 +69,7 @@ func _physics_process(delta : float) -> void:
 	
 	velocity = Vector3(velocity_xz.x, velocity.y, velocity_xz.y)
 	
-	velocity.y -= PhysicsManager.gravity * delta
+	velocity += get_gravity() * delta
 
 	move_and_slide()
 	
@@ -95,4 +95,9 @@ func _input(event : InputEvent) -> void:
 #endregion Public Methods
 
 #region Private Methods
+#region Callbacks
+func _on_item_consumed(food_points : int, drink_points : int) -> void:
+	hunger -= food_points
+	thirst -= drink_points
+#endregion Callbacks
 #endregion Private Methods

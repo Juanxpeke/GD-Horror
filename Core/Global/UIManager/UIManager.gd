@@ -5,22 +5,26 @@ extends Node
 #endregion Signals
 
 #region Enums
-enum CollisionLayer {
-	STATIC_WORLD = 1 <<  0,
-	RIGID_WORLD  = 1 <<  1,
-	PLAYER_WORLD = 1 <<  2, 
-	CAMERA_RAY   = 1 << 31
-}
 #endregion Enums
 
 #region Constants
+## TODO
+enum DrawLayer {
+	## TODO
+	DEFAULT,
+	## TODO
+	HUD,
+	## TODO
+	MENU,
+	## TODO
+	LOG,
+}
 #endregion Constants
 
 #region Exports Variables
 #endregion Exports Variables
 
 #region Public Variables
-var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
@@ -31,10 +35,15 @@ var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gra
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	LogManager.physics_log("Global gravity: %f" % global_gravity)
-
-func _process(delta : float) -> void:
-	pass
+	for node in get_tree().get_nodes_in_group("HUDLayer"):
+		var canvas_layer : CanvasLayer = node as CanvasLayer
+		canvas_layer.layer = DrawLayer.HUD
+	for node in get_tree().get_nodes_in_group("MenuLayer"):
+		var canvas_layer : CanvasLayer = node as CanvasLayer
+		canvas_layer.layer = DrawLayer.MENU
+	for node in get_tree().get_nodes_in_group("LogLayer"):
+		var canvas_layer : CanvasLayer = node as CanvasLayer
+		canvas_layer.layer = DrawLayer.LOG
 #endregion Built-in Virtual Methods
 
 #region Public Methods
