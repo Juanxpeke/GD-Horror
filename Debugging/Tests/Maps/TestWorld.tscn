@@ -4,7 +4,7 @@
 [ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Debugging/Tests/Items/Cubito.tscn" id="2_sin7y"]
 [ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Furniture/TV.tscn" id="3_tbc3t"]
-[ext_resource type="PackedScene" uid="uid://b8wdbuv2mv34d" path="res://Core/Items/ChocolateBar/ChocolateBar.tscn" id="4_lgxhr"]
+[ext_resource type="PackedScene" uid="uid://b8wdbuv2mv34d" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.tscn" id="4_lgxhr"]
 [ext_resource type="PackedScene" uid="uid://b3wft6mp2dlru" path="res://Debugging/Components/UI/CameraPanelComponent/CameraPanelComponent.tscn" id="6_v3lsl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cao4t"]

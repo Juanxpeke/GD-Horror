@@ -43,8 +43,8 @@ const CAN_SLEEP_RESTORATION_TIME : float = 1.0
 #region Exports Variables
 ## [CollisionObject3D] that will be put in the ray's layer in order to be detected.
 @export var collision_object : CollisionObject3D
-## TODO
-@export var mesh : MeshInstance3D
+## [MeshInstance3D] that visually represents [member collision_object].
+@export var mesh_instance : MeshInstance3D
 
 @export_group("Interaction")
 ## If [code]true[/code], [member collision_object] can be interacted with when the action
@@ -189,8 +189,8 @@ func _input(event: InputEvent) -> void:
 func register_hit() -> void:
 	being_hit = true
 	
-	if mesh:
-		mesh.material_overlay = highlight_material
+	if mesh_instance:
+		mesh_instance.material_overlay = highlight_material
 	
 	LogManager.physics_log("HittableComponent hit registered")
 	
@@ -199,8 +199,8 @@ func register_hit() -> void:
 func unregister_hit() -> void:
 	being_hit = false
 	
-	if mesh:
-		mesh.material_overlay = null
+	if mesh_instance:
+		mesh_instance.material_overlay = null
 	
 	LogManager.physics_log("HittableComponent hit unregistered")
 	
@@ -230,7 +230,7 @@ func pick_object() -> void:
 	object.lock_rotation = true
 	object.add_collision_exception_with(GameManager.player)
 
-	mesh.material_overlay = null
+	mesh_instance.material_overlay = null
 	
 	if pick_sound:
 		AudioManager.play_sound(pick_sound)
@@ -252,7 +252,7 @@ func unpick_object() -> void:
 	object.remove_collision_exception_with(GameManager.player)
 	
 	if being_hit:
-		mesh.material_overlay = highlight_material
+		mesh_instance.material_overlay = highlight_material
 	
 	if unpick_sound:
 		AudioManager.play_sound(unpick_sound)

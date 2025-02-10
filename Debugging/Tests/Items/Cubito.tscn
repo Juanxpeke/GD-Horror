@@ -21,10 +21,9 @@ mesh = SubResource("BoxMesh_s3twx")
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_b3l4v")
 
-[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("2_dy8ae")]
+[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object") instance=ExtResource("2_dy8ae")]
 unique_name_in_owner = true
 collision_object = NodePath("..")
-mesh = NodePath("../MeshInstance")
 pickable = true
 pick_sound = ExtResource("3_084l1")
 unpick_sound = ExtResource("4_2eu5d")

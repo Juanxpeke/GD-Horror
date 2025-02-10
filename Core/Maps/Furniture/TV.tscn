@@ -19,8 +19,7 @@ mesh = SubResource("BoxMesh_avbgd")
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_gpogc")
 
-[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh") instance=ExtResource("2_6cw46")]
+[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object") instance=ExtResource("2_6cw46")]
 unique_name_in_owner = true
 collision_object = NodePath("..")
-mesh = NodePath("../MeshInstance")
 interactable = true

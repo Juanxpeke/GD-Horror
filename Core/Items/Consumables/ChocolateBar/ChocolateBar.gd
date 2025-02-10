@@ -18,26 +18,21 @@ extends RigidBody3D
 #endregion Public Variables
 
 #region Private Variables
-var chunks_amount : int = 3
 #endregion Private Variables
 
 #region On Ready Variables
 @onready var _hittable_component : HittableComponent = %HittableComponent
+@onready var _consumable_component : ConsumableComponent = %ConsumableComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	_hittable_component.interacted.connect(_on_interacted)
+	_consumable_component.consumption_food_points  = GameParametersManager.CHOCOLATE_BAR_FOOD_POINTS
+	_consumable_component.consumption_drink_points = GameParametersManager.CHOCOLATE_BAR_DRINK_POINTS
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 #endregion Public Methods
 
 #region Private Methods
-func _on_interacted() -> void:
-	chunks_amount -= 1
-	EventsManager.item_consumed.emit(GameParametersManager.CHOCOLATE_BAR_FOOD_POINTS, GameParametersManager.CHOCOLATE_BAR_DRINK_POINTS)
-	
-	if chunks_amount <= 0:
-		queue_free()
 #endregion Private Methods

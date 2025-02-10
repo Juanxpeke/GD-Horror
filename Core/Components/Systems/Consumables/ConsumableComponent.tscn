@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpjimldvg7rt5"]
+
+[ext_resource type="Script" path="res://Core/Components/Systems/Consumables/ConsumableComponent.gd" id="1_tx5tt"]
+
+[node name="ConsumableComponent" type="Node"]
+script = ExtResource("1_tx5tt")
