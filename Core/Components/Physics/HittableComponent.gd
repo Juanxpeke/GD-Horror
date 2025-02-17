@@ -7,6 +7,7 @@ class_name HittableComponent extends Node
 ## Emitted when the ray starts colliding with [member collision_object].
 signal focused
 ## Emitted when the ray stops colliding with [member collision_object].
+## [b]Note:[/b] This signal won't be emitted when [member collision_object] is freed.
 signal unfocused
 ## Emitted when [member collision_object] is interacted with.
 ## Requires [member interactable] to be set to [code]true[/code].
@@ -19,6 +20,7 @@ signal picked
 ## Emitted when [member collision_object] is unpicked.
 ## Requires [member pickable] to be set to [code]true[/code].
 ## See also [member pickable].
+## [b]Note:[/b] This signal won't be emitted when [member collision_object] is freed.
 signal unpicked
 #endregion Signals
 
@@ -51,7 +53,7 @@ const CAN_SLEEP_RESTORATION_TIME : float = 1.0
 ## [code]"interact"[/code] is pressed.
 @export var interactable : bool = false
 ## Name that can be shown as a hint while [member being_hit].
-@export var interaction_name : String = ""
+@export var interaction_name : String = "Interact"
 ## Default sound that will be played when [member collision_object] is interacted with.
 ## For more advanced behaviour, use [signal interacted].
 @export var interact_sound : AudioStream
@@ -228,9 +230,10 @@ func pick_object() -> void:
 	
 	object.can_sleep = false
 	object.lock_rotation = true
-	object.add_collision_exception_with(GameManager.player)
-
-	mesh_instance.material_overlay = null
+	object.add_collision_exception_with(GameManager.player)  ## BUG: When object is too heavy, player can easily pass through it
+															 ## TODO: Fix this
+	if mesh_instance:
+		mesh_instance.material_overlay = null
 	
 	if pick_sound:
 		AudioManager.play_sound(pick_sound)
@@ -251,7 +254,7 @@ func unpick_object() -> void:
 	object.lock_rotation = false
 	object.remove_collision_exception_with(GameManager.player)
 	
-	if being_hit:
+	if mesh_instance and being_hit:
 		mesh_instance.material_overlay = highlight_material
 	
 	if unpick_sound:

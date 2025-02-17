@@ -76,7 +76,8 @@ func _physics_process(delta : float) -> void:
 	for i in get_slide_collision_count():
 		var c = get_slide_collision(i)
 		if c.get_collider() is RigidBody3D:
-			c.get_collider().apply_central_impulse(-c.get_normal() * 0.0)
+			pass
+			#c.get_collider().apply_central_impulse(-c.get_normal() * 0.0)
 
 func _input(event : InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -96,8 +97,8 @@ func _input(event : InputEvent) -> void:
 
 #region Private Methods
 #region Callbacks
-func _on_item_consumed(food_points : int, drink_points : int) -> void:
-	hunger -= food_points
-	thirst -= drink_points
+func _on_item_consumed(consumption_event : EventsManager.ConsumptionEvent) -> void:
+	hunger -= consumption_event.food_points
+	thirst -= consumption_event.drink_points
 #endregion Callbacks
 #endregion Private Methods

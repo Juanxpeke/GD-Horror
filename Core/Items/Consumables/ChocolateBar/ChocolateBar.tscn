@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://b8wdbuv2mv34d"]
+[gd_scene load_steps=14 format=3 uid="uid://b8wdbuv2mv34d"]
 
 [ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="1_6231q"]
 [ext_resource type="Script" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.gd" id="1_wc3m4"]
 [ext_resource type="PackedScene" uid="uid://dpjimldvg7rt5" path="res://Core/Components/Systems/Consumables/ConsumableComponent.tscn" id="3_f73se"]
+[ext_resource type="Script" path="res://Core/Components/Systems/Consumables/ConsumedStage.gd" id="4_touus"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qipi1"]
 albedo_color = Color(0.977008, 0.495561, 0, 1)
@@ -14,13 +15,29 @@ size = Vector3(0.36, 0.18, 1.08)
 [sub_resource type="BoxShape3D" id="BoxShape3D_1haf1"]
 size = Vector3(0.36, 0.18, 1.08)
 
-[sub_resource type="BoxMesh" id="BoxMesh_rw7d7"]
+[sub_resource type="BoxMesh" id="BoxMesh_gt8yf"]
 material = SubResource("StandardMaterial3D_qipi1")
 size = Vector3(0.36, 0.18, 0.72)
 
-[sub_resource type="BoxMesh" id="BoxMesh_gjjmn"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_i5mlm"]
+size = Vector3(0.36, 0.18, 0.72)
+
+[sub_resource type="Resource" id="Resource_58h52"]
+script = ExtResource("4_touus")
+mesh = SubResource("BoxMesh_gt8yf")
+shape = SubResource("BoxShape3D_i5mlm")
+
+[sub_resource type="BoxMesh" id="BoxMesh_5kosm"]
 material = SubResource("StandardMaterial3D_qipi1")
 size = Vector3(0.36, 0.18, 0.36)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vkow7"]
+size = Vector3(0.36, 0.18, 0.36)
+
+[sub_resource type="Resource" id="Resource_sax5o"]
+script = ExtResource("4_touus")
+mesh = SubResource("BoxMesh_5kosm")
+shape = SubResource("BoxShape3D_vkow7")
 
 [node name="ChocolateBar" type="RigidBody3D"]
 collision_layer = 7
@@ -33,7 +50,7 @@ script = ExtResource("1_wc3m4")
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_355ic")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_1haf1")
 
 [node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object", "mesh_instance") instance=ExtResource("1_6231q")]
@@ -46,4 +63,4 @@ pickable = true
 [node name="ConsumableComponent" parent="." node_paths=PackedStringArray("hittable_component") instance=ExtResource("3_f73se")]
 unique_name_in_owner = true
 hittable_component = NodePath("../HittableComponent")
-consumed_meshes = Array[Mesh]([SubResource("BoxMesh_rw7d7"), SubResource("BoxMesh_gjjmn")])
+consumed_stages = Array[ExtResource("4_touus")]([SubResource("Resource_58h52"), SubResource("Resource_sax5o")])

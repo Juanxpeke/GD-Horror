@@ -1,29 +1,41 @@
-[gd_scene load_steps=2 format=3 uid="uid://bykfrvsw1lj2g"]
+[gd_scene load_steps=3 format=3 uid="uid://bykfrvsw1lj2g"]
 
 [ext_resource type="Texture2D" uid="uid://dl7w63rw1vb4n" path="res://Core/Entities/Player/Crosshair.png" id="1_j1rjn"]
+[ext_resource type="Script" path="res://Core/Entities/Player/HUD.gd" id="1_sj0cf"]
 
 [node name="HUD" type="CanvasLayer" groups=["HUDLayer"]]
+script = ExtResource("1_sj0cf")
 
-[node name="HUDContainer" type="Control" parent="."]
-layout_mode = 3
+[node name="HUDContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
 [node name="Crosshair" type="TextureRect" parent="HUDContainer"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -8.0
-offset_right = 8.0
-offset_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("1_j1rjn")
 expand_mode = 1
+
+[node name="ObjectsLabelsArranger" type="VBoxContainer" parent="HUDContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="PickingLabel" type="Label" parent="HUDContainer/ObjectsLabelsArranger"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pick"
+
+[node name="InteractionLabel" type="Label" parent="HUDContainer/ObjectsLabelsArranger"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Interact"

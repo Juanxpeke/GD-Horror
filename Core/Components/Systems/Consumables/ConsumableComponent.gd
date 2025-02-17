@@ -1,5 +1,4 @@
-class_name ConsumableComponent
-extends Node
+class_name ConsumableComponent extends Node
 ## Docstring
 
 #region Signals
@@ -19,9 +18,7 @@ extends Node
 ## TODO
 @export var consumption_drink_points : int = 0
 ## TODO
-@export var max_consumptions : int = 1
-## TODO
-@export var consumed_meshes : Array[Mesh]
+@export var consumed_stages : Array[ConsumedStage] = []
 #endregion Exports Variables
 
 #region Public Variables
@@ -36,7 +33,9 @@ var _consumptions_counter : int = 0
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	max_consumptions = max(max_consumptions, consumed_meshes.size() + 1)
+	_assert_parameters()
+	
+	hittable_component.interaction_name = "Consume"
 	
 	hittable_component.interacted.connect(_on_interacted)
 #endregion Built-in Virtual Methods
@@ -45,16 +44,38 @@ func _ready() -> void:
 #endregion Public Methods
 
 #region Private Methods
+#region Assertions
+func _assert_parameters() -> void:
+	_assert_collision_object_parameters()
+	_assert_consumed_stages_parameters()
+
+func _assert_collision_object_parameters() -> void:
+	# NOTE: At the moment, we assume collision_object only has one shape owner with one shape
+	assert(hittable_component.collision_object.get_shape_owners().size() == 1)
+	assert(hittable_component.collision_object.shape_owner_get_shape_count(0) == 1)
+
+func _assert_consumed_stages_parameters() -> void:
+	for stage in consumed_stages:
+		assert(stage.mesh)
+		assert(stage.shape)
+#endregion Assertions
+#region Callbacks
 func _on_interacted() -> void:
-	assert(_consumptions_counter < max_consumptions)
+	assert(_consumptions_counter < consumed_stages.size() + 1)
 	
-	EventsManager.item_consumed.emit(consumption_food_points, consumption_drink_points)
-	
-	if _consumptions_counter < consumed_meshes.size():
-		hittable_component.mesh_instance.mesh = consumed_meshes[_consumptions_counter]
+	if _consumptions_counter < consumed_stages.size():
+		var mesh_instance : MeshInstance3D = hittable_component.mesh_instance
+		mesh_instance.mesh = consumed_stages[_consumptions_counter].mesh
+		
+		var collision_shape : CollisionShape3D = hittable_component.collision_object.shape_owner_get_owner(0)
+		collision_shape.shape = consumed_stages[_consumptions_counter].shape
 	
 	_consumptions_counter += 1
 	
-	if _consumptions_counter == max_consumptions:
+	if _consumptions_counter == consumed_stages.size() + 1:
 		owner.queue_free()
+	
+	var consumption_event := EventsManager.ConsumptionEvent.new(self)
+	EventsManager.item_consumed.emit(consumption_event)
+#endregion Callbacks
 #endregion Private Methods

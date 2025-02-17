@@ -36,6 +36,9 @@ func _physics_process(delta : float) -> void:
 			# Make sure last_hittable_component is not null nor being freed
 			if is_instance_valid(last_hittable_component):
 				last_hittable_component.unregister_hit()
+			# If last_hittable_component is not null, emit global unhit signal
+			if last_hittable_component:
+				EventsManager.hittable_component_unhit.emit()
 			last_hittable_component = null
 		
 		if last_collider:
@@ -45,9 +48,12 @@ func _physics_process(delta : float) -> void:
 				# Make sure last_hittable_component is not null nor being freed
 				if is_instance_valid(last_hittable_component):
 					last_hittable_component.unregister_hit()
+				
 				last_hittable_component = hittable_component
 				last_hittable_component.register_hit()
-		
+				
+				var hit_event := EventsManager.HitEvent.new(last_hittable_component)
+				EventsManager.hittable_component_hit.emit(hit_event)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
