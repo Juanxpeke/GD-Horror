@@ -32,6 +32,7 @@ var _arguments : Array = []
 #region On Ready Variables
 @onready var _object_icon : TextureRect = %ObjectIcon
 @onready var _object_name_label : Label = %ObjectNameLabel
+@onready var _method_name_label : Label = %MethodNameLabel
 @onready var _arguments_list : VBoxContainer = %ArgumentsList
 @onready var _call_button : Button = %CallButton
 #endregion On Ready Variables
@@ -80,6 +81,8 @@ func _update_as_release_build() -> void:
 	else:
 		_object_name_label.text = object.name
 	
+	_method_name_label.text = method["name"]
+	
 	_update_arguments()
 	_update_call_button()
 
@@ -102,18 +105,21 @@ func _update_arguments() -> void:
 			TYPE_BOOL:
 				_create_bool_argument_editor(arg, arg_idx, def_idx)
 			TYPE_INT:
-				print(arg["hint"])
+				_create_int_argument_editor(arg, arg_idx, def_idx)
 			TYPE_STRING, TYPE_STRING_NAME:
 				_create_string_argument_editor(arg, arg_idx, def_idx)
 		arg_idx += 1
 
-func xd(si : bool, lol : String = "kkk", lala : String = "Default Argument Bro JAJA") -> void:
-	print(lala)
-	print(lol)
-	if si:
-		print("Si")
+enum A {
+	B,
+	C
+}
+
+func xd(conjoined : bool, L : A, amount : int = 0, text : String = "Default Argument Bro JAJA") -> void:
+	if conjoined:
+		print("Conjoined to %s at %d" % [text, amount])
 	else:
-		print("Nop")
+		print("Unconjoined from %s at %d" % [text, amount])
 
 func _create_inline_argument_editor(arg : Dictionary, raw_editor : Control) -> void:
 	var editor := HBoxContainer.new()
@@ -142,6 +148,17 @@ func _create_bool_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int
 	bool_argument_editor.toggled.connect(func(toggled_on): _arguments[arg_idx] = toggled_on)
 	
 	_create_inline_argument_editor(arg, bool_argument_editor)
+
+func _create_int_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int) -> void:
+	var int_argument_editor := SpinBox.new()
+	
+	if def_idx >= 0:
+		int_argument_editor.value = method["default_args"][def_idx]
+	_arguments[arg_idx] = int_argument_editor.value
+	
+	int_argument_editor.value_changed.connect(func(value): _arguments[arg_idx] = value)
+	
+	_create_inline_argument_editor(arg, int_argument_editor)
 
 func _create_string_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int) -> void:
 	var string_argument_editor := LineEdit.new()

@@ -9,3 +9,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cre1g")
+
+[node name="NoObjectLabelContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="NoObjectLabel" type="Label" parent="NoObjectLabelContainer"]
+layout_mode = 2
+text = "Press the \"Show Methods\" option for a Node or Resource to see its methods."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ObjectMethodsList" type="Tree" parent="."]
+unique_name_in_owner = true
+layout_mode = 2

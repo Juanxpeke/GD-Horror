@@ -64,7 +64,7 @@ func _create_items_from_node(node : Node, parent : TreeItem = null) -> void:
 
 	tree_item.set_metadata(0, node)
 	
-	tree_item.add_button(0, DebugManager.get_editor_class_icon("Callable"), SceneTreeListButton.BUTTON_METHODS, false, "Show Methods")
+	tree_item.add_button(0, DebugManager.get_editor_class_icon("MemberMethod"), SceneTreeListButton.BUTTON_METHODS, false, "Show Methods")
 	
 	var node_visible : bool = false;
 	
