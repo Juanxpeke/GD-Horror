@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://b5d32p0ftlaaj"]
+
+[ext_resource type="Script" path="res://Debugging/Components/UI/SceneTreeInspectorComponent/SceneTreeList/SceneTreeList.gd" id="1_8yyvs"]
+
+[node name="SceneTreeList" type="Tree"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_8yyvs")

@@ -14,11 +14,13 @@ extends Node
 ## TODO
 @export var minimal_menu_enabled : bool = true
 ## TODO
-@export var minimal_menu_scene : PackedScene
-## TODO
 @export var log_interface_enabled : bool = true
 ## TODO
-@export var log_interface_scene : PackedScene
+@export var minimal_menu_scene : PackedScene = null
+## TODO
+@export var log_interface_scene : PackedScene = null
+## TODO
+@export var editor_theme : Theme = null
 #endregion Exports Variables
 
 #region Public Variables
@@ -41,6 +43,25 @@ func _ready() -> void:
 #endregion Built-in Virtual Methods
 
 #region Public Methods
+#region Editor Theme
+## TODO
+func get_editor_theme() -> Theme:
+	return editor_theme	
+## TODO
+func get_editor_main_font() -> Font:
+	return editor_theme.get_font("main", "EditorFonts")
+## TODO
+func get_editor_output_source_font() -> Font:
+	return editor_theme.get_font("output_source", "EditorFonts")
+## TODO
+func get_editor_output_source_font_size() -> int:
+	return editor_theme.get_font_size("output_source_size", "EditorFonts")
+## TODO
+func get_editor_class_icon(class_name_ : String) -> Texture2D:
+	if editor_theme.has_icon(class_name_, "EditorIcons"):
+		return editor_theme.get_icon(class_name_, "EditorIcons")
+	return editor_theme.get_icon("Object", "EditorIcons")
+#endregion Editor Theme
 #endregion Public Methods
 
 #region Private Methods

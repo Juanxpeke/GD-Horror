@@ -12,6 +12,8 @@ extends CanvasLayer
 #endregion Constants
 
 #region Exports Variables
+## TODO
+@export var toggle_menu_key : Key = KEY_ESCAPE
 #endregion Exports Variables
 
 #region Public Variables
@@ -38,16 +40,11 @@ func _ready() -> void:
 	_exit_buton.pressed.connect(_on_exit_button_pressed)
 
 func _unhandled_input(event : InputEvent) -> void:
-	if event.is_action_pressed("open_menu"):
+	if event is InputEventKey and event.keycode == toggle_menu_key and event.is_pressed():
 		if visible:
-			get_tree().paused = false
-			Input.mouse_mode = _last_mouse_mode
-			visible = false
+			_close()
 		else:
-			get_tree().paused = true
-			_last_mouse_mode = Input.mouse_mode
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-			visible = true
+			_open()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -56,9 +53,7 @@ func _unhandled_input(event : InputEvent) -> void:
 #region Private Methods
 #region Callbacks
 func _on_resume_button_pressed() -> void:
-	get_tree().paused = false
-	Input.mouse_mode = _last_mouse_mode
-	visible = false
+	_close()
 
 func _on_settings_button_pressed() -> void:
 	pass
@@ -66,4 +61,15 @@ func _on_settings_button_pressed() -> void:
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()
 #endregion Callbacks
+
+func _open() -> void:
+	get_tree().paused = true
+	_last_mouse_mode = Input.mouse_mode
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	visible = true
+
+func _close() -> void:
+	get_tree().paused = false
+	Input.mouse_mode = _last_mouse_mode
+	visible = false
 #endregion Private Methods

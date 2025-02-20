@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://bbxeingvdxxjd"
-path="res://.godot/imported/JetBrainsMono-VariableFont_wght.ttf-9e44be4012489d00adae352e53d2141a.fontdata"
+path="res://.godot/imported/OutputSourceFont.ttf-e38e33557e07f93a196465d6b732b5ec.fontdata"
 
 [deps]
 
-source_file="res://Debugging/Components/UI/LogInterfaceComponent/JetBrainsMono-VariableFont_wght.ttf"
-dest_files=["res://.godot/imported/JetBrainsMono-VariableFont_wght.ttf-9e44be4012489d00adae352e53d2141a.fontdata"]
+source_file="res://Debugging/Global/DebugManager/OutputSourceFont.ttf"
+dest_files=["res://.godot/imported/OutputSourceFont.ttf-e38e33557e07f93a196465d6b732b5ec.fontdata"]
 
 [params]
 

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://crhxbvloyffac"]
+
+[ext_resource type="Script" path="res://Debugging/Components/3D/SpawnerComponent/SpawnerComponent.gd" id="1_3emul"]
+
+[node name="SpawnerComponent" type="Node3D"]
+script = ExtResource("1_3emul")
+
+[node name="AutoSpawnTimer" type="Timer" parent="."]
+unique_name_in_owner = true

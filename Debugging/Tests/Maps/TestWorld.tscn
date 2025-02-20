@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bmkct1k6278t8"]
+[gd_scene load_steps=14 format=3 uid="uid://bmkct1k6278t8"]
 
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_5gggp"]
 [ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Debugging/Tests/Items/Cubito.tscn" id="2_sin7y"]
 [ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Furniture/TV.tscn" id="3_tbc3t"]
 [ext_resource type="PackedScene" uid="uid://b8wdbuv2mv34d" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.tscn" id="4_lgxhr"]
+[ext_resource type="PackedScene" uid="uid://crhxbvloyffac" path="res://Debugging/Components/3D/SpawnerComponent/SpawnerComponent.tscn" id="6_3n2dn"]
 [ext_resource type="PackedScene" uid="uid://b3wft6mp2dlru" path="res://Debugging/Components/UI/CameraPanelComponent/CameraPanelComponent.tscn" id="6_v3lsl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_cao4t"]
@@ -78,6 +79,11 @@ gravity = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_iclbq")
+
+[node name="SpawnerComponent" parent="." instance=ExtResource("6_3n2dn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 3, 0)
+scene = ExtResource("4_lgxhr")
+spawn_count = 20
 
 [node name="CameraPanelComponent" parent="." node_paths=PackedStringArray("cameras") instance=ExtResource("6_v3lsl")]
 offset_left = 20.0

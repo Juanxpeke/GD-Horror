@@ -28,6 +28,7 @@ class_name HUD extends CanvasLayer
 func _ready() -> void:
 	EventsManager.hittable_component_hit.connect(_on_hittable_component_hit)
 	EventsManager.hittable_component_unhit.connect(_on_hittable_component_unhit)
+	EventsManager.hittable_component_picked.connect(_on_hittable_component_picked)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -49,6 +50,9 @@ func _on_hittable_component_hit(hit_event : EventsManager.HitEvent) -> void:
 
 func _on_hittable_component_unhit() -> void:
 	_interaction_label.visible = false
+	_picking_label.visible = false
+
+func _on_hittable_component_picked() -> void:
 	_picking_label.visible = false
 #endregion Callbacks
 #endregion Private Methods

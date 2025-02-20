@@ -46,7 +46,7 @@ func _ready() -> void:
 		else:
 			_reparent_cameras.call_deferred()
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.keycode == switch_camera_key and event.is_pressed():
 		var previous_camera : Camera3D = _sub_viewport.get_child(current_camera_index)
 		previous_camera.current = false

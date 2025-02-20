@@ -77,7 +77,11 @@ const CAN_SLEEP_RESTORATION_TIME : float = 1.0
 #region Static Variables
 ## If [code]true[/code], there is at least one instance of [HittableComponent] being picked.
 ## See also [member being_picked].
-static var picking : bool = false
+static var picking : bool = false:
+	set(new_picking):
+		picking = new_picking
+		if picking:
+			EventsManager.hittable_component_picked.emit()
 #endregion Static Variables
 
 #region Public Variables
@@ -106,8 +110,8 @@ var _object_unpicked_time : float = 0.0
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	_force_collision_object_state()
-	_assert_collision_object_state()
+	_force_parameters()
+	_assert_parameters()
 	
 	collision_object.collision_layer |= PhysicsManager.CollisionLayer.CAMERA_RAY
 	collision_object.set_meta("HittableComponentPath", collision_object.get_path_to(self, true))
@@ -267,12 +271,12 @@ func unpick_object() -> void:
 
 #region Private Methods
 #region Assertions
-func _force_collision_object_state() -> void:
+func _force_parameters() -> void:
 	if pickable and collision_object.max_contacts_reported == 0:
 		collision_object.contact_monitor = true
 		collision_object.max_contacts_reported = 1
 
-func _assert_collision_object_state() -> void:
+func _assert_parameters() -> void:
 	assert(collision_object)
 	assert(not (collision_object.collision_layer & PhysicsManager.CollisionLayer.CAMERA_RAY))
 	

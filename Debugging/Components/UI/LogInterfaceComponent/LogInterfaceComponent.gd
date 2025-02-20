@@ -1,6 +1,4 @@
-@tool
-class_name LogInterfaceComponent
-extends CanvasLayer
+class_name LogInterfaceComponent extends CanvasLayer
 ## Docstring
 
 #region Signals
@@ -37,7 +35,7 @@ extends CanvasLayer
 
 #region On Ready Variables
 @onready var _lines_container : Control = %LinesContainer
-@onready var _lines_arranger  : Control = %LinesArranger
+@onready var _lines_list      : Control = %LinesList
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
@@ -84,22 +82,24 @@ func _update() -> void:
 	else:
 		_lines_container.self_modulate = Color.WHITE
 		
-	while _lines_arranger.get_child_count() < lines:
+	while _lines_list.get_child_count() < lines:
 		var new_line : RichTextLabel = line_scene.instantiate()
+		new_line.add_theme_font_override("normal_font", DebugManager.get_editor_output_source_font())
+		new_line.add_theme_font_size_override("normal_font_size", DebugManager.get_editor_output_source_font_size())
 		new_line.text = ""
-		_lines_arranger.add_child(new_line)
-		_lines_arranger.move_child(new_line, -1)
+		_lines_list.add_child(new_line)
+		_lines_list.move_child(new_line, -1)
 	
-	while _lines_arranger.get_child_count() > lines:
-		var death_line := _lines_arranger.get_child(0)
-		_lines_arranger.remove_child(death_line)
+	while _lines_list.get_child_count() > lines:
+		var death_line := _lines_list.get_child(0)
+		_lines_list.remove_child(death_line)
 		death_line.queue_free()
 
 func _push_line(content : String) -> void:
-	for line_index in range(_lines_arranger.get_child_count()):
-		var line : RichTextLabel = _lines_arranger.get_child(line_index)
-		if line_index < _lines_arranger.get_child_count() - 1:
-			var bottom_line : RichTextLabel = _lines_arranger.get_child(line_index + 1)
+	for line_index in range(_lines_list.get_child_count()):
+		var line : RichTextLabel = _lines_list.get_child(line_index)
+		if line_index < _lines_list.get_child_count() - 1:
+			var bottom_line : RichTextLabel = _lines_list.get_child(line_index + 1)
 			line.text = bottom_line.text
 		else:
 			line.text = content

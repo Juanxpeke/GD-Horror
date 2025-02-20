@@ -7,9 +7,11 @@ extends Node
 signal hittable_component_hit(hit_event : HitEvent)
 ## Emitted when a [HittableComponent] is unhit.
 signal hittable_component_unhit
+## Emitted when a [HittableComponent] is picked.
+signal hittable_component_picked
 #endregion Hittables
 #region Consumables
-## Emitted when an item is consumed.
+## Emitted when a [ConsumableComponent] is consumed.
 signal item_consumed(consumption_event : ConsumptionEvent)
 #endregion Consumables
 #endregion Signals
