@@ -34,7 +34,11 @@ enum SceneTreeListButton {
 func _ready() -> void:
 	_update()
 	
+	get_tree().node_added.connect(_on_node_added)
+	get_tree().node_removed.connect(_on_node_removed)
+	
 	button_clicked.connect(_on_button_clicked)
+	item_activated.connect(_on_item_activated)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -42,6 +46,12 @@ func _ready() -> void:
 
 #region Private Methods
 #region Callbacks
+func _on_node_added(_node : Node) -> void:
+	pass #_update()
+
+func _on_node_removed(_node : Node) -> void:
+	pass #_update()
+
 func _on_button_clicked(item : TreeItem, column : int, id : int, mouse_button_index : int) -> void:
 	var node : Node = item.get_metadata(0)
 	
@@ -50,7 +60,44 @@ func _on_button_clicked(item : TreeItem, column : int, id : int, mouse_button_in
 			show_methods_button_pressed.emit(node)
 		SceneTreeListButton.BUTTON_VISIBILITY:
 			toggle_visibility_button_pressed.emit(node)
+
+func _on_item_activated() -> void:
+	var item : TreeItem = get_selected()
+	item.collapsed = not item.collapsed
 #endregion Callbacks
+#region Nodes Callbacks
+func _node_child_entered_tree_callback(child : Node, node : Node) -> void:
+	if node.has_meta(DebugManager.NODE_SCENE_TREE_ITEM):
+		var tree_item : TreeItem = node.get_meta(DebugManager.NODE_SCENE_TREE_ITEM)
+		
+		if tree_item:
+			if not child.has_meta(DebugManager.NODE_SCENE_TREE_ITEM):
+				_create_items_from_node(child, tree_item)
+
+func _node_renamed_callback(node : Node) -> void:
+	if node.has_meta(DebugManager.NODE_SCENE_TREE_ITEM):
+		var tree_item : TreeItem = node.get_meta(DebugManager.NODE_SCENE_TREE_ITEM)
+		
+		if tree_item:
+			tree_item.set_text(0, node.name)
+
+func _node_tree_exiting_callback(node : Node) -> void:
+	if node.has_meta(DebugManager.NODE_SCENE_TREE_ITEM):
+		var tree_item : TreeItem = node.get_meta(DebugManager.NODE_SCENE_TREE_ITEM)
+		
+		if tree_item:
+			tree_item.free() # NOTE: From TreeItem docs
+
+func _node_visibility_changed_callback(node : Node) -> void:
+	if node.has_meta(DebugManager.NODE_SCENE_TREE_ITEM):
+		var tree_item : TreeItem = node.get_meta(DebugManager.NODE_SCENE_TREE_ITEM)
+		
+		if tree_item:
+			if node.call("is_visible"):
+				tree_item.set_button(0, SceneTreeListButton.BUTTON_VISIBILITY, DebugManager.get_editor_class_icon("GuiVisibilityVisible"))
+			else:
+				tree_item.set_button(0, SceneTreeListButton.BUTTON_VISIBILITY, DebugManager.get_editor_class_icon("GuiVisibilityHidden"))
+#endregion Nodes Callbacks
 
 func _update() -> void:
 	clear()
@@ -66,22 +113,25 @@ func _create_items_from_node(node : Node, parent : TreeItem = null) -> void:
 	
 	tree_item.add_button(0, DebugManager.get_editor_class_icon("MemberMethod"), SceneTreeListButton.BUTTON_METHODS, false, "Show Methods")
 	
-	var node_visible : bool = false;
+	if not node.is_connected("child_entered_tree", _node_child_entered_tree_callback.bind(node)):
+		node.connect("child_entered_tree", _node_child_entered_tree_callback.bind(node))
+	
+	if not node.is_connected("renamed", _node_renamed_callback.bind(node)):
+		node.connect("renamed", _node_renamed_callback.bind(node))
+	
+	if not node.is_connected("tree_exiting", _node_tree_exiting_callback.bind(node)):
+		node.connect("tree_exiting", _node_tree_exiting_callback.bind(node))
 	
 	if node.has_method("is_visible") and node.has_method("set_visible") and node.has_signal("visibility_changed") and node != get_tree().root:
-		if node.is_visible():
+		if node.call("is_visible"):
 			tree_item.add_button(0, DebugManager.get_editor_class_icon("GuiVisibilityVisible"), SceneTreeListButton.BUTTON_VISIBILITY, false, "Toggle Visibility")
 		else:
 			tree_item.add_button(0, DebugManager.get_editor_class_icon("GuiVisibilityHidden"), SceneTreeListButton.BUTTON_VISIBILITY, false, "Toggle Visibility")
 		
-		var visibility_changed_callback = func():
-			if node.is_visible():
-				tree_item.set_button(0, SceneTreeListButton.BUTTON_VISIBILITY, DebugManager.get_editor_class_icon("GuiVisibilityVisible"))
-			else:
-				tree_item.set_button(0, SceneTreeListButton.BUTTON_VISIBILITY, DebugManager.get_editor_class_icon("GuiVisibilityHidden"))
-	
-		if not node.is_connected("visibility_changed", visibility_changed_callback):
-			node.connect("visibility_changed", visibility_changed_callback)
+		if not node.is_connected("visibility_changed", _node_visibility_changed_callback.bind(node)):
+			node.connect("visibility_changed", _node_visibility_changed_callback.bind(node))
+		
+	node.set_meta(DebugManager.NODE_SCENE_TREE_ITEM, tree_item)
 	
 	for child_node in node.get_children():
 		_create_items_from_node(child_node, tree_item)

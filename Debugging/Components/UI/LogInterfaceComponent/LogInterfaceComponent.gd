@@ -57,6 +57,7 @@ func _ready_game() -> void:
 	LogManager.rendering_log_issued.connect(_on_rendering_log_issued)
 	LogManager.physics_log_issued.connect(_on_physics_log_issued)
 	LogManager.audio_log_issued.connect(_on_audio_log_issued)
+	LogManager.debugging_log_issued.connect(_on_debugging_log_issued)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -74,6 +75,10 @@ func _on_physics_log_issued(message : String) -> void:
 
 func _on_audio_log_issued(message : String) -> void:
 	var content := "[color=%s](Audio) %s[/color]" % [LogManager.audio_color, message]
+	_push_line(content)
+
+func _on_debugging_log_issued(message : String) -> void:
+	var content := "[color=%s](Debugging) %s[/color]" % [LogManager.debugging_color, message]
 	_push_line(content)
 #endregion Callbacks
 func _update() -> void:

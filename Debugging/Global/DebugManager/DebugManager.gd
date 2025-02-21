@@ -8,6 +8,10 @@ extends Node
 #endregion Enums
 
 #region Constants
+#region Meta Names
+const META_PREFIX : String = "gdbugger_"
+const NODE_SCENE_TREE_ITEM : String = META_PREFIX + "tree_item" 
+#endregion Meta Names
 #endregion Constants
 
 #region Exports Variables

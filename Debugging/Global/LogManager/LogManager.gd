@@ -8,6 +8,8 @@ signal rendering_log_issued(message : String)
 signal physics_log_issued(message : String)
 ## TODO
 signal audio_log_issued(message : String)
+## TODO
+signal debugging_log_issued(message : String)
 #endregion Signals
 
 #region Enums
@@ -23,6 +25,7 @@ signal audio_log_issued(message : String)
 var rendering_color : String = "green"
 var physics_color   : String = "yellow"
 var audio_color     : String = "cyan"
+var debugging_color : String = "white"
 #endregion Public Variables
 
 #region Private Variables
@@ -47,6 +50,10 @@ func physics_log(message : String) -> void:
 func audio_log(message : String) -> void:
 	print_rich("[color=%s](Audio) %s[/color]" % [audio_color, message])
 	audio_log_issued.emit(message)
+## Logs a message related to a debugging system.
+func debugging_log(message : String) -> void:
+	print_rich("[color=%s](Debugging) %s[/color]" % [debugging_color, message])
+	debugging_log_issued.emit(message)
 #endregion Public Methods
 
 #region Private Methods

@@ -10,30 +10,51 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v2ixo")
 
-[node name="ObjectInformationArranger" type="HBoxContainer" parent="."]
+[node name="NoObjectOrMethodLabelContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="NoObjectOrMethodLabel" type="Label" parent="NoObjectOrMethodLabelContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+text = "Press a method in the \"MethodsList\" menu."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="MethodCallerMenu" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ObjectInformationArranger" type="HBoxContainer" parent="MethodCallerMenu"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ObjectIcon" type="TextureRect" parent="ObjectInformationArranger"]
+[node name="ObjectIcon" type="TextureRect" parent="MethodCallerMenu/ObjectInformationArranger"]
 unique_name_in_owner = true
 layout_mode = 2
 stretch_mode = 5
 
-[node name="ObjectNameLabel" type="Label" parent="ObjectInformationArranger"]
+[node name="ObjectNameLabel" type="Label" parent="MethodCallerMenu/ObjectInformationArranger"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Object Name"
 text_overrun_behavior = 3
 
-[node name="MethodInformationArranger" type="HBoxContainer" parent="."]
+[node name="MethodInformationArranger" type="HBoxContainer" parent="MethodCallerMenu"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="MethodIcon" type="TextureRect" parent="MethodInformationArranger"]
+[node name="MethodIcon" type="TextureRect" parent="MethodCallerMenu/MethodInformationArranger"]
 layout_mode = 2
 
-[node name="MethodNameLabel" type="Label" parent="MethodInformationArranger"]
+[node name="MethodNameLabel" type="Label" parent="MethodCallerMenu/MethodInformationArranger"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -41,11 +62,11 @@ theme_override_font_sizes/font_size = 13
 text = "Method Name"
 text_overrun_behavior = 3
 
-[node name="ArgumentsList" type="VBoxContainer" parent="."]
+[node name="ArgumentsList" type="VBoxContainer" parent="MethodCallerMenu"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CallButton" type="Button" parent="."]
+[node name="CallButton" type="Button" parent="MethodCallerMenu"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4

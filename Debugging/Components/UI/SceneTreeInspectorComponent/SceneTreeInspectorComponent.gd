@@ -31,8 +31,10 @@ func _ready() -> void:
 	
 	set_tab_icon(_get_tab_index(_scene_tree_list), DebugManager.get_editor_class_icon("ClassList"))
 	set_tab_title(_get_tab_index(_scene_tree_list), "")
-	set_tab_title(_get_tab_index(_object_methods_list), "Object Methods")
-	set_tab_title(_get_tab_index(_method_caller_interface), "Method Call")
+	set_tab_title(_get_tab_index(_object_methods_list), "Methods List")
+	set_tab_title(_get_tab_index(_method_caller_interface), "Method")
+	
+	tab_selected.connect(_on_tab_selected)
 	
 	_scene_tree_list.show_methods_button_pressed.connect(_on_show_methods_button_pressed)
 	_scene_tree_list.toggle_visibility_button_pressed.connect(_on_toggle_visibility_button_pressed)
@@ -46,6 +48,12 @@ func _ready() -> void:
 
 #region Private Methods
 #region Callbacks
+func _on_tab_selected(tab : int) -> void:
+	if tab == _get_tab_index(_object_methods_list):
+		_object_methods_list.update()
+	elif tab == _get_tab_index(_method_caller_interface):
+		_method_caller_interface.update()
+
 func _on_show_methods_button_pressed(node : Node) -> void:
 	_object_methods_list.object = node
 	
