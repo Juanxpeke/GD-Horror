@@ -16,8 +16,6 @@ enum DrawLayer {
 	HUD,
 	## TODO
 	MENU,
-	## TODO
-	LOG,
 }
 #endregion Constants
 
@@ -41,9 +39,6 @@ func _ready() -> void:
 	for node in get_tree().get_nodes_in_group("MenuLayer"):
 		var canvas_layer : CanvasLayer = node as CanvasLayer
 		canvas_layer.layer = DrawLayer.MENU
-	for node in get_tree().get_nodes_in_group("LogLayer"):
-		var canvas_layer : CanvasLayer = node as CanvasLayer
-		canvas_layer.layer = DrawLayer.LOG
 #endregion Built-in Virtual Methods
 
 #region Public Methods

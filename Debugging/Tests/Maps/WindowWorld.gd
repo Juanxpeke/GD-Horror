@@ -5,12 +5,6 @@ extends Node
 #endregion Signals
 
 #region Enums
-enum CollisionLayer {
-	STATIC_WORLD = 1 <<  0,
-	RIGID_WORLD  = 1 <<  1,
-	PLAYER_WORLD = 1 <<  2, 
-	CAMERA_RAY   = 1 << 31
-}
 #endregion Enums
 
 #region Constants
@@ -20,18 +14,18 @@ enum CollisionLayer {
 #endregion Exports Variables
 
 #region Public Variables
-var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
 #endregion Private Variables
 
 #region On Ready Variables
+@onready var _window : Window = %Window
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	LogManager.physics_log("Global gravity: %f" % global_gravity)
+	_window.show()
 #endregion Built-in Virtual Methods
 
 #region Public Methods

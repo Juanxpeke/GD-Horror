@@ -16,6 +16,9 @@ enum SceneTreeListButton {
 #endregion Enums
 
 #region Constants
+const BANNED_NODE_NAMES : Dictionary = {
+	"Dialogic": true,
+}
 #endregion Constants
 
 #region Exports Variables
@@ -52,7 +55,7 @@ func _on_node_added(_node : Node) -> void:
 func _on_node_removed(_node : Node) -> void:
 	pass #_update()
 
-func _on_button_clicked(item : TreeItem, column : int, id : int, mouse_button_index : int) -> void:
+func _on_button_clicked(item : TreeItem, _column : int, id : int, _mouse_button_index : int) -> void:
 	var node : Node = item.get_metadata(0)
 	
 	match id:
@@ -105,6 +108,9 @@ func _update() -> void:
 	_create_items_from_node(get_tree().root)
 
 func _create_items_from_node(node : Node, parent : TreeItem = null) -> void:
+	if BANNED_NODE_NAMES.has(node.name):
+		return
+	
 	var tree_item := create_item(parent)
 	tree_item.set_text(0, node.name)
 	tree_item.set_icon(0, DebugManager.get_editor_class_icon(node.get_class()))

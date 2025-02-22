@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://fllxo62d1cfe"]
+
+[ext_resource type="Script" path="res://Debugging/Tests/Maps/WindowWorld.gd" id="1_ybcjq"]
+[ext_resource type="PackedScene" uid="uid://n523xpsqwcpb" path="res://Debugging/Components/UI/DebugMenuComponent/DebugMenuComponent.tscn" id="2_26yem"]
+
+[node name="WindowWorld" type="Node"]
+script = ExtResource("1_ybcjq")
+
+[node name="Window" type="Window" parent="."]
+unique_name_in_owner = true
+initial_position = 2
+size = Vector2i(400, 400)
+visible = false
+force_native = true
+
+[node name="MinimalMenuComponent" parent="Window" instance=ExtResource("2_26yem")]

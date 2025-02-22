@@ -73,7 +73,6 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 HUDLayer=""
 MenuLayer=""
-LogLayer=""
 
 [input]
 

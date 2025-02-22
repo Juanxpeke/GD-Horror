@@ -1,16 +1,10 @@
-extends Node
+class_name PerformanceInterfaceComponent extends Control
 ## Docstring
 
 #region Signals
 #endregion Signals
 
 #region Enums
-enum CollisionLayer {
-	STATIC_WORLD = 1 <<  0,
-	RIGID_WORLD  = 1 <<  1,
-	PLAYER_WORLD = 1 <<  2, 
-	CAMERA_RAY   = 1 << 31
-}
 #endregion Enums
 
 #region Constants
@@ -20,18 +14,22 @@ enum CollisionLayer {
 #endregion Exports Variables
 
 #region Public Variables
-var global_gravity : float = ProjectSettings.get_setting("physics/3d/default_gravity")
 #endregion Public Variables
 
 #region Private Variables
 #endregion Private Variables
 
 #region On Ready Variables
+@onready var _device_label : Label = %DeviceLabel
+@onready var _fps_label : Label = %FPSLabel
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	LogManager.physics_log("Global gravity: %f" % global_gravity)
+	_device_label.text = RenderingServer.get_rendering_device().get_device_name()
+
+func _process(delta : float) -> void:
+	_fps_label.text = str(Engine.get_frames_per_second())
 #endregion Built-in Virtual Methods
 
 #region Public Methods

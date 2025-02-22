@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://n523xpsqwcpb"]
+
+[ext_resource type="Script" path="res://Debugging/Components/UI/DebugMenuComponent/DebugMenuComponent.gd" id="1_15jhm"]
+[ext_resource type="Theme" uid="uid://cl08tkaudp2kc" path="res://Debugging/Global/DebugManager/EditorTheme.tres" id="1_glkky"]
+
+[node name="DebugMenuComponent" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_glkky")
+script = ExtResource("1_15jhm")
+
+[node name="DebugMenuList" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="GamePausedCheckBox" type="CheckBox" parent="DebugMenuList"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Game Paused"
+
+[node name="DebugWindowsList" type="VBoxContainer" parent="DebugMenuList"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BottomButtonsList" type="VBoxContainer" parent="DebugMenuList"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StopDebuggingButton" type="Button" parent="DebugMenuList/BottomButtonsList"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stop Debugging"
+
+[node name="ExitButton" type="Button" parent="DebugMenuList/BottomButtonsList"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Exit"

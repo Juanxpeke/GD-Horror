@@ -185,7 +185,6 @@ func _update_methods_list() -> void:
 			section_item.set_editable(0, false)
 			section_item.set_custom_bg_color(0, get_theme_color("prop_subsection", "Editor"))
 		for method : Dictionary in class_methods:
-			var method_name : String = method["name"]
 			var method_item : TreeItem = _object_methods_list.create_item(section_item)
 			
 			method_item.set_text(0, DebugManager.get_method_signature(method))

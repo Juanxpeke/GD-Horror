@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bckjvr56scvx2"]
+
+[ext_resource type="Theme" uid="uid://cl08tkaudp2kc" path="res://Debugging/Global/DebugManager/EditorTheme.tres" id="1_adee5"]
+[ext_resource type="Script" path="res://Debugging/Components/UI/PerformanceInterfaceComponent/PerformanceInterfaceComponent.gd" id="1_kms3y"]
+
+[node name="PerformanceInterface" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_adee5")
+script = ExtResource("1_kms3y")
+
+[node name="DeviceLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FPSLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2

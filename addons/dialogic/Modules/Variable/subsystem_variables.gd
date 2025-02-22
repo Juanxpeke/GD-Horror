@@ -178,6 +178,8 @@ func _set(property, value) -> bool:
 ## Allows to get dialogic built-in variables
 func _get(property):
 	property = str(property)
+	print(name)
+	print(property)
 	if property in dialogic.current_state_info['variables'].keys():
 		if typeof(dialogic.current_state_info['variables'][property]) == TYPE_DICTIONARY:
 			return VariableFolder.new(dialogic.current_state_info['variables'][property], property, self)

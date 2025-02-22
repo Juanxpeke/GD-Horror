@@ -1,4 +1,4 @@
-class_name LogInterfaceComponent extends CanvasLayer
+class_name LogInterfaceComponent extends Control
 ## Docstring
 
 #region Signals
@@ -34,26 +34,13 @@ class_name LogInterfaceComponent extends CanvasLayer
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var _lines_container : Control = %LinesContainer
 @onready var _lines_list      : Control = %LinesList
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
-	_ready_base()
-	
-	if Engine.is_editor_hint():
-		_ready_editor()
-	else:
-		_ready_game()
-
-func _ready_base() -> void:
 	_update()
-
-func _ready_editor() -> void:
-	pass
-
-func _ready_game() -> void:
+	
 	LogManager.rendering_log_issued.connect(_on_rendering_log_issued)
 	LogManager.physics_log_issued.connect(_on_physics_log_issued)
 	LogManager.audio_log_issued.connect(_on_audio_log_issued)
@@ -83,9 +70,9 @@ func _on_debugging_log_issued(message : String) -> void:
 #endregion Callbacks
 func _update() -> void:
 	if transparent:
-		_lines_container.self_modulate = Color.TRANSPARENT
+		self_modulate = Color.TRANSPARENT
 	else:
-		_lines_container.self_modulate = Color.WHITE
+		self_modulate = Color.WHITE
 		
 	while _lines_list.get_child_count() < lines:
 		var new_line : RichTextLabel = line_scene.instantiate()

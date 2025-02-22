@@ -33,9 +33,6 @@ var player_hand : Marker3D = null:
 #region Built-in Virtual Methods
 func _ready() -> void:
 	pass
-
-func _process(delta : float) -> void:
-	pass
 #endregion Built-in Virtual Methods
 
 #region Public Methods
