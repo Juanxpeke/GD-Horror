@@ -17,28 +17,21 @@ class_name LogInterfaceComponent extends Control
 		transparent = new_transparent
 		if is_inside_tree():
 			_update()
-## TODO
-@export var lines : int = 6:
-	set(new_lines):
-		lines = new_lines
-		if is_inside_tree():
-			_update()
-## TODO
-@export var line_scene : PackedScene
 #endregion Exports Variables
 
 #region Public Variables
 #endregion Public Variables
 
 #region Private Variables
+var _log : RichTextLabel
 #endregion Private Variables
 
 #region On Ready Variables
-@onready var _lines_list      : Control = %LinesList
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
 func _ready() -> void:
+	_initialize()
 	_update()
 	
 	LogManager.rendering_log_issued.connect(_on_rendering_log_issued)
@@ -68,31 +61,50 @@ func _on_debugging_log_issued(message : String) -> void:
 	var content := "[color=%s](Debugging) %s[/color]" % [LogManager.debugging_color, message]
 	_push_line(content)
 #endregion Callbacks
+func _initialize() -> void:
+	add_theme_stylebox_override("panel", get_theme_stylebox("DefaultPanel", "EditorStyles"))
+	
+	var vb_left := VBoxContainer.new();
+	vb_left.set_custom_minimum_size(Vector2(0, 180));
+	vb_left.set_v_size_flags(SIZE_EXPAND_FILL);
+	vb_left.set_h_size_flags(SIZE_EXPAND_FILL);
+	add_child(vb_left);
+	
+	_log = RichTextLabel.new()
+	_log.bbcode_enabled = true
+	_log.scroll_following = true
+	_log.selection_enabled = true
+	_log.context_menu_enabled = true
+	_log.focus_mode = Control.FOCUS_CLICK
+	_log.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_log.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_log.deselect_on_focus_loss_enabled = true
+	
+	_log.add_theme_font_override("normal_font", DebugManager.get_editor_output_source_font())
+	
+	var font_size : int = DebugManager.get_editor_output_source_font_size()
+	_log.begin_bulk_theme_override();
+	_log.add_theme_font_size_override("normal_font_size", font_size);
+	_log.add_theme_font_size_override("bold_font_size", font_size);
+	_log.add_theme_font_size_override("italics_font_size", font_size);
+	_log.add_theme_font_size_override("mono_font_size", font_size);
+	_log.end_bulk_theme_override();
+	
+	
+	add_child(_log)
+
 func _update() -> void:
 	if transparent:
 		self_modulate = Color.TRANSPARENT
+		_log.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 	else:
 		self_modulate = Color.WHITE
-		
-	while _lines_list.get_child_count() < lines:
-		var new_line : RichTextLabel = line_scene.instantiate()
-		new_line.add_theme_font_override("normal_font", DebugManager.get_editor_output_source_font())
-		new_line.add_theme_font_size_override("normal_font_size", DebugManager.get_editor_output_source_font_size())
-		new_line.text = ""
-		_lines_list.add_child(new_line)
-		_lines_list.move_child(new_line, -1)
+		if _log.has_theme_stylebox_override("normal"):
+			_log.remove_theme_stylebox_override("normal")
 	
-	while _lines_list.get_child_count() > lines:
-		var death_line := _lines_list.get_child(0)
-		_lines_list.remove_child(death_line)
-		death_line.queue_free()
+
 
 func _push_line(content : String) -> void:
-	for line_index in range(_lines_list.get_child_count()):
-		var line : RichTextLabel = _lines_list.get_child(line_index)
-		if line_index < _lines_list.get_child_count() - 1:
-			var bottom_line : RichTextLabel = _lines_list.get_child(line_index + 1)
-			line.text = bottom_line.text
-		else:
-			line.text = content
+	_log.append_text(content)
+	_log.newline()
 #endregion Private Methods

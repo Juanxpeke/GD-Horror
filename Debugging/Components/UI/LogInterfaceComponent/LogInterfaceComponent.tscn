@@ -1,15 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcpelyemlb6hk"]
+[gd_scene load_steps=3 format=3 uid="uid://bcpelyemlb6hk"]
 
 [ext_resource type="Theme" uid="uid://cl08tkaudp2kc" path="res://Debugging/Global/DebugManager/EditorTheme.tres" id="1_31jqt"]
 [ext_resource type="Script" path="res://Debugging/Components/UI/LogInterfaceComponent/LogInterfaceComponent.gd" id="1_xmtp5"]
-[ext_resource type="PackedScene" uid="uid://dnvybyli02r33" path="res://Debugging/Components/UI/LogInterfaceComponent/LogInterfaceLine.tscn" id="2_atvk6"]
 
 [node name="LogInterfaceComponent" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_31jqt")
 script = ExtResource("1_xmtp5")
-line_scene = ExtResource("2_atvk6")
-
-[node name="LinesList" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 0
