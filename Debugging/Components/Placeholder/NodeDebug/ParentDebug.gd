@@ -1,4 +1,4 @@
-class_name DebugComponentParent extends DebugComponent
+class_name ParentDebug extends NodeDebug
 ## Docstring
 
 #region Signals
@@ -23,13 +23,11 @@ class_name DebugComponentParent extends DebugComponent
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	pass
 #endregion Built-in Virtual Methods
 
 #region Public Methods
 ## TODO
-func method(what_if : bool, action : String,  n_times : int = 0) -> void:
+func method(_what_if : bool, _action : String,  _n_times : int = 0) -> void:
 	LogManager.debugging_log("Get overrided") # TODO
 ## TODO
 func parent_method(what_if : bool, action : String,  n_times : int = 0, at : String = "Paris") -> void:

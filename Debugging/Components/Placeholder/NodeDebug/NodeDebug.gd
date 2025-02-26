@@ -1,11 +1,11 @@
-class_name DebugComponent extends Node
-## Docstring
+class_name NodeDebug extends Node
+## Im just a debug node.
 
 #region Signals
 #endregion Signals
 
 #region Enums
-## TODO
+## Im just a debug node.
 enum DebugEnum {
 	## TODO
 	FIRST,
@@ -31,41 +31,45 @@ enum DebugEnum {
 
 #region Built-in Virtual Methods
 func _enter_tree() -> void:
-	is_inside_tree()
-	LogManager.debugging_log("Debug component %s entered the tree!" % name)
+	LogManager.debugging_log("Debug node %s entered the tree!" % name)
 
 func _ready() -> void:
-	LogManager.debugging_log("Debug component %s ready!" % name)
+	LogManager.debugging_log("Debug node %s ready!" % name)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
-## TODO
+## Im just a debug node.
 func method(what_if : bool, action : String,  n_times : int = 0) -> void:
 	if what_if:
 		LogManager.debugging_log("We did %s %d times" % [action, n_times]) # TODO
 	else:
 		LogManager.debugging_log("We didn't %s %d times" % [action, n_times]) # TODO
-## TODO
+## Im just a debug node.
 func enum_method(e : DebugEnum) -> void:
 	LogManager.debugging_log(str(e))
-## TODO
+## Im just a debug node.
 func array_method(arr : Array, typed_arr : Array[bool]) -> void:
 	LogManager.debugging_log(str(arr) + "-" + str(typed_arr))
-## TODO
+## Im just a debug node.
+func rename_method(new_name : String) -> void:
+	name = new_name
+## Im just a debug node.
 func add_children_method() -> void:
-	var first_child := DebugComponent.new()
+	var first_child := NodeDebug.new()
 	first_child.name = "FirstChild"
-	var second_child := DebugComponent.new()
+	var second_child := NodeDebug.new()
 	second_child.name = "SecondChild"
-	var grandchild := DebugComponent.new()
+	var grandchild := NodeDebug.new()
 	grandchild.name = "Grandchild"
 	
 	first_child.add_child(grandchild)
 	add_child(first_child)
 	add_child(second_child)
-## TODO
-func rename_method(new_name : String) -> void:
-	name = new_name
+## Im just a debug node.
+func replace_by_method() -> void:
+	var replacement := NodeDebug.new()
+	replacement.name = "Replacement"
+	replace_by(replacement)
 #endregion Public Methods
 
 #region Private Methods

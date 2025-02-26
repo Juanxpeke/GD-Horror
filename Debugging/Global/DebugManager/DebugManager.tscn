@@ -1,14 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b04c17n6pxkyf"]
+[gd_scene load_steps=2 format=3 uid="uid://b04c17n6pxkyf"]
 
 [ext_resource type="Script" path="res://Debugging/Global/DebugManager/DebugManager.gd" id="1_iahjq"]
-[ext_resource type="Theme" uid="uid://cl08tkaudp2kc" path="res://Debugging/Global/DebugManager/EditorTheme.tres" id="4_v6gnn"]
-[ext_resource type="PackedScene" uid="uid://c1e3lr1f8ranu" path="res://Debugging/Components/Placeholder/DebugComponent/DebugComponent.tscn" id="5_fy04s"]
-[ext_resource type="PackedScene" uid="uid://c61pw2pw0emqi" path="res://Debugging/Global/DebugManager/DebugInterface.tscn" id="6_rwujr"]
 
 [node name="DebugManager" type="Node"]
 script = ExtResource("1_iahjq")
-editor_theme = ExtResource("4_v6gnn")
-
-[node name="DebugComponent" parent="." instance=ExtResource("5_fy04s")]
-
-[node name="DebugInterface" parent="." instance=ExtResource("6_rwujr")]
