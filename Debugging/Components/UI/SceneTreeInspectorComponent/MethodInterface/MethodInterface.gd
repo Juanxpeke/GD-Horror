@@ -9,6 +9,8 @@ class_name MethodInterface extends VBoxContainer
 #endregion Enums
 
 #region Constants
+## TODO
+const COMPONENT_LABELS : Array[String] = ["x", "y", "z", "w"]
 #endregion Constants
 
 #region Exports Variables
@@ -157,6 +159,8 @@ func _update_arguments() -> void:
 				_create_int_argument_editor(arg, arg_idx, def_idx)
 			TYPE_STRING, TYPE_STRING_NAME:
 				_create_string_argument_editor(arg, arg_idx, def_idx)
+			TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I:
+				_create_vector_argument_editor(arg, arg_idx, def_idx)
 		arg_idx += 1
 
 func _create_inline_argument_editor(arg : Dictionary, raw_editor : Control) -> void:
@@ -200,6 +204,7 @@ func _create_int_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int)
 
 func _create_string_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int) -> void:
 	var string_argument_editor := LineEdit.new()
+	string_argument_editor.caret_blink = true
 	
 	if def_idx >= 0:
 		string_argument_editor.text = method["default_args"][def_idx]
@@ -208,6 +213,40 @@ func _create_string_argument_editor(arg : Dictionary, arg_idx : int, def_idx : i
 	string_argument_editor.text_changed.connect(func(new_text): _arguments[arg_idx] = new_text)
 	
 	_create_inline_argument_editor(arg, string_argument_editor)
+
+func _create_vector_argument_editor(arg : Dictionary, arg_idx : int, def_idx : int) -> void:
+	var component_count : int
+	match arg["type"]:
+		TYPE_VECTOR2, TYPE_VECTOR2I:
+			component_count = 2
+		TYPE_VECTOR3, TYPE_VECTOR3I:
+			component_count = 3
+		TYPE_VECTOR4, TYPE_VECTOR4I:
+			component_count = 4
+	
+	var hb := HBoxContainer.new()
+	hb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	var bc : BoxContainer
+	if true:
+		bc = HBoxContainer.new()
+	bc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hb.add_child(bc)
+	
+	var spin_sliders : Array[SpinBox] = []
+	spin_sliders.resize(component_count)
+	
+	for i : int in range(component_count):
+		spin_sliders[i] = SpinBox.new()
+		#spin[i]->set_flat(true);
+		#spin[i]->set_label(String(COMPONENT_LABELS[i]));
+		if true:
+			spin_sliders[i].size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		
+		
+		bc.add_child(spin_sliders[i])
+	
+	_arguments_vbox.add_child(hb)
 
 func _update_call_button() -> void:
 	_call_button.disabled = false
