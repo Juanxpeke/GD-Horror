@@ -38,8 +38,8 @@ func _ready() -> void:
 func _on_interacted() -> void:
 	if not is_on:
 		is_on = true
-		print("TV ON")
+		hittable_component.interaction_name = "Turn OFF" # TODO: HUD can't handle interaction name changes
 	else:
 		is_on = false
-		print("TV OFF")
+		hittable_component.interaction_name = "Turn ON"
 #endregion Private Methods

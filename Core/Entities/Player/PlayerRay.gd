@@ -14,7 +14,9 @@ class_name PlayerRay extends RayCast3D
 #endregion Exports Variables
 
 #region Public Variables
+## TODO
 var last_collider : CollisionObject3D = null
+## TODO
 var last_hittable_component : HittableComponent = null
 #endregion Public Variables
 
@@ -25,10 +27,7 @@ var last_hittable_component : HittableComponent = null
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
-	pass
-
-func _physics_process(delta : float) -> void:
+func _physics_process(_delta : float) -> void:
 	last_collider = get_collider()
 	
 	if not HittableComponent.picking:

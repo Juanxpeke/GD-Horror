@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cb5udnaur6knc"]
 
 [ext_resource type="Script" path="res://Core/Maps/Furniture/TV.gd" id="1_1y0xe"]
-[ext_resource type="PackedScene" uid="uid://d76ielbkk3lx" path="res://Core/Components/Physics/HittableComponent.tscn" id="2_6cw46"]
+[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="3_48oik"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_avbgd"]
 size = Vector3(2, 1.4, 1)
@@ -19,7 +19,9 @@ mesh = SubResource("BoxMesh_avbgd")
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_gpogc")
 
-[node name="HittableComponent" parent="." node_paths=PackedStringArray("collision_object") instance=ExtResource("2_6cw46")]
+[node name="HittableComponent" type="Node" parent="." node_paths=PackedStringArray("collision_object", "mesh_instance")]
 unique_name_in_owner = true
+script = ExtResource("3_48oik")
 collision_object = NodePath("..")
+mesh_instance = NodePath("../MeshInstance")
 interactable = true
