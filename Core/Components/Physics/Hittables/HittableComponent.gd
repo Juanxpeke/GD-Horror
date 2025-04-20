@@ -5,10 +5,10 @@ class_name HittableComponent extends Node
 
 #region Signals
 ## Emitted when the ray starts colliding with [member collision_object].
-signal focused
+signal hit
 ## Emitted when the ray stops colliding with [member collision_object].
 ## [b]Note:[/b] This signal won't be emitted when [member collision_object] is freed.
-signal unfocused
+signal unhit
 ## Emitted when [member collision_object] is interacted with.
 ## Requires [member interactable] to be set to [code]true[/code].
 ## See also [member interactable].
@@ -75,13 +75,6 @@ const CAN_SLEEP_RESTORATION_TIME : float = 1.0
 #endregion Exports Variables
 
 #region Static Variables
-## If [code]true[/code], there is at least one instance of [HittableComponent] being picked.
-## See also [member being_picked].
-static var picking : bool = false:
-	set(new_picking):
-		picking = new_picking
-		if picking:
-			EventsManager.hittable_component_picked.emit()
 #endregion Static Variables
 
 #region Public Variables
@@ -109,85 +102,76 @@ var _object_unpicked_time : float = 0.0
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
+func _init() -> void:	
+	add_to_group("JuanxpHittableComponent")
+
+func _enter_tree() -> void:
 	_force_parameters()
 	_assert_parameters()
 	
-	collision_object.collision_layer |= PhysicsManager.CollisionLayer.CAMERA_RAY
-	collision_object.set_meta("HittableComponentPath", collision_object.get_path_to(self, true))
+	# TODO: Check there is only one hittable attached to collision object
+	collision_object.set_meta("JuanxpHittableComponentPath", collision_object.get_path_to(self, true))
 	
 	tree_exited.connect(_on_tree_exited)
 
-func _physics_process(delta : float) -> void:
-	if being_picked:
-		var object : RigidBody3D = collision_object as RigidBody3D
+func process_after_pick(delta : float) -> void:
+	if _waiting_to_restore_object_can_sleep_state:
+		_object_unpicked_time += delta
 		
-		var object_pos := object.global_transform.origin
-		var hand_pos := GameManager.player_hand.global_transform.origin
-		
-		var drag_vector := hand_pos - object_pos
-		var drag_length := drag_vector.length()
-		
-		# If the object is too far, it must be dropped
-		if drag_length > MAXIMUM_DRAG_DISTANCE:
-			object.set_linear_velocity(Vector3.ZERO)
-			unpick_object()
-		# If not, it should be dragged to the player's hand
-		else:
-			var drag_direction := drag_vector / drag_length
+		if _object_unpicked_time > CAN_SLEEP_RESTORATION_TIME:
+			var object : RigidBody3D = collision_object as RigidBody3D
+			object.can_sleep = _object_pick_initial_can_sleep
 			
-			# The drag speed depends on the object's mass and its distance
-			var mass_factor     : float = min(1.0 / object.mass, 1.0)
-			var distance_factor : float = drag_length
+			_waiting_to_restore_object_can_sleep_state = false
+			_object_unpicked_time = 0.0
 			
-			var drag_speed := distance_factor * mass_factor * INITIAL_DRAG_SPEED
-			
-			# If object is colliding, reduce drag speed so it doesn't push heavy objects so easily
-			if object.get_contact_count() > 0:
-				drag_speed /= 1 # TODO: Solve this, dividing the speed entirely causes a bug in which
-								#       heavy objects can't be lifted
-			
-			drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
-			
-			object.set_linear_velocity(drag_direction * drag_speed)
-			
-			# Maintain object's rotation relative to the player
-			var object_vector := object_pos - GameManager.player.global_transform.origin
-			var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
-			
-			var object_vector_xz := Vector2(object_vector.x, object_vector.z)
-			var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
-			
-			var object_angle_to_hand := object_vector_xz.angle_to(hand_vector_xz) 
-			
-			var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
-			
-			object.rotation.y = object_front_rotation + (object_angle_to_hand - _object_pick_initial_angle_to_hand)
-	else:
-		if _waiting_to_restore_object_can_sleep_state:
-			_object_unpicked_time += delta
-			
-			if _object_unpicked_time > CAN_SLEEP_RESTORATION_TIME:
-				var object : RigidBody3D = collision_object as RigidBody3D
-				object.can_sleep = _object_pick_initial_can_sleep
-				
-				_waiting_to_restore_object_can_sleep_state = false
-				_object_unpicked_time = 0.0
-				
-				LogManager.physics_log("Restoring %s can_sleep value to %s" % [object.name, object.can_sleep])
+			LogManager.physics_log("Restoring %s can_sleep value to %s" % [object.name, object.can_sleep])
 
-func _input(event: InputEvent) -> void:
-	if being_hit:
-		if interactable and event.is_action_pressed("interact"):
-			if interact_sound:
-				AudioManager.play_sound(interact_sound)
-			interacted.emit()
+
+func process_pick(delta : float) -> void:
+	var object : RigidBody3D = collision_object as RigidBody3D
+	
+	var object_pos := object.global_transform.origin
+	var hand_pos := GameManager.player_hand.global_transform.origin
+	
+	var drag_vector := hand_pos - object_pos
+	var drag_length := drag_vector.length()
+	
+	# If the object is too far, it must be dropped
+	if drag_length > MAXIMUM_DRAG_DISTANCE:
+		object.set_linear_velocity(Vector3.ZERO)
+		#unpick_object()
+	# If not, it should be dragged to the player's hand
+	else:
+		var drag_direction := drag_vector / drag_length
 		
-		if pickable and not picking and event.is_action_pressed("pick_item"):
-			pick_object()
-			
-	if being_picked and event.is_action_released("pick_item"):
-		unpick_object()
+		# The drag speed depends on the object's mass and its distance
+		var mass_factor     : float = min(1.0 / object.mass, 1.0)
+		var distance_factor : float = drag_length
+		
+		var drag_speed := distance_factor * mass_factor * INITIAL_DRAG_SPEED
+		
+		# If object is colliding, reduce drag speed so it doesn't push heavy objects so easily
+		if object.get_contact_count() > 0:
+			drag_speed /= 1 # TODO: Solve this, dividing the speed entirely causes a bug in which
+							#       heavy objects can't be lifted
+		
+		drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
+		
+		object.set_linear_velocity(drag_direction * drag_speed)
+		
+		# Maintain object's rotation relative to the player
+		var object_vector := object_pos - GameManager.player.global_transform.origin
+		var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
+		
+		var object_vector_xz := Vector2(object_vector.x, object_vector.z)
+		var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
+		
+		var object_angle_to_hand := object_vector_xz.angle_to(hand_vector_xz) 
+		
+		var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
+		
+		object.rotation.y = object_front_rotation + (object_angle_to_hand - _object_pick_initial_angle_to_hand)
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -198,9 +182,10 @@ func register_hit() -> void:
 	if mesh_instance:
 		mesh_instance.material_overlay = highlight_material
 	
+	# TODO: Move this logic so this component is game code independent
 	LogManager.physics_log("HittableComponent hit registered")
 	
-	focused.emit()
+	hit.emit()
 ## TODO
 func unregister_hit() -> void:
 	being_hit = false
@@ -208,13 +193,18 @@ func unregister_hit() -> void:
 	if mesh_instance:
 		mesh_instance.material_overlay = null
 	
+	# TODO: Move this logic so this component is game code independent
 	LogManager.physics_log("HittableComponent hit unregistered")
 	
-	unfocused.emit()
+	unhit.emit()
 ## TODO
-func pick_object() -> void:
+func register_interaction() -> void:
+	if interact_sound:
+		AudioManager.play_sound(interact_sound)
+	interacted.emit()
+## TODO
+func register_pick() -> void:
 	being_picked = true
-	picking = true
 	
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
@@ -246,9 +236,8 @@ func pick_object() -> void:
 	
 	picked.emit()
 ## TODO
-func unpick_object() -> void:
+func unregister_pick() -> void:
 	being_picked = false
-	picking = false
 	
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
@@ -278,7 +267,6 @@ func _force_parameters() -> void:
 
 func _assert_parameters() -> void:
 	assert(collision_object)
-	assert(not (collision_object.collision_layer & PhysicsManager.CollisionLayer.CAMERA_RAY))
 	
 	if pickable:
 		assert(collision_object is RigidBody3D)
@@ -291,6 +279,5 @@ func _assert_parameters() -> void:
 func _on_tree_exited() -> void:
 	if being_picked:
 		being_picked = false
-		picking = false
 #endregion Callbacks
 #endregion Private Methods

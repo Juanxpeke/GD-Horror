@@ -1,13 +1,105 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0iq20sd7m7o0"]
+[gd_scene load_steps=11 format=3 uid="uid://c0iq20sd7m7o0"]
 
 [ext_resource type="Script" path="res://Core/Entities/Player/Player.gd" id="1_1r26l"]
-[ext_resource type="Script" path="res://Core/Entities/Player/PlayerRay.gd" id="2_bvb30"]
 [ext_resource type="Texture2D" uid="uid://bdp17jic62e33" path="res://icon.svg" id="2_cqp8a"]
+[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableRay.gd" id="3_jiond"]
 [ext_resource type="PackedScene" uid="uid://bykfrvsw1lj2g" path="res://Core/Entities/Player/HUD.tscn" id="4_hlms6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3k7nc"]
+radius = 0.35
+height = 1.6
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_rypoi"]
+radius = 0.35
+height = 1.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_kfi4i"]
+radius = 0.35
+
+[sub_resource type="Animation" id="Animation_83fpi"]
+resource_name = "crouch"
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.6, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.8, 0), Vector3(0, 0.5, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HeadPivot:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.6, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_h5mo0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HeadPivot:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.8, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_obmkc"]
+_data = {
+"RESET": SubResource("Animation_h5mo0"),
+"crouch": SubResource("Animation_83fpi")
+}
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 7
@@ -19,33 +111,45 @@ script = ExtResource("1_1r26l")
 shape = SubResource("CapsuleShape3D_3k7nc")
 
 [node name="MeshInstance" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 layers = 2
 mesh = SubResource("CapsuleMesh_rypoi")
 
-[node name="FaceSprite" type="Sprite3D" parent="MeshInstance"]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 1.03588, -0.418298)
-layers = 2
-texture = ExtResource("2_cqp8a")
-
 [node name="HeadPivot" type="Node3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="Camera" type="Camera3D" parent="HeadPivot"]
 cull_mask = 1
 current = true
-fov = 90.0
 
-[node name="PlayerRay" type="RayCast3D" parent="HeadPivot/Camera"]
+[node name="HeadRay" type="RayCast3D" parent="HeadPivot/Camera"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-target_position = Vector3(0, -3, 0)
+target_position = Vector3(0, -1.5, 0)
 collision_mask = 2147483648
-collide_with_areas = true
-script = ExtResource("2_bvb30")
+script = ExtResource("3_jiond")
 
 [node name="Hand" type="Marker3D" parent="HeadPivot/Camera"]
 unique_name_in_owner = true
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, -2)
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, -1)
+
+[node name="FaceSprite" type="Sprite3D" parent="HeadPivot"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0718123, -0.351038)
+layers = 2
+texture = ExtResource("2_cqp8a")
+
+[node name="TopHeadCast" type="ShapeCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+shape = SubResource("SphereShape3D_kfi4i")
+target_position = Vector3(0, 0.35, 0)
+debug_shape_custom_color = Color(0, 1, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_obmkc")
+}
 
 [node name="HUD" parent="." instance=ExtResource("4_hlms6")]

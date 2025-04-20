@@ -25,10 +25,15 @@ class_name HUD extends CanvasLayer
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _ready() -> void:
+func _enter_tree() -> void:
 	EventsManager.hittable_component_hit.connect(_on_hittable_component_hit)
 	EventsManager.hittable_component_unhit.connect(_on_hittable_component_unhit)
 	EventsManager.hittable_component_picked.connect(_on_hittable_component_picked)
+	EventsManager.hittable_component_unpicked.connect(_on_hittable_component_unpicked)
+
+func _ready() -> void:
+	_interaction_label.visible = false
+	_picking_label.visible = false
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -54,5 +59,8 @@ func _on_hittable_component_unhit() -> void:
 
 func _on_hittable_component_picked() -> void:
 	_picking_label.visible = false
+
+func _on_hittable_component_unpicked() -> void:
+	_picking_label.visible = true
 #endregion Callbacks
 #endregion Private Methods

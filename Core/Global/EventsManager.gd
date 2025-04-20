@@ -9,6 +9,8 @@ signal hittable_component_hit(hit_event : HitEvent)
 signal hittable_component_unhit
 ## Emitted when a [HittableComponent] is picked.
 signal hittable_component_picked
+## Emitted when a [HittableComponent] is unpicked.
+signal hittable_component_unpicked
 #endregion Hittables
 #region Consumables
 ## Emitted when a [ConsumableComponent] is consumed.
