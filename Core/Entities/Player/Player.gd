@@ -5,6 +5,17 @@ class_name Player extends CharacterBody3D
 #endregion Signals
 
 #region Enums
+## TODO
+enum CrouchingState {
+	## TODO
+	STANDING,
+	## TODO
+	CROUCHING_DOWN,
+	## TODO
+	CROUCHING,
+	## TODO
+	STANDING_UP
+}
 #endregion Enums
 
 #region Constants
@@ -21,7 +32,7 @@ const MAXIMUM_HEAD_VERTICAL_DELTA_ROTATION   : float = 0.25
 ## TODO
 const MAXIMUM_HEAD_VERTICAL_ROTATION         : float = deg_to_rad(72)
 ## TODO
-const CROUCH_SPEED : float = 7.0
+const CROUCH_SPEED : float = 4.5
 #endregion Constants
 
 #region Exports Variables
@@ -29,7 +40,8 @@ const CROUCH_SPEED : float = 7.0
 
 #region Public Variables
 ## TODO
-var crouching : bool = false
+var _trying_to_crouch : bool = false
+var _crouching_state : CrouchingState = CrouchingState.STANDING
 ## TODO
 var hunger : int = 100:
 	set(new_hunger):
@@ -69,7 +81,7 @@ func _ready() -> void:
 	
 	top_head_cast.add_exception(self)
 	
-	animation_player.animation_started.connect(_on_animation_player_animation_started)
+	animation_player.animation_finished.connect(_on_animation_player_animation_finished)
 	
 	EventsManager.item_consumed.connect(_on_item_consumed)
 
@@ -101,12 +113,12 @@ func _input(event : InputEvent) -> void:
 		head_pivot.rotate_x(vertical_rotation)
 		head_pivot.rotation.x = clamp(head_pivot.rotation.x, -MAXIMUM_HEAD_VERTICAL_ROTATION, MAXIMUM_HEAD_VERTICAL_ROTATION)
 	
-	if event.is_action_pressed("crouch") and not crouching and is_on_floor():
-		crouching = true
-		animation_player.play("crouch", -1, CROUCH_SPEED)
+	if event.is_action_pressed("crouch"):
+		_trying_to_crouch = true
+		_update_crouching_state()
 	elif event.is_action_released("crouch"):
-		crouching = false
-		animation_player.play("crouch", -1, -CROUCH_SPEED, true)
+		_trying_to_crouch = false
+		_update_crouching_state()
 #endregion Built-in Virtual Methods
 
 #region Public Methods
@@ -127,13 +139,27 @@ func _on_head_ray_pick_registered() -> void:
 func _on_head_ray_pick_unregistered() -> void:
 	EventsManager.hittable_component_unpicked.emit()
 
-func _on_animation_player_animation_started(anim_name : StringName) -> void:
+func _on_animation_player_animation_finished(anim_name : StringName) -> void:
 	if anim_name == "crouch":
-		pass
-		#crouching = not crouching
+		if _trying_to_crouch:
+			_crouching_state = CrouchingState.CROUCHING
+		else:
+			_crouching_state = CrouchingState.STANDING
 
 func _on_item_consumed(consumption_event : EventsManager.ConsumptionEvent) -> void:
 	hunger -= consumption_event.food_points
 	thirst -= consumption_event.drink_points
 #endregion Callbacks
+
+func _update_crouching_state() -> void:
+	if _trying_to_crouch and _crouching_state != CrouchingState.CROUCHING:
+		if is_on_floor():
+			animation_player.play("crouch", -1, CROUCH_SPEED)
+			_crouching_state = CrouchingState.CROUCHING_DOWN
+	elif not _trying_to_crouch and _crouching_state != CrouchingState.STANDING:
+		if top_head_cast.is_colliding():
+			pass
+		else:
+			animation_player.play("crouch", -1, -CROUCH_SPEED, true)
+			_crouching_state = CrouchingState.STANDING_UP
 #endregion Private Methods

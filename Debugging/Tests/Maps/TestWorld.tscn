@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bmkct1k6278t8"]
+[gd_scene load_steps=16 format=3 uid="uid://bmkct1k6278t8"]
 
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_5gggp"]
 [ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
@@ -28,6 +28,13 @@ size = Vector3(60, 1, 30)
 material = ExtResource("2_6tu8j")
 size = Vector3(60, 1, 30)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_4p8rp"]
+size = Vector3(5, 0.5, 5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u16kr"]
+material = ExtResource("2_6tu8j")
+size = Vector3(5, 0.5, 5)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_iclbq"]
 size = Vector3(5, 5, 5)
 
@@ -52,6 +59,17 @@ shape = SubResource("BoxShape3D_4nl04")
 
 [node name="MeshInstance" type="MeshInstance3D" parent="Floor"]
 mesh = SubResource("BoxMesh_afef1")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.772, 1.85, -10.968)
+collision_layer = 7
+metadata/_edit_group_ = true
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("BoxShape3D_4p8rp")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("BoxMesh_u16kr")
 
 [node name="Cubito" parent="." instance=ExtResource("2_sin7y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 3.01973, -3.81759)
