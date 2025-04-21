@@ -1,4 +1,4 @@
-class_name HittableRay extends RayCast3D
+class_name HittableRayCast extends RayCast3D
 ## TODO
 
 #region Signals
