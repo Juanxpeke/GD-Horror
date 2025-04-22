@@ -22,6 +22,11 @@ signal picked
 ## See also [member pickable].
 ## [b]Note:[/b] This signal won't be emitted when [member collision_object] is freed.
 signal unpicked
+## Emitted when [member collision_object] [member RigidBody3D.can_sleep] property is restored to
+## its initial value after being unpicked.
+## See also [constant CAN_SLEEP_RESTORATION_TIME].
+## [b]Note:[/b] This signal is intended to be catched only for debugging purposes.
+signal can_sleep_restored
 #endregion Signals
 
 #region Enums
@@ -35,9 +40,9 @@ const MAXIMUM_DRAG_SPEED : float = 40.0
 ## See also [member pickable].
 const MAXIMUM_COLLIDING_DRAG_SPEED : float = 2.5
 ## See also [member pickable].
-const MAXIMUM_DRAG_DISTANCE : float = 1.6
-## Time that has to pass in order for [member collision_object] [member RigidBody3D.can_sleep] variable
-## to be restored to its initial value after being unpicked.
+const MAXIMUM_DRAG_DISTANCE : float = 1.2
+## Time that has to pass in order for [member collision_object] [member RigidBody3D.can_sleep]
+## property to be restored to its initial value after being unpicked.
 ## See also [member pickable].
 const CAN_SLEEP_RESTORATION_TIME : float = 1.0
 #endregion Constants
@@ -88,13 +93,11 @@ var being_picked : bool = false
 #endregion Public Variables
 
 #region Private Variables
-var _player_pick_initial_rotation      : float = 0.0
-var _object_pick_initial_rotation      : float = 0.0
-var _object_pick_initial_angle_to_hand : float = 0.0
-var _object_pick_initial_can_sleep     : bool  = true
-
-var _waiting_to_restore_object_can_sleep_state : bool = false
-var _object_unpicked_time : float = 0.0
+var _player_pick_initial_rotation       : float = 0.0
+var _object_pick_initial_rotation       : float = 0.0
+var _object_pick_initial_angle_to_hand  : float = 0.0
+var _object_pick_initial_can_sleep      : bool  = true
+var _object_can_sleep_restoration_timer : Timer
 #endregion Private Variables
 
 #region On Ready Variables
@@ -102,33 +105,95 @@ var _object_unpicked_time : float = 0.0
 #endregion On Ready Variables
 
 #region Built-in Virtual Methods
-func _init() -> void:	
+func _init() -> void:
 	add_to_group("JuanxpHittableComponent")
-
-func _enter_tree() -> void:
-	_force_parameters()
-	_assert_parameters()
-	
-	# TODO: Check there is only one hittable attached to collision object
-	collision_object.set_meta("JuanxpHittableComponentPath", collision_object.get_path_to(self, true))
 	
 	tree_exited.connect(_on_tree_exited)
 
-func process_after_pick(delta : float) -> void:
-	if _waiting_to_restore_object_can_sleep_state:
-		_object_unpicked_time += delta
-		
-		if _object_unpicked_time > CAN_SLEEP_RESTORATION_TIME:
-			var object : RigidBody3D = collision_object as RigidBody3D
-			object.can_sleep = _object_pick_initial_can_sleep
-			
-			_waiting_to_restore_object_can_sleep_state = false
-			_object_unpicked_time = 0.0
-			
-			LogManager.physics_log("Restoring %s can_sleep value to %s" % [object.name, object.can_sleep])
+func _enter_tree() -> void:
+	_assert_and_force_properties()
+	
+	if pickable:
+		_object_can_sleep_restoration_timer = Timer.new()
+		_object_can_sleep_restoration_timer.wait_time = CAN_SLEEP_RESTORATION_TIME
+		_object_can_sleep_restoration_timer.one_shot = true
+		_object_can_sleep_restoration_timer.timeout.connect(_on_object_can_sleep_restoration_timer_timeout)
+		add_child(_object_can_sleep_restoration_timer)
+#endregion Built-in Virtual Methods
 
+#region Public Methods
+## TODO
+func register_hit() -> void:
+	being_hit = true
+	
+	if mesh_instance:
+		mesh_instance.material_overlay = highlight_material
+	
+	hit.emit()
+## TODO
+func unregister_hit() -> void:
+	being_hit = false
+	
+	if mesh_instance:
+		mesh_instance.material_overlay = null
+	
+	unhit.emit()
+## TODO
+func register_interaction() -> void:
+	if interact_sound:
+		AudioManager.play_sound(interact_sound)
+	interacted.emit()
+## TODO
+func register_pick() -> void:
+	being_picked = true
+	
+	var object : RigidBody3D = collision_object as RigidBody3D
+	
+	var object_vector :=                  object.global_transform.origin - GameManager.player.global_transform.origin
+	var hand_vector   := GameManager.player_hand.global_transform.origin - GameManager.player.global_transform.origin
+	
+	var object_vector_xz := Vector2(object_vector.x, object_vector.z)
+	var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
+	
+	_player_pick_initial_rotation      = GameManager.player.rotation.y
+	_object_pick_initial_rotation      = object.rotation.y
+	_object_pick_initial_angle_to_hand = object_vector_xz.angle_to(hand_vector_xz)
+	
+	if _object_can_sleep_restoration_timer.is_stopped():
+		_object_pick_initial_can_sleep = object.can_sleep
+	_object_can_sleep_restoration_timer.stop()
+	
+	object.can_sleep = false
+	object.lock_rotation = true
+	object.add_collision_exception_with(GameManager.player)  # BUG: When object is too heavy, player can easily pass through it
+															 # TODO: Fix this
+	if mesh_instance:
+		mesh_instance.material_overlay = null
+	
+	if pick_sound:
+		AudioManager.play_sound(pick_sound)
+	
+	picked.emit()
+## TODO
+func unregister_pick() -> void:
+	being_picked = false
+	
+	var object : RigidBody3D = collision_object as RigidBody3D
+	
+	_object_can_sleep_restoration_timer.start()
+	
+	object.lock_rotation = false
+	object.remove_collision_exception_with(GameManager.player)
+	
+	if mesh_instance and being_hit:
+		mesh_instance.material_overlay = highlight_material
+	
+	if unpick_sound:
+		AudioManager.play_sound(unpick_sound)
+	
+	unpicked.emit()
 
-func process_pick(delta : float) -> void:
+func register_picking_process(delta : float, unpick_callback : Callable) -> void:
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
 	var object_pos := object.global_transform.origin
@@ -140,7 +205,7 @@ func process_pick(delta : float) -> void:
 	# If the object is too far, it must be dropped
 	if drag_length > MAXIMUM_DRAG_DISTANCE:
 		object.set_linear_velocity(Vector3.ZERO)
-		#unpick_object()
+		unpick_callback.call()
 	# If not, it should be dragged to the player's hand
 	else:
 		var drag_direction := drag_vector / drag_length
@@ -172,112 +237,32 @@ func process_pick(delta : float) -> void:
 		var object_front_rotation = _object_pick_initial_rotation + (GameManager.player.rotation.y - _player_pick_initial_rotation)
 		
 		object.rotation.y = object_front_rotation + (object_angle_to_hand - _object_pick_initial_angle_to_hand)
-#endregion Built-in Virtual Methods
-
-#region Public Methods
-## TODO
-func register_hit() -> void:
-	being_hit = true
-	
-	if mesh_instance:
-		mesh_instance.material_overlay = highlight_material
-	
-	# TODO: Move this logic so this component is game code independent
-	LogManager.physics_log("HittableComponent hit registered")
-	
-	hit.emit()
-## TODO
-func unregister_hit() -> void:
-	being_hit = false
-	
-	if mesh_instance:
-		mesh_instance.material_overlay = null
-	
-	# TODO: Move this logic so this component is game code independent
-	LogManager.physics_log("HittableComponent hit unregistered")
-	
-	unhit.emit()
-## TODO
-func register_interaction() -> void:
-	if interact_sound:
-		AudioManager.play_sound(interact_sound)
-	interacted.emit()
-## TODO
-func register_pick() -> void:
-	being_picked = true
-	
-	var object : RigidBody3D = collision_object as RigidBody3D
-	
-	var object_vector :=                  object.global_transform.origin - GameManager.player.global_transform.origin
-	var hand_vector   := GameManager.player_hand.global_transform.origin - GameManager.player.global_transform.origin
-	
-	var object_vector_xz := Vector2(object_vector.x, object_vector.z)
-	var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
-	
-	_player_pick_initial_rotation      = GameManager.player.rotation.y
-	_object_pick_initial_rotation      = object.rotation.y
-	_object_pick_initial_angle_to_hand = object_vector_xz.angle_to(hand_vector_xz)
-	
-	if not _waiting_to_restore_object_can_sleep_state:
-		_object_pick_initial_can_sleep = object.can_sleep
-	_waiting_to_restore_object_can_sleep_state = false
-	
-	object.can_sleep = false
-	object.lock_rotation = true
-	object.add_collision_exception_with(GameManager.player)  ## BUG: When object is too heavy, player can easily pass through it
-															 ## TODO: Fix this
-	if mesh_instance:
-		mesh_instance.material_overlay = null
-	
-	if pick_sound:
-		AudioManager.play_sound(pick_sound)
-	
-	LogManager.physics_log("HittableComponent picked")
-	
-	picked.emit()
-## TODO
-func unregister_pick() -> void:
-	being_picked = false
-	
-	var object : RigidBody3D = collision_object as RigidBody3D
-	
-	_waiting_to_restore_object_can_sleep_state = true
-	_object_unpicked_time = 0.0
-	
-	object.lock_rotation = false
-	object.remove_collision_exception_with(GameManager.player)
-	
-	if mesh_instance and being_hit:
-		mesh_instance.material_overlay = highlight_material
-	
-	if unpick_sound:
-		AudioManager.play_sound(unpick_sound)
-	
-	LogManager.physics_log("HittableComponent unpicked")
-	
-	unpicked.emit()
 #endregion Public Methods
 
 #region Private Methods
 #region Assertions
-func _force_parameters() -> void:
-	if pickable and collision_object.max_contacts_reported == 0:
-		collision_object.contact_monitor = true
-		collision_object.max_contacts_reported = 1
-
-func _assert_parameters() -> void:
+func _assert_and_force_properties() -> void:
 	assert(collision_object)
+	assert(not collision_object.has_meta("JuanxpHittableComponentPath"))
+	
+	collision_object.set_meta("JuanxpHittableComponentPath", collision_object.get_path_to(self, true))
 	
 	if pickable:
 		assert(collision_object is RigidBody3D)
 		# NOTE: This is necessary for collision detection
 		#       (https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html#class-rigidbody3d-method-get-colliding-bodies)
-		assert(collision_object.contact_monitor)
-		assert(collision_object.max_contacts_reported > 0)
+		if not collision_object.contact_monitor:
+			collision_object.contact_monitor
+		if not collision_object.max_contacts_reported > 0:
+			collision_object.max_contacts_reported = 1
 #endregion Assertions
 #region Callbacks
 func _on_tree_exited() -> void:
 	if being_picked:
 		being_picked = false
+
+func _on_object_can_sleep_restoration_timer_timeout() -> void:
+	var object : RigidBody3D = collision_object as RigidBody3D
+	object.can_sleep = _object_pick_initial_can_sleep
 #endregion Callbacks
 #endregion Private Methods

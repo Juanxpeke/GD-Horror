@@ -14,7 +14,46 @@ radius = 0.35
 height = 1.6
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_kfi4i"]
-radius = 0.3
+radius = 0.35
+
+[sub_resource type="Animation" id="Animation_h5mo0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.8, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HeadPivot:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.6, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_83fpi"]
 resource_name = "crouch"
@@ -56,45 +95,6 @@ tracks/2/keys = {
 "values": [Vector3(0, 1.6, 0), Vector3(0, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_h5mo0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CollisionShape:shape:height")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.6]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0.8, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HeadPivot:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 1.6, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_obmkc"]
 _data = {
 "RESET": SubResource("Animation_h5mo0"),
@@ -104,7 +104,6 @@ _data = {
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 7
 collision_mask = 4
-platform_on_leave = 2
 script = ExtResource("1_1r26l")
 
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
@@ -124,6 +123,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 [node name="Camera" type="Camera3D" parent="HeadPivot"]
 cull_mask = 1
 current = true
+near = 0.01
+far = 500.0
 
 [node name="EyesRayCast" type="RayCast3D" parent="HeadPivot/Camera"]
 unique_name_in_owner = true
@@ -145,11 +146,11 @@ texture = ExtResource("2_cqp8a")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("SphereShape3D_kfi4i")
-target_position = Vector3(0, 0.4, 0)
+target_position = Vector3(0, 0.35, 0)
 max_results = 8
 debug_shape_custom_color = Color(0, 1, 0, 1)
 
-[node name="CrouchingCheckTimer" type="Timer" parent="."]
+[node name="CrouchingLockedCheckTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -20,7 +20,7 @@ enum CrouchingState {
 
 #region Constants
 ## TODO
-const MOVEMENT_SPEED                         : float = 4.0
+const WALKING_SPEED                          : float = 4.0
 ## TODO
 const HEAD_HORIZONTAL_ROTATION_SPEED         : float = 0.003
 ## TODO
@@ -32,11 +32,11 @@ const MAXIMUM_HEAD_VERTICAL_DELTA_ROTATION   : float = 0.25
 ## TODO
 const MAXIMUM_HEAD_VERTICAL_ROTATION         : float = deg_to_rad(72)
 ## TODO
-const CROUCH_SPEED                           : float = 4.5
+const CROUCHING_DOWN_SPEED                   : float = 4.5
 ## TODO
-const CROUCHING_MOVEMENT_SPEED               : float = 1.6
+const CROUCHING_SPEED                        : float = 1.6
 ## TODO
-const STAND_UP_CHECK_DELTA_TIME              : float = 0.05
+const CROUCHING_LOCKED_CHECK_DELTA_TIME      : float = 0.05
 #endregion Constants
 
 #region Exports Variables
@@ -45,7 +45,14 @@ const STAND_UP_CHECK_DELTA_TIME              : float = 0.05
 #region Public Variables
 ## TODO
 var _trying_to_crouch : bool = false
-var _crouching_state : CrouchingState = CrouchingState.STANDING
+var _crouching_state : CrouchingState = CrouchingState.STANDING:
+	set(new_crouching_state):
+		_crouching_state = new_crouching_state
+		match _crouching_state:
+			CrouchingState.CROUCHING_DOWN:
+				_animation_player.play("crouch", -1, CROUCHING_DOWN_SPEED)
+			CrouchingState.STANDING_UP:
+				_animation_player.play("crouch", -1, -CROUCHING_DOWN_SPEED, true)
 ## TODO
 var hunger : int = 100:
 	set(new_hunger):
@@ -68,7 +75,7 @@ var oxygen : int = 100:
 @onready var _eyes_ray_cast : HittableRayCast = %EyesRayCast
 @onready var _hand : Marker3D = %Hand
 @onready var _crouching_shape_cast : ShapeCast3D = %CrouchingShapeCast
-@onready var _crouching_check_timer : Timer = %CrouchingCheckTimer
+@onready var _crouching_locked_check_timer : Timer = %CrouchingLockedCheckTimer
 @onready var _animation_player : AnimationPlayer = %AnimationPlayer
 #endregion On Ready Variables
 
@@ -83,16 +90,16 @@ func _ready() -> void:
 	GameManager.player = self
 	GameManager.player_hand = _hand
 	
-	_eyes_ray_cast.hit_registered.connect(_on__eyes_ray_cast_hit_registered)
-	_eyes_ray_cast.hit_unregistered.connect(_on__eyes_ray_cast_hit_unregistered)
-	_eyes_ray_cast.pick_registered.connect(_on__eyes_ray_cast_pick_registered)
-	_eyes_ray_cast.pick_unregistered.connect(_on__eyes_ray_cast_pick_unregistered)
+	EventsManager.item_consumed.connect(_on_item_consumed)
 	
-	_crouching_check_timer.timeout.connect(_on_crouching_check_timer_timeout)
+	_eyes_ray_cast.hit_registered.connect(_on_eyes_ray_cast_hit_registered)
+	_eyes_ray_cast.hit_unregistered.connect(_on_eyes_ray_cast_hit_unregistered)
+	_eyes_ray_cast.pick_registered.connect(_on_eyes_ray_cast_pick_registered)
+	_eyes_ray_cast.pick_unregistered.connect(_on_eyes_ray_cast_pick_unregistered)
+	
+	_crouching_locked_check_timer.timeout.connect(_on_crouching_locked_check_timer_timeout)
 	
 	_animation_player.animation_finished.connect(_on_animation_player_animation_finished)
-	
-	EventsManager.item_consumed.connect(_on_item_consumed)
 
 func _physics_process(delta : float) -> void:
 	var input_direction : Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
@@ -102,9 +109,9 @@ func _physics_process(delta : float) -> void:
 	
 	var movement_direction := Vector2(forward.x, forward.z) * input_direction.y + Vector2(right.x, right.z) * input_direction.x
 	
-	var movement_speed := MOVEMENT_SPEED
+	var movement_speed := WALKING_SPEED
 	if _crouching_state == CrouchingState.CROUCHING or _crouching_state == CrouchingState.CROUCHING_DOWN:
-		movement_speed = CROUCHING_MOVEMENT_SPEED
+		movement_speed = CROUCHING_SPEED
 	
 	var velocity_xz = movement_direction * movement_speed # WARNING: This should not be delta dependent (?)
 	
@@ -140,31 +147,30 @@ func _input(event : InputEvent) -> void:
 #region Private Methods
 #region Assertions
 func _force_properties() -> void:
-	_crouching_check_timer.wait_time = STAND_UP_CHECK_DELTA_TIME
+	_crouching_locked_check_timer.wait_time = CROUCHING_LOCKED_CHECK_DELTA_TIME
 
 func _assert_properties() -> void:
-	assert(_crouching_check_timer.wait_time == STAND_UP_CHECK_DELTA_TIME)
-	assert(not _crouching_check_timer.one_shot)
+	assert(_crouching_locked_check_timer.wait_time == CROUCHING_LOCKED_CHECK_DELTA_TIME)
+	assert(not _crouching_locked_check_timer.one_shot)
 #endregion Assertions
 #region Callbacks
-func _on__eyes_ray_cast_hit_registered(hittable_component : HittableComponent) -> void:
+func _on_eyes_ray_cast_hit_registered(hittable_component : HittableComponent) -> void:
 	var hit_event := EventsManager.HitEvent.new(hittable_component)
 	EventsManager.hittable_component_hit.emit(hit_event)
 
-func _on__eyes_ray_cast_hit_unregistered() -> void:
+func _on_eyes_ray_cast_hit_unregistered() -> void:
 	EventsManager.hittable_component_unhit.emit()
 
-func _on__eyes_ray_cast_pick_registered() -> void:
+func _on_eyes_ray_cast_pick_registered() -> void:
 	EventsManager.hittable_component_picked.emit()
 
-func _on__eyes_ray_cast_pick_unregistered() -> void:
+func _on_eyes_ray_cast_pick_unregistered() -> void:
 	EventsManager.hittable_component_unpicked.emit()
 
-func _on_crouching_check_timer_timeout() -> void:
-	if _can_stand_up():
-		_animation_player.play("crouch", -1, -CROUCH_SPEED, true)
+func _on_crouching_locked_check_timer_timeout() -> void:
+	if not _is_crouching_locked():
 		_crouching_state = CrouchingState.STANDING_UP
-		_crouching_check_timer.stop()
+		_crouching_locked_check_timer.stop()
 
 func _on_animation_player_animation_finished(anim_name : StringName) -> void:
 	if anim_name == "crouch":
@@ -177,25 +183,24 @@ func _on_item_consumed(consumption_event : EventsManager.ConsumptionEvent) -> vo
 	hunger -= consumption_event.food_points
 	thirst -= consumption_event.drink_points
 #endregion Callbacks
-
-func _can_stand_up() -> bool:
+#region Crouching
+func _is_crouching_locked() -> bool:
 	for index : int in _crouching_shape_cast.get_collision_count():
 		var collider : Object = _crouching_shape_cast.get_collider(index)
 		if collider is StaticBody3D:
-			return false
-		if collider is RigidBody3D and collider.mass > 5:
-			return false
-	return true
+			return true
+		if collider is RigidBody3D and collider.mass > 2.5:
+			return true
+	return false
 
 func _update_crouching_state() -> void:
 	if _trying_to_crouch and _crouching_state != CrouchingState.CROUCHING:
 		if is_on_floor():
-			_animation_player.play("crouch", -1, CROUCH_SPEED)
 			_crouching_state = CrouchingState.CROUCHING_DOWN
 	elif not _trying_to_crouch and _crouching_state != CrouchingState.STANDING:
-		if not _can_stand_up():
-			_crouching_check_timer.start()
+		if _is_crouching_locked():
+			_crouching_locked_check_timer.start()
 		else:
-			_animation_player.play("crouch", -1, -CROUCH_SPEED, true)
 			_crouching_state = CrouchingState.STANDING_UP
+#endregion Crouching
 #endregion Private Methods

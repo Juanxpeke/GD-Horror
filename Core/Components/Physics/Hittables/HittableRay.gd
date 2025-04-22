@@ -52,14 +52,34 @@ func _physics_process(_delta : float) -> void:
 	last_collider = get_collider()
 	
 	if not _picking:
-		_process_last_hittable_component()
+		_update_last_hittable_component()
 	else:
 		if not is_instance_valid(last_hittable_component):
 			_picking = false
 			return # WARNING: There should be a last hittable component
-		last_hittable_component.process_pick(_delta)
+		last_hittable_component.register_picking_process(_delta, _unpick_last_hittable_component)
 
-func _process_last_hittable_component() -> void:
+func _input(event: InputEvent) -> void:
+	if not is_instance_valid(last_hittable_component):
+		return
+	
+	if last_hittable_component.interactable and event.is_action_pressed("interact"):
+		last_hittable_component.register_interaction()
+	
+	if not _picking and last_hittable_component.pickable and event.is_action_pressed("pick_item"):
+		_pick_last_hittable_component()
+	
+	# Safer in case pickable is set to false but still being picked
+	if last_hittable_component.being_picked and event.is_action_released("pick_item"):
+		_unpick_last_hittable_component()
+
+#endregion Built-in Virtual Methods
+
+#region Public Methods
+#endregion Public Methods
+
+#region Private Methods
+func _update_last_hittable_component() -> void:
 		if not last_collider:
 			# Make sure last_hittable_component is not null nor being freed before unregistering hit
 			if is_instance_valid(last_hittable_component):
@@ -78,28 +98,14 @@ func _process_last_hittable_component() -> void:
 				last_hittable_component = hittable_component
 				last_hittable_component.register_hit()
 
-func _input(event: InputEvent) -> void:
-	if not is_instance_valid(last_hittable_component):
-		return
-	
-	if last_hittable_component.interactable and event.is_action_pressed("interact"):
-		last_hittable_component.register_interaction()
-	
-	if not _picking and last_hittable_component.pickable and event.is_action_pressed("pick_item"):
-		_picking = true
-		last_hittable_component.register_pick()
-	
-	# Safer in case pickable is set to false but still being picked
-	if last_hittable_component.being_picked and event.is_action_released("pick_item"):
-		_picking = false
-		last_hittable_component.unregister_pick()
+func _pick_last_hittable_component() -> void:
+	_picking = true
+	last_hittable_component.register_pick()
 
-#endregion Built-in Virtual Methods
+func _unpick_last_hittable_component() -> void:
+	_picking = false
+	last_hittable_component.unregister_pick()
 
-#region Public Methods
-#endregion Public Methods
-
-#region Private Methods
 func _get_hittable_component(node : Node3D) -> HittableComponent:
 	if node.has_meta("JuanxpHittableComponentPath"):
 		var component_path = node.get_meta("JuanxpHittableComponentPath", null)
