@@ -27,40 +27,6 @@ AudioManager="*res://Core/Global/AudioManager/AudioManager.tscn"
 UIManager="*res://Core/Global/UIManager/UIManager.tscn"
 ThirdPartyManager="*res://Core/Global/ThirdPartyManager.gd"
 
-[dialogic]
-
-directories/dch_directory={
-"BasicDialogicCharacter": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicCharacter.dch"
-}
-directories/dtl_directory={
-"BasicDialogicTimeline": "res://Debugging/Tests/Plugins/Dialogic/BasicDialogicScene/BasicDialogicTimeline.dtl"
-}
-layout/style_list=["res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres", "res://Debugging/Tests/Dialogic/Styles/TestPremadeStyle.tres"]
-layout/default_style="res://Debugging/Tests/Dialogic/Styles/TestCustomStyle.tres"
-extensions_folder="res://addons/dialogic_additions"
-text/letter_speed=0.01
-text/initial_text_reveal_skippable=true
-text/text_reveal_skip_delay=0.1
-text/advance_delay=0.1
-text/autoadvance_per_character_delay=0.1
-text/autoadvance_ignored_characters_enabled=true
-audio/max_channels=4.0
-animations/join_default_length=0.5
-animations/join_default_wait=true
-animations/leave_default_length=0.5
-animations/leave_default_wait=true
-animations/cross_fade_default_length=0.5
-choices/autofocus_first=true
-choices/delay=0.2
-choices/reveal_delay=0
-choices/reveal_by_input=false
-save/autosave_delay=60.0
-save/encryption_on_exports_only=true
-portraits/default_portrait=""
-text/autopauses={}
-glossary/default_case_sensitive=true
-variables={}
-
 [editor]
 
 script/templates_search_path="res://ScriptTemplates"
@@ -132,3 +98,4 @@ dialogic_default_action={
 [physics]
 
 common/physics_ticks_per_second=120
+3d/physics_engine="Jolt Physics"
