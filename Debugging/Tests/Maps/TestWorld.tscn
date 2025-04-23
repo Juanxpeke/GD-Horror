@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://bmkct1k6278t8"]
 
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_5gggp"]
-[ext_resource type="Script" path="res://Debugging/Tests/Maps/TestWorld.gd" id="1_lo4q4"]
+[ext_resource type="Script" uid="uid://brbjts6llicku" path="res://Debugging/Tests/Maps/TestWorld.gd" id="1_lo4q4"]
 [ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Debugging/Tests/Items/Cubito.tscn" id="2_sin7y"]
 [ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Furniture/TV.tscn" id="3_tbc3t"]

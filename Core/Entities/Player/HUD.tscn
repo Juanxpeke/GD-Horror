@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bykfrvsw1lj2g"]
 
 [ext_resource type="Texture2D" uid="uid://dl7w63rw1vb4n" path="res://Core/Entities/Player/Crosshair.png" id="1_j1rjn"]
-[ext_resource type="Script" path="res://Core/Entities/Player/HUD.gd" id="1_sj0cf"]
+[ext_resource type="Script" uid="uid://b5d1elypfl2hq" path="res://Core/Entities/Player/HUD.gd" id="1_sj0cf"]
 
 [node name="HUD" type="CanvasLayer" groups=["HUDLayer"]]
 script = ExtResource("1_sj0cf")

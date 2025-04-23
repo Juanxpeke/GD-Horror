@@ -3,7 +3,7 @@
 [ext_resource type="Material" uid="uid://cd7fqtyah8axh" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Item.tres" id="1_2miml"]
 [ext_resource type="AudioStream" uid="uid://cxen5srofqu5v" path="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/WHOOSH_AIRY_FLUTTER_01.wav" id="3_084l1"]
 [ext_resource type="AudioStream" uid="uid://sa8ltjno67yg" path="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/WHOOSH_ARM_SWING_01.wav" id="4_2eu5d"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="5_pjg3y"]
+[ext_resource type="Script" uid="uid://bm167rb0mmwsw" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="5_pjg3y"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_s3twx"]
 material = ExtResource("1_2miml")

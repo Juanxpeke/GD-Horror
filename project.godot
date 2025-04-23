@@ -12,7 +12,7 @@ config_version=5
 
 config/name="GD-Horror"
 run/main_scene="res://Debugging/Tests/Maps/TestWorld.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -26,7 +26,6 @@ PhysicsManager="*res://Core/Global/PhysicsManager.gd"
 AudioManager="*res://Core/Global/AudioManager/AudioManager.tscn"
 UIManager="*res://Core/Global/UIManager/UIManager.tscn"
 ThirdPartyManager="*res://Core/Global/ThirdPartyManager.gd"
-Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 
 [dialogic]
 
@@ -65,10 +64,6 @@ variables={}
 [editor]
 
 script/templates_search_path="res://ScriptTemplates"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 [global_group]
 

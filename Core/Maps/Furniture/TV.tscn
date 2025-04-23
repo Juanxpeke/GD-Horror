@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cb5udnaur6knc"]
 
-[ext_resource type="Script" path="res://Core/Maps/Furniture/TV.gd" id="1_1y0xe"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="3_48oik"]
+[ext_resource type="Script" uid="uid://bwoaff02ua8vj" path="res://Core/Maps/Furniture/TV.gd" id="1_1y0xe"]
+[ext_resource type="Script" uid="uid://bm167rb0mmwsw" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="3_48oik"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_avbgd"]
 size = Vector3(0.8, 0.6, 0.05)

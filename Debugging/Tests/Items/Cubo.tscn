@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://grg744kaolgj"]
 
 [ext_resource type="Material" uid="uid://b2qy1do8snwc1" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Item2.tres" id="1_b5p1p"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="2_nkxmf"]
+[ext_resource type="Script" uid="uid://bm167rb0mmwsw" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="2_nkxmf"]
 [ext_resource type="AudioStream" uid="uid://cxen5srofqu5v" path="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/WHOOSH_AIRY_FLUTTER_01.wav" id="3_gog1t"]
 [ext_resource type="AudioStream" uid="uid://sa8ltjno67yg" path="res://Debugging/Tests/Assets/ShapeformsAudioFreeSoundEffects/Hit and Punch Preview/WHOOSH_ARM_SWING_01.wav" id="4_vb2n4"]
 

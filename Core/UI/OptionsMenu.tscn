@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cpbu8dyp262go"]
 
-[ext_resource type="Shader" path="res://Core/UI/MainMenu.gdshader" id="1_6r45g"]
-[ext_resource type="Script" path="res://Core/UI/options_menu.gd" id="1_34hup"]
+[ext_resource type="Shader" uid="uid://cn6pbfevfjsvy" path="res://Core/UI/MainMenu.gdshader" id="1_6r45g"]
+[ext_resource type="Script" uid="uid://h5wyh872yh0c" path="res://Core/UI/options_menu.gd" id="1_34hup"]
 [ext_resource type="Theme" uid="uid://cyq0hshp2gbi0" path="res://Core/UI/FontTheme.tres" id="2_eoq5r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_l63pl"]

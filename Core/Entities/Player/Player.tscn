@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=3 uid="uid://c0iq20sd7m7o0"]
 
-[ext_resource type="Script" path="res://Core/Entities/Player/Player.gd" id="1_1r26l"]
-[ext_resource type="Texture2D" uid="uid://bdp17jic62e33" path="res://icon.svg" id="2_cqp8a"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableRayCast.gd" id="3_jiond"]
+[ext_resource type="Script" uid="uid://dqpwgyffln7ci" path="res://Core/Entities/Player/Player.gd" id="1_1r26l"]
+[ext_resource type="Texture2D" uid="uid://clrno8mdn2qy3" path="res://icon.svg" id="2_cqp8a"]
+[ext_resource type="Script" uid="uid://dabgb2x86a0ku" path="res://Core/Components/Physics/Hittables/HittableRayCast.gd" id="3_jiond"]
 [ext_resource type="PackedScene" uid="uid://bykfrvsw1lj2g" path="res://Core/Entities/Player/HUD.tscn" id="4_hlms6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3k7nc"]
@@ -97,8 +97,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_obmkc"]
 _data = {
-"RESET": SubResource("Animation_h5mo0"),
-"crouch": SubResource("Animation_83fpi")
+&"RESET": SubResource("Animation_h5mo0"),
+&"crouch": SubResource("Animation_83fpi")
 }
 
 [node name="Player" type="CharacterBody3D"]
@@ -152,7 +152,7 @@ unique_name_in_owner = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
 libraries = {
-"": SubResource("AnimationLibrary_obmkc")
+&"": SubResource("AnimationLibrary_obmkc")
 }
 
 [node name="HUD" parent="." instance=ExtResource("4_hlms6")]

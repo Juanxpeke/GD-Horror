@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://b8wdbuv2mv34d"]
 
-[ext_resource type="Script" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.gd" id="1_wc3m4"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="2_gvw1t"]
-[ext_resource type="Script" path="res://Core/Components/Systems/Consumables/ConsumableComponent.gd" id="3_54y62"]
-[ext_resource type="Script" path="res://Core/Components/Systems/Consumables/ConsumedStage.gd" id="4_touus"]
+[ext_resource type="Script" uid="uid://bv7qhdujaquf4" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.gd" id="1_wc3m4"]
+[ext_resource type="Script" uid="uid://bm167rb0mmwsw" path="res://Core/Components/Physics/Hittables/HittableComponent.gd" id="2_gvw1t"]
+[ext_resource type="Script" uid="uid://ciicobx3waxgb" path="res://Core/Components/Systems/Consumables/ConsumableComponent.gd" id="3_54y62"]
+[ext_resource type="Script" uid="uid://bik0422l6sonu" path="res://Core/Components/Systems/Consumables/ConsumedStage.gd" id="4_touus"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qipi1"]
 albedo_color = Color(0.977008, 0.495561, 0, 1)
