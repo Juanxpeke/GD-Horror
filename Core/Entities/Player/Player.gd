@@ -73,7 +73,6 @@ var oxygen : int = 100:
 #region On Ready Variables
 @onready var _head_pivot : Node3D = %HeadPivot
 @onready var _eyes_ray_cast : HittableRayCast = %EyesRayCast
-@onready var _hand : Marker3D = %Hand
 @onready var _crouching_shape_cast : ShapeCast3D = %CrouchingShapeCast
 @onready var _crouching_locked_check_timer : Timer = %CrouchingLockedCheckTimer
 @onready var _animation_player : AnimationPlayer = %AnimationPlayer
@@ -88,7 +87,6 @@ func _ready() -> void:
 	_assert_properties()
 	
 	GameManager.player = self
-	GameManager.player_hand = _hand
 	
 	EventsManager.item_consumed.connect(_on_item_consumed)
 	

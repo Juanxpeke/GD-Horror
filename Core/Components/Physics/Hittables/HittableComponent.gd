@@ -1,7 +1,8 @@
 class_name HittableComponent extends Node
-## A component that can make a [CollisionObject3D] detectable by the [Player]'s camera ray.
+## A component that can make a [CollisionObject3D] detectable by a [HittableRayCast].
 ##
 ## [HittableComponent] is very cool.
+## [b]Weak dependencies:[/b] [HittableRayCast].
 
 #region Signals
 ## Emitted when the ray starts colliding with [member collision_object].
@@ -144,13 +145,13 @@ func register_interaction() -> void:
 		AudioManager.play_sound(interact_sound)
 	interacted.emit()
 ## TODO
-func register_pick() -> void:
+func register_pick(hand_position : Vector3) -> void:
 	being_picked = true
 	
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
-	var object_vector :=                  object.global_transform.origin - GameManager.player.global_transform.origin
-	var hand_vector   := GameManager.player_hand.global_transform.origin - GameManager.player.global_transform.origin
+	var object_vector := object.global_transform.origin - GameManager.player.global_transform.origin
+	var hand_vector   :=                  hand_position - GameManager.player.global_transform.origin
 	
 	var object_vector_xz := Vector2(object_vector.x, object_vector.z)
 	var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
@@ -165,7 +166,7 @@ func register_pick() -> void:
 	
 	object.can_sleep = false
 	object.lock_rotation = true
-	object.add_collision_exception_with(GameManager.player)  # BUG: When object is too heavy, player can easily pass through it
+	#object.add_collision_exception_with(GameManager.player)  # BUG: When object is too heavy, player can easily pass through it
 															 # TODO: Fix this
 	if mesh_instance:
 		mesh_instance.material_overlay = null
@@ -183,7 +184,7 @@ func unregister_pick() -> void:
 	_object_can_sleep_restoration_timer.start()
 	
 	object.lock_rotation = false
-	object.remove_collision_exception_with(GameManager.player)
+	#object.remove_collision_exception_with(GameManager.player)
 	
 	if mesh_instance and being_hit:
 		mesh_instance.material_overlay = highlight_material
@@ -193,19 +194,19 @@ func unregister_pick() -> void:
 	
 	unpicked.emit()
 
-func register_picking_process(delta : float, unpick_callback : Callable) -> void:
+func register_picking_process(delta : float, hand_position : Vector3, unpick_callback : Callable) -> void:
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
-	var object_pos := object.global_transform.origin
-	var hand_pos := GameManager.player_hand.global_transform.origin
+	var object_position := object.global_transform.origin
 	
-	var drag_vector := hand_pos - object_pos
+	var drag_vector := hand_position - object_position
 	var drag_length := drag_vector.length()
 	
 	# If the object is too far, it must be dropped
 	if drag_length > MAXIMUM_DRAG_DISTANCE:
 		object.set_linear_velocity(Vector3.ZERO)
-		unpick_callback.call()
+		unpick_callback.call()  # WARNING: If the object is too big, it's picked and dropped, as the
+								#          distance between the hand and the object center is too big
 	# If not, it should be dragged to the player's hand
 	else:
 		var drag_direction := drag_vector / drag_length
@@ -226,8 +227,8 @@ func register_picking_process(delta : float, unpick_callback : Callable) -> void
 		object.set_linear_velocity(drag_direction * drag_speed)
 		
 		# Maintain object's rotation relative to the player
-		var object_vector := object_pos - GameManager.player.global_transform.origin
-		var hand_vector   :=   hand_pos - GameManager.player.global_transform.origin
+		var object_vector := object_position - GameManager.player.global_transform.origin
+		var hand_vector   :=   hand_position - GameManager.player.global_transform.origin
 		
 		var object_vector_xz := Vector2(object_vector.x, object_vector.z)
 		var hand_vector_xz   := Vector2(  hand_vector.x,   hand_vector.z)
@@ -266,3 +267,11 @@ func _on_object_can_sleep_restoration_timer_timeout() -> void:
 	object.can_sleep = _object_pick_initial_can_sleep
 #endregion Callbacks
 #endregion Private Methods
+
+#region Inner Classes
+## TODO
+class PickData:
+	var pick_target_position : Vector3
+	var unpick_callback : Callable
+	var colliding_with_player : bool = false
+#endregion Inner Classes

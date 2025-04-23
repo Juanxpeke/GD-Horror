@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Core/Entities/Player/Player.gd" id="1_1r26l"]
 [ext_resource type="Texture2D" uid="uid://bdp17jic62e33" path="res://icon.svg" id="2_cqp8a"]
-[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableRay.gd" id="3_jiond"]
+[ext_resource type="Script" path="res://Core/Components/Physics/Hittables/HittableRayCast.gd" id="3_jiond"]
 [ext_resource type="PackedScene" uid="uid://bykfrvsw1lj2g" path="res://Core/Entities/Player/HUD.tscn" id="4_hlms6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3k7nc"]
@@ -132,10 +132,6 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 
 target_position = Vector3(0, -1.5, 0)
 collision_mask = 2147483648
 script = ExtResource("3_jiond")
-
-[node name="Hand" type="Marker3D" parent="HeadPivot/Camera"]
-unique_name_in_owner = true
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, -1)
 
 [node name="FaceSprite" type="Sprite3D" parent="HeadPivot"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0718123, -0.351038)

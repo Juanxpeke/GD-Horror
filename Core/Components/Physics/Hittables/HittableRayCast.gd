@@ -1,5 +1,7 @@
 class_name HittableRayCast extends RayCast3D
 ## TODO
+##
+## [b]Strong dependencies:[/b] [HittableComponent].
 
 #region Signals
 ## TODO
@@ -19,6 +21,10 @@ signal pick_unregistered
 #endregion Constants
 
 #region Exports Variables
+## The name of the variable explains everything.
+@export var use_hand_node_as_pick_target_position : bool = false
+## TODO
+@export var hand_node : Node3D
 #endregion Exports Variables
 
 #region Public Variables
@@ -57,9 +63,10 @@ func _physics_process(_delta : float) -> void:
 		if not is_instance_valid(last_hittable_component):
 			_picking = false
 			return # WARNING: There should be a last hittable component
-		last_hittable_component.register_picking_process(_delta, _unpick_last_hittable_component)
+		
+		last_hittable_component.register_picking_process(_delta, _get_pick_target_position(), _unpick_last_hittable_component)
 
-func _input(event: InputEvent) -> void:
+func _input(event : InputEvent) -> void:
 	if not is_instance_valid(last_hittable_component):
 		return
 	
@@ -67,6 +74,9 @@ func _input(event: InputEvent) -> void:
 		last_hittable_component.register_interaction()
 	
 	if not _picking and last_hittable_component.pickable and event.is_action_pressed("pick_item"):
+		assert(not last_hittable_component.being_picked) # NOTE: At the moment, some code assumes a
+														 #       hittable component can be picked by
+														 #       only one hittable ray cast
 		_pick_last_hittable_component()
 	
 	# Safer in case pickable is set to false but still being picked
@@ -100,11 +110,18 @@ func _update_last_hittable_component() -> void:
 
 func _pick_last_hittable_component() -> void:
 	_picking = true
-	last_hittable_component.register_pick()
+	last_hittable_component.register_pick(_get_pick_target_position())
 
 func _unpick_last_hittable_component() -> void:
 	_picking = false
 	last_hittable_component.unregister_pick()
+
+func _get_pick_target_position() -> Vector3:
+	if use_hand_node_as_pick_target_position:
+		assert(hand_node)
+		return hand_node.global_transform.origin
+	else:
+		return global_transform.origin + global_transform.basis * target_position
 
 func _get_hittable_component(node : Node3D) -> HittableComponent:
 	if node.has_meta("JuanxpHittableComponentPath"):

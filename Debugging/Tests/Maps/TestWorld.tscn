@@ -1,9 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://bmkct1k6278t8"]
+[gd_scene load_steps=17 format=3 uid="uid://bmkct1k6278t8"]
 
 [ext_resource type="PackedScene" uid="uid://c0iq20sd7m7o0" path="res://Core/Entities/Player/Player.tscn" id="1_5gggp"]
+[ext_resource type="Script" path="res://Debugging/Tests/Maps/TestWorld.gd" id="1_lo4q4"]
 [ext_resource type="Material" uid="uid://d13og4qqatc6r" path="res://Debugging/Tests/Assets/KenneyPrototypeTextures/Materials/Floor.tres" id="2_6tu8j"]
 [ext_resource type="PackedScene" uid="uid://dsqsm4bv8ojnj" path="res://Debugging/Tests/Items/Cubito.tscn" id="2_sin7y"]
 [ext_resource type="PackedScene" uid="uid://cb5udnaur6knc" path="res://Core/Maps/Furniture/TV.tscn" id="3_tbc3t"]
+[ext_resource type="PackedScene" uid="uid://grg744kaolgj" path="res://Debugging/Tests/Items/Cubo.tscn" id="4_j86ir"]
 [ext_resource type="PackedScene" uid="uid://b8wdbuv2mv34d" path="res://Core/Items/Consumables/ChocolateBar/ChocolateBar.tscn" id="4_lgxhr"]
 [ext_resource type="PackedScene" uid="uid://crhxbvloyffac" path="res://Debugging/Components/3D/SpawnerComponent/SpawnerComponent.tscn" id="6_3n2dn"]
 [ext_resource type="PackedScene" uid="uid://b3wft6mp2dlru" path="res://Debugging/Components/UI/CameraPanelComponent/CameraPanelComponent.tscn" id="6_v3lsl"]
@@ -35,10 +37,8 @@ size = Vector3(5, 0.5, 5)
 material = ExtResource("2_6tu8j")
 size = Vector3(5, 0.5, 5)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_iclbq"]
-size = Vector3(5, 5, 5)
-
 [node name="TestWorld" type="Node3D"]
+script = ExtResource("1_lo4q4")
 
 [node name="PreviewEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hg0md")
@@ -71,12 +71,17 @@ shape = SubResource("BoxShape3D_4p8rp")
 [node name="MeshInstance" type="MeshInstance3D" parent="Ceiling"]
 mesh = SubResource("BoxMesh_u16kr")
 
-[node name="Cubito" parent="." instance=ExtResource("2_sin7y")]
+[node name="Cubos" type="Node3D" parent="."]
+
+[node name="Cubito" parent="Cubos" instance=ExtResource("2_sin7y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.739137, 3.01973, -3.81759)
 mass = 50.0
 
-[node name="Cubito2" parent="." instance=ExtResource("2_sin7y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29893, 3.03519, -3.8294)
+[node name="Cubito2" parent="Cubos" instance=ExtResource("2_sin7y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3.035, -3.829)
+
+[node name="Cubo" parent="Cubos" instance=ExtResource("4_j86ir")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.60239, 2.29365, 0)
 
 [node name="TV" parent="." instance=ExtResource("3_tbc3t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.7, -11)
@@ -89,14 +94,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32735, 2.00995, 0)
 
 [node name="Camera2" type="Camera3D" parent="."]
 transform = Transform3D(-4.37047e-08, 7.62869e-10, 1, 0.0174524, 0.999848, 0, -0.999848, 0.0174524, -4.37114e-08, -1.47225, 1.38915, -11.2881)
-
-[node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.0318, 3.20815, 0)
-gravity_space_override = 3
-gravity = 0.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("BoxShape3D_iclbq")
 
 [node name="SpawnerComponent" parent="." instance=ExtResource("6_3n2dn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 3, 0)
