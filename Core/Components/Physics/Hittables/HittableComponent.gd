@@ -194,7 +194,7 @@ func unregister_pick() -> void:
 	
 	unpicked.emit()
 
-func register_picking_process(delta : float, hand_position : Vector3, unpick_callback : Callable) -> void:
+func register_picking_process(_delta : float, hand_position : Vector3, unpick_callback : Callable) -> void:
 	var object : RigidBody3D = collision_object as RigidBody3D
 	
 	var object_position := object.global_transform.origin
@@ -253,7 +253,7 @@ func _assert_and_force_properties() -> void:
 		# NOTE: This is necessary for collision detection
 		#       (https://docs.godotengine.org/en/stable/classes/class_rigidbody3d.html#class-rigidbody3d-method-get-colliding-bodies)
 		if not collision_object.contact_monitor:
-			collision_object.contact_monitor
+			collision_object.contact_monitor = true
 		if not collision_object.max_contacts_reported > 0:
 			collision_object.max_contacts_reported = 1
 #endregion Assertions
