@@ -26,12 +26,10 @@ extends Node3D
 func _ready() -> void:
 	pass
 
-func _input(event : InputEvent) -> void:
+func _physics_process(delta: float) -> void:
 	var cubo : RigidBody3D = $Cubos/Cubo
-	if event.is_action_pressed("interact"):
-		cubo.linear_velocity = Vector3(10, 0, 0)
-	elif event.is_action_released("interact"):
-		cubo.apply_impulse(Vector3(100, 0, 0))
+	if Input.is_action_pressed("interact"):
+		cubo.apply_force(Vector3(-200, 0, 0))
 #endregion Built-in Virtual Methods
 
 #region Public Methods

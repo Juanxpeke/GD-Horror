@@ -21,10 +21,16 @@ signal pick_unregistered
 #endregion Constants
 
 #region Exports Variables
-## The name of the variable explains everything.
-@export var use_hand_node_as_pick_target_position : bool = false
 ## TODO
 @export var hand_node : Node3D
+## The name of the variable explains everything.
+@export var use_hand_node_as_pick_target_position : bool = false
+
+@export_group("Object Boosting")
+## TODO
+@export var feet_area : Area3D
+## The name of the variable explains everything, again.
+@export var can_pick_object_in_feet_area : bool = false 
 #endregion Exports Variables
 
 #region Public Variables
@@ -38,16 +44,17 @@ var last_hittable_component : HittableComponent = null:
 			hit_registered.emit(last_hittable_component)
 		else:
 			hit_unregistered.emit()
-#endregion Public Variables
-
-#region Private Variables
-var _picking : bool:
+## TODO
+var picking : bool:
 	set(new_picking):
-		_picking = new_picking
-		if _picking:
+		picking = new_picking
+		if picking:
 			pick_registered.emit()
 		else:
 			pick_unregistered.emit()
+#endregion Public Variables
+
+#region Private Variables
 #endregion Private Variables
 
 #region On Ready Variables
@@ -57,11 +64,11 @@ var _picking : bool:
 func _physics_process(_delta : float) -> void:
 	last_collider = get_collider()
 	
-	if not _picking:
+	if not picking:
 		_update_last_hittable_component()
 	else:
 		if not is_instance_valid(last_hittable_component):
-			_picking = false
+			picking = false
 			return # WARNING: There should be a last hittable component
 		
 		last_hittable_component.register_picking_process(_delta, _get_pick_target_position(), _unpick_last_hittable_component)
@@ -73,11 +80,14 @@ func _input(event : InputEvent) -> void:
 	if last_hittable_component.interactable and event.is_action_pressed("interact"):
 		last_hittable_component.register_interaction()
 	
-	if not _picking and last_hittable_component.pickable and event.is_action_pressed("pick_item"):
+	if not picking and last_hittable_component.pickable and event.is_action_pressed("pick_item"):
 		assert(not last_hittable_component.being_picked) # NOTE: At the moment, some code assumes a
 														 #       hittable component can be picked by
 														 #       only one hittable ray cast
-		_pick_last_hittable_component()
+		if not can_pick_object_in_feet_area and feet_area and last_collider in feet_area.get_overlapping_bodies():
+			return 
+		else:
+			_pick_last_hittable_component()
 	
 	# Safer in case pickable is set to false but still being picked
 	if last_hittable_component.being_picked and event.is_action_released("pick_item"):
@@ -109,11 +119,11 @@ func _update_last_hittable_component() -> void:
 				last_hittable_component.register_hit()
 
 func _pick_last_hittable_component() -> void:
-	_picking = true
+	picking = true
 	last_hittable_component.register_pick(_get_pick_target_position())
 
 func _unpick_last_hittable_component() -> void:
-	_picking = false
+	picking = false
 	last_hittable_component.unregister_pick()
 
 func _get_pick_target_position() -> Vector3:

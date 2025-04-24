@@ -220,7 +220,7 @@ func register_picking_process(_delta : float, hand_position : Vector3, unpick_ca
 		# If object is colliding, reduce drag speed so it doesn't push heavy objects so easily
 		if object.get_contact_count() > 0:
 			drag_speed /= 1 # TODO: Solve this, dividing the speed entirely causes a bug in which
-							#       heavy objects can't be lifted
+							#       heavy objects can't be lifted due to collision with the ground
 		
 		drag_speed = min(drag_speed, MAXIMUM_DRAG_SPEED)
 		
@@ -265,6 +265,7 @@ func _on_tree_exited() -> void:
 func _on_object_can_sleep_restoration_timer_timeout() -> void:
 	var object : RigidBody3D = collision_object as RigidBody3D
 	object.can_sleep = _object_pick_initial_can_sleep
+	can_sleep_restored.emit()
 #endregion Callbacks
 #endregion Private Methods
 

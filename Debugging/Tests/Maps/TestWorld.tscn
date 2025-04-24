@@ -89,11 +89,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2, 1.7, -11)
 [node name="ChocolateBar" parent="." instance=ExtResource("4_lgxhr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.35, 2.1, -11)
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Camera" type="Camera3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32735, 2.00995, 0)
 
-[node name="Camera2" type="Camera3D" parent="."]
-transform = Transform3D(-4.37047e-08, 7.62869e-10, 1, 0.0174524, 0.999848, 0, -0.999848, 0.0174524, -4.37114e-08, -1.47225, 1.38915, -11.2881)
+[node name="Camera2" type="Camera3D" parent="Node3D"]
+transform = Transform3D(-4.37047e-08, 7.62869e-10, 1, 0.0174524, 0.999848, -1.15856e-15, -0.999848, 0.0174524, -4.37113e-08, -1.47225, 1.38915, -11.2881)
+
+[node name="FloorCamera" type="Camera3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.02114, 0.706241, 0)
 
 [node name="SpawnerComponent" parent="." instance=ExtResource("6_3n2dn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 3, 0)
@@ -105,4 +110,4 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 365.6
 offset_bottom = 214.4
-cameras = [NodePath("../Camera"), NodePath("../Camera2")]
+cameras = [NodePath("../Node3D/Camera"), NodePath("../Node3D/Camera2"), NodePath("../Node3D/FloorCamera")]

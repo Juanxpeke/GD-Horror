@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c0iq20sd7m7o0"]
+[gd_scene load_steps=12 format=3 uid="uid://c0iq20sd7m7o0"]
 
 [ext_resource type="Script" uid="uid://dqpwgyffln7ci" path="res://Core/Entities/Player/Player.gd" id="1_1r26l"]
 [ext_resource type="Texture2D" uid="uid://clrno8mdn2qy3" path="res://icon.svg" id="2_cqp8a"]
@@ -14,6 +14,10 @@ radius = 0.35
 height = 1.6
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_kfi4i"]
+radius = 0.35
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dsppf"]
+height = 0.35
 radius = 0.35
 
 [sub_resource type="Animation" id="Animation_h5mo0"]
@@ -126,12 +130,13 @@ current = true
 near = 0.01
 far = 500.0
 
-[node name="EyesRayCast" type="RayCast3D" parent="HeadPivot/Camera"]
+[node name="EyesRayCast" type="RayCast3D" parent="HeadPivot/Camera" node_paths=PackedStringArray("feet_area")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 target_position = Vector3(0, -1.5, 0)
 collision_mask = 2147483648
 script = ExtResource("3_jiond")
+feet_area = NodePath("../../../FeetArea")
 
 [node name="FaceSprite" type="Sprite3D" parent="HeadPivot"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0718123, -0.351038)
@@ -140,14 +145,20 @@ texture = ExtResource("2_cqp8a")
 
 [node name="CrouchingShapeCast" type="ShapeCast3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
 shape = SubResource("SphereShape3D_kfi4i")
-target_position = Vector3(0, 0.35, 0)
+target_position = Vector3(0, 0.6, 0)
 max_results = 8
 debug_shape_custom_color = Color(0, 1, 0, 1)
 
 [node name="CrouchingLockedCheckTimer" type="Timer" parent="."]
 unique_name_in_owner = true
+
+[node name="FeetArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 0)
+
+[node name="CollisionShape" type="CollisionShape3D" parent="FeetArea"]
+shape = SubResource("CylinderShape3D_dsppf")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
